@@ -17,6 +17,7 @@ class CreateMunicipalPoliceStationsTable extends Migration
             $table->id();
             $table->unsignedBigInteger('provincial_police_office_id');
             $table->string('name');
+            $table->string('municipality');
             $table->decimal('latitude');
             $table->decimal('longitude');
             $table->timestamps();
