@@ -22,5 +22,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::group(['prefix' => 'v1'], function () {
     Route::group(['prefix' => 'personnel'], function () {
         Route::post('login', [AuthController::class, 'login']);
+
+        Route::group(['middleware' => 'auth:sanctum'], function () {
+            Route::get('/details', [AuthController::class, 'details']);
+        });
     });
 });
