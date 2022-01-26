@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Personnel;
 
+use App\Models\Personnel;
 use Illuminate\Foundation\Http\FormRequest;
 
 class LoginRequest extends FormRequest
@@ -25,7 +26,14 @@ class LoginRequest extends FormRequest
     {
         return [
             'personnel_id' => 'required',
-            'birth_date' => 'required|date|date_format:Y-m-d'
+            'birth_date' => 'required|date|date_format:Y-m-d',
         ];
+    }
+
+    public function authenticate()
+    {
+        return Personnel::where('personnel_id', $this->personnel_id)
+            ->where('birth_date', $this->birth_date)
+            ->first();   
     }
 }
