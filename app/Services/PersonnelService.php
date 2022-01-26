@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Repositories\PersonnelRepository;
+use Illuminate\Support\Facades\Auth;
 
 class PersonnelService
 {
@@ -31,6 +32,17 @@ class PersonnelService
             'data' => [
                 'message' => 'Successful Login.',
                 'token' => $personnel->createToken('')->plainTextToken
+            ]
+        ];
+    }
+
+    public function getAuthPersonnel()
+    {
+        return (object) [
+            'code' => 200,
+            'data' => [
+                'message' => 'Successful get personnel details.',
+                'data' => Auth::user()
             ]
         ];
     }

@@ -21,4 +21,11 @@ class AuthController extends Controller
 
         return response($result->data, $result->code);
     }
+
+    public function details()
+    {
+        $result = $this->service->getAuthPersonnel();
+
+        return response($result->data, $result->code);
+    }
 }
