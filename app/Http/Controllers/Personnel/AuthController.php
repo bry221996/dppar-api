@@ -4,29 +4,28 @@ namespace App\Http\Controllers\Personnel;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Personnel\LoginRequest;
-use Illuminate\Support\Facades\Auth;
+use App\Services\PersonnelService;
 
 class AuthController extends Controller
 {
+    protected $service;
+
+    public function __construct(PersonnelService $personnelService)
+    {
+        $this->service = $personnelService;
+    }
+
     public function login(LoginRequest $request)
     {
-        $personnel = $request->authenticate();
+        $result = $this->service->login($request->personnel_id, $request->birth_date);
 
-        if (!$personnel) {
-            return response(['message' => 'Invalid Credentials'], 401);
-        }
-
-        return response([
-            'message' => 'Successful Login.',
-            'token' => $personnel->createToken('')->plainTextToken
-        ]);
+        return response($result->data, $result->code);
     }
 
     public function details()
     {
-        return response([
-            'message' => 'Successful get personnel details.',
-            'data' => Auth::user()
-        ]);
+        $result = $this->service->getAuthPersonnel();
+
+        return response($result->data, $result->code);
     }
 }
