@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Personnel\AuthController;
+use App\Http\Controllers\Personnel\PersonnelMpinController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -25,6 +26,7 @@ Route::group(['prefix' => 'v1'], function () {
 
         Route::group(['middleware' => 'auth:personnels'], function () {
             Route::get('/details', [AuthController::class, 'details']);
+            Route::post('/mpin', [PersonnelMpinController::class, 'store']);
         });
     });
 });

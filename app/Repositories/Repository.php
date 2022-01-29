@@ -12,4 +12,9 @@ class Repository
     {
         $this->model = $model;
     }
+
+    public function update($entity, array $data)
+    {
+       return $entity->update($data);
+    }
 }
