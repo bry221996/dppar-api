@@ -3,6 +3,7 @@
 use App\Http\Controllers\Personnel\AuthController as PersonnelAuthController;
 use App\Http\Controllers\Personnel\CheckinController as PersonnelCheckinController;
 use App\Http\Controllers\Admin\AuthController as AdminAuthController;
+use App\Http\Controllers\Personnel\PersonnelDashboardController;
 use App\Http\Controllers\Personnel\PersonnelMpinController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -28,6 +29,8 @@ Route::group(['prefix' => 'v1'], function () {
 
         Route::group(['middleware' => 'auth:personnels'], function () {
             Route::post('/logout', [PersonnelAuthController::class, 'logout']);
+
+            Route::get('/dashboard', [PersonnelDashboardController::class, 'index']);
             Route::get('/details', [PersonnelAuthController::class, 'details']);
             Route::post('/mpin', [PersonnelMpinController::class, 'store']);
 

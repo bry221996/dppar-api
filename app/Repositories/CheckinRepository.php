@@ -16,4 +16,12 @@ class CheckinRepository extends Repository
         return $this->model->where('personnel_id', $personnel_id)
             ->paginate($page_size);
     }
+
+    public function getLatestByPersonnelId(int $personnel_id, $count)
+    {
+        return $this->model->where('personnel_id', $personnel_id)
+            ->take($count)
+            ->orderBy('created_at', 'desc')
+            ->get();
+    }
 }
