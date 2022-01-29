@@ -17,7 +17,8 @@ class LoginTest extends TestCase
 
         $data = [
             'personnel_id' => $personnel->personnel_id,
-            'birth_date' => $personnel->birth_date
+            'birth_date' => $personnel->birth_date,
+            'device' => $this->faker->macAddress,
         ];
 
         $this->postJson('/api/v1/personnel/login', $data)
@@ -34,7 +35,8 @@ class LoginTest extends TestCase
         
         $data = [
             'personnel_id' => $personnel->personnel_id,
-            'mpin' => '1234'
+            'mpin' => '1234',
+            'device' => $this->faker->macAddress,
         ];
 
         $this->postJson('/api/v1/personnel/login', $data)
@@ -50,6 +52,7 @@ class LoginTest extends TestCase
         $data = [
             'personnel_id' => $this->faker->bothify('##-???????'),
             'birth_date' => $this->faker->date(),
+            'device' => $this->faker->macAddress,
         ];
 
         $this->postJson('/api/v1/personnel/login', $data)
@@ -63,7 +66,8 @@ class LoginTest extends TestCase
         
         $data = [
             'personnel_id' => $personnel->personnel_id,
-            'mpin' => '4321'
+            'mpin' => '4321',
+            'device' => $this->faker->macAddress,
         ];
 
         $this->postJson('/api/v1/personnel/login', $data)

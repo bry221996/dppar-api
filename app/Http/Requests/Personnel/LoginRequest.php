@@ -35,7 +35,8 @@ class LoginRequest extends FormRequest
         return [
             'personnel_id' => 'required',
             'birth_date' => 'required_without:mpin|date|date_format:Y-m-d',
-            'mpin' => 'required_without:birth_date|size:4'
+            'mpin' => 'required_without:birth_date|size:4',
+            'device' => 'required'
         ];
     }
 
@@ -47,6 +48,6 @@ class LoginRequest extends FormRequest
     
         if (!$personnel || ($personnel && $this->mpin && !Hash::check($this->mpin, $personnel->mpin))) return false;
 
-        return $personnel->createToken('')->plainTextToken;
+        return $personnel->createToken($this->device)->plainTextToken;
     }
 }
