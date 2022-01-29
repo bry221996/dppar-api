@@ -11,6 +11,7 @@ class PersonnelDetailsTest extends TestCase
 {
     use RefreshDatabase;
 
+    /** @group personnel */
     public function test_logged_in_personnel_can_fetch_details()
     {
         Sanctum::actingAs(Personnel::factory()->create(), [], 'personnels');
@@ -34,6 +35,7 @@ class PersonnelDetailsTest extends TestCase
             ]);
     }
 
+    /** @group personnel */
     public function test_guess_can_not_fetch_personnel_details()
     {
         $this->getJson('/api/v1/personnel/details')

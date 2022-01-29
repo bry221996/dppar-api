@@ -15,6 +15,7 @@ class CheckinTest extends TestCase
 {
     use RefreshDatabase, WithFaker;
 
+    /** @group personnel */
     public function test_personnel_can_list_checkins()
     {
         $personnel = Personnel::factory()->create();
@@ -55,12 +56,14 @@ class CheckinTest extends TestCase
             ]);
     }
 
+    /** @group personnel */
     public function test_guest_can_not_list_checkins()
     {
         $this->getJson('/api/v1/personnel/checkins')
             ->assertStatus(401);
     }
 
+    /** @group personnel */
     public function test_personnel_can_create_checkin()
     {
         Storage::fake('s3');
@@ -84,7 +87,6 @@ class CheckinTest extends TestCase
                     'id',
                     'image',
                     'type',
-                    'is_accounted',
                     'latitude',
                     'longitude',
                     'remarks',
@@ -95,6 +97,7 @@ class CheckinTest extends TestCase
             ]);
     }
 
+    /** @group personnel */
     public function test_guess_can_not_create_checkin()
     {
         $this->postJson('/api/v1/personnel/checkins', [])

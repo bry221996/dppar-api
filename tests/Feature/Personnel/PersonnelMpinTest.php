@@ -12,6 +12,7 @@ class PersonnelMpinTest extends TestCase
 {
     use RefreshDatabase, WithFaker;
 
+    /** @group personnel */
     public function test_personnel_can_update_mpin()
     {
         Sanctum::actingAs(Personnel::factory()->create(), [], 'personnels');
@@ -26,12 +27,14 @@ class PersonnelMpinTest extends TestCase
             ->assertStatus(200);
     }
 
+    /** @group personnel */
     public function test_guess_can_not_update_mpin()
     {
         $this->postJson('/api/v1/personnel/mpin')
             ->assertStatus(401);
     }
 
+    /** @group personnel */
     public function test_personnel_can_not_update_mpin_with_empty_data()
     {
         Sanctum::actingAs(Personnel::factory()->create(), [], 'personnels');
@@ -41,6 +44,7 @@ class PersonnelMpinTest extends TestCase
             ->assertJsonValidationErrors(['mpin']);
     }
 
+    /** @group personnel */
     public function test_personnel_can_not_update_mpin_with_not_confirmed_mpin()
     {
         Sanctum::actingAs(Personnel::factory()->create(), [], 'personnels');

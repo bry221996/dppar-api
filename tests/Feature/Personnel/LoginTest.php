@@ -11,6 +11,7 @@ class LoginTest extends TestCase
 {
     use RefreshDatabase, WithFaker;
 
+    /** @group personnel */
     public function test_personnel_can_login_using_personnel_id_and_birthdate()
     {
         $personnel = Personnel::factory()->create();
@@ -29,6 +30,7 @@ class LoginTest extends TestCase
             ]);
     }
 
+    /** @group personnel */
     public function test_personnel_can_login_using_personnel_id_and_mpin()
     {
         $personnel = Personnel::factory()->create();
@@ -47,6 +49,7 @@ class LoginTest extends TestCase
             ]);
     }
 
+    /** @group personnel */
     public function test_personnel_can_not_login_with_invalid_personnel_id_and_birth_date()
     {
         $data = [
@@ -60,6 +63,7 @@ class LoginTest extends TestCase
             ->assertJsonStructure(['message']);
     }
 
+    /** @group personnel */
     public function test_personnel_can_not_login_with_invalid_personnel_id_and_pin()
     {
         $personnel = Personnel::factory()->create();
@@ -75,6 +79,7 @@ class LoginTest extends TestCase
             ->assertJsonStructure(['message']);
     }
 
+    /** @group personnel */
     public function test_personnel_can_not_login_with_empty_credentials()
     {
         $this->postJson('/api/v1/personnel/login', [])
