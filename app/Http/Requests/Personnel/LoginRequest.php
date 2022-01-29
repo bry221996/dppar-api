@@ -5,6 +5,7 @@ namespace App\Http\Requests\Personnel;
 use App\Repositories\PersonnelRepository;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Hash;
+use Laravel\Sanctum\PersonalAccessToken;
 
 class LoginRequest extends FormRequest
 {
@@ -47,6 +48,8 @@ class LoginRequest extends FormRequest
             $this->personnelRepository->getByPersonnelId($this->personnel_id);
     
         if (!$personnel || ($personnel && $this->mpin && !Hash::check($this->mpin, $personnel->mpin))) return false;
+
+        $personnel->tokens()->where('name', $this->device)->delete();
 
         return $personnel->createToken($this->device)->plainTextToken;
     }
