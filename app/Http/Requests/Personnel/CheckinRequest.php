@@ -28,8 +28,8 @@ class CheckinRequest extends FormRequest
     {
         return [
             'image' => 'required|image',
-            'type' => 'required|in:regular_checkin,aor,leave_of_absence,off_duty',
-            'aor_type' => 'required_if:type,aor|in:hospital,travel,under_instruction,official_mission,conference,others',
+            'type' => 'required|in:regular_checkin,out_of_area_of_responsibility,leave_of_absence,off_duty',
+            'out_of_area_of_responsibility_type' => 'required_if:type,out_of_area_of_responsibility|in:hospital,travel,under_instruction,official_mission,conference,others',
             'latitude' => 'required|numeric',
             'longitude' => 'required|numeric',
             'remarks' => 'required',

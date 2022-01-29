@@ -26,11 +26,11 @@ class CheckinFactory extends Factory
         ];
     }
 
-    public function aor()
+    public function outOfAreaOfResponsibility()
     {
         return $this->state(function (array $attributes) {
             return [
-                'type' => 'aor',
+                'type' => 'out_of_area_of_responsibility',
                 'aor_type' => $this->faker->randomElement(['hospital', 'travel', 'under_instruction', 'official_mission', 'conference', 'others']),
             ];
         });
