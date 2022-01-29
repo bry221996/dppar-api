@@ -30,6 +30,7 @@ Route::group(['prefix' => 'v1'], function () {
             Route::post('/mpin', [PersonnelMpinController::class, 'store']);
 
             Route::get('/checkins', [PersonnelCheckinController::class, 'index']);
+            Route::post('/checkins', [PersonnelCheckinController::class, 'store']);
         });
     });
 });

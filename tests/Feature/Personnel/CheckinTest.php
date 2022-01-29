@@ -6,6 +6,8 @@ use App\Models\Checkin;
 use App\Models\Personnel;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
 
@@ -36,7 +38,7 @@ class CheckinTest extends TestCase
                         'remarks',
                         'admin_remarks',
                         'created_at',
-                        'updated_at' 
+                        'updated_at'
                     ]
                 ],
                 'first_page_url',
@@ -56,6 +58,46 @@ class CheckinTest extends TestCase
     public function test_guest_can_not_list_checkins()
     {
         $this->getJson('/api/v1/personnel/checkins')
+            ->assertStatus(401);
+    }
+
+    public function test_personnel_can_create_checkin()
+    {
+        Storage::fake('s3');
+
+        $personnel = Personnel::factory()->create();
+        Sanctum::actingAs($personnel, [], 'personnels');
+
+        $data = Checkin::factory()
+            ->make([
+                'personnel_id' => $personnel->id,
+                'image' => UploadedFile::fake()->image('checkin-selfie.jpeg')
+            ])
+            ->toArray();
+
+
+        $this->postJson('/api/v1/personnel/checkins', $data)
+            ->assertStatus(200)
+            ->assertJsonStructure([
+                'message',
+                'data' => [
+                    'id',
+                    'image',
+                    'type',
+                    'is_accounted',
+                    'latitude',
+                    'longitude',
+                    'remarks',
+                    'personnel_id',
+                    'created_at',
+                    'updated_at'
+                ]
+            ]);
+    }
+
+    public function test_guess_can_not_create_checkin()
+    {
+        $this->postJson('/api/v1/personnel/checkins', [])
             ->assertStatus(401);
     }
 }

@@ -13,6 +13,11 @@ class Repository
         $this->model = $model;
     }
 
+    public function create(array $data)
+    {
+        return $this->model->create($data);   
+    }
+
     public function update($entity, array $data)
     {
        return $entity->update($data);

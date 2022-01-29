@@ -17,7 +17,7 @@ class CheckinFactory extends Factory
         return [
             'personnel_id' => Personnel::factory()->create()->id,
             'image' => $this->faker->imageUrl(),
-            'type' => $this->faker->randomElement(['regular_checkin', 'aor', 'leave_of_absence', 'off_duty']),
+            'type' => $this->faker->randomElement(['regular_checkin', 'leave_of_absence', 'off_duty']),
             'is_accounted' => $this->faker->boolean,
             'latitude' => $this->faker->latitude,
             'longitude' => $this->faker->longitude,
@@ -30,6 +30,7 @@ class CheckinFactory extends Factory
     {
         return $this->state(function (array $attributes) {
             return [
+                'type' => 'aor',
                 'aor_type' => $this->faker->randomElement(['hospital', 'travel', 'under_instruction', 'official_mission', 'conference', 'others']),
             ];
         });
