@@ -50,7 +50,7 @@ class LoginRequest extends FormRequest
         if (!$personnel || ($personnel && $this->mpin && !Hash::check($this->mpin, $personnel->mpin))) return false;
 
         // Delete previous tokens on this device.
-        $personnel->tokens()->where('name', $this->device)->delete();
+        // $personnel->tokens()->where('name', $this->device)->delete();
 
         return $personnel->createToken($this->device)->plainTextToken;
     }
