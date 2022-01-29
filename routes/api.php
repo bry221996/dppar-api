@@ -27,6 +27,7 @@ Route::group(['prefix' => 'v1'], function () {
         Route::post('login', [PersonnelAuthController::class, 'login']);
 
         Route::group(['middleware' => 'auth:personnels'], function () {
+            Route::post('/logout', [PersonnelAuthController::class, 'logout']);
             Route::get('/details', [PersonnelAuthController::class, 'details']);
             Route::post('/mpin', [PersonnelMpinController::class, 'store']);
 

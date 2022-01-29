@@ -5,6 +5,7 @@ namespace Tests\Feature\Personnel;
 use App\Models\Personnel;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
 
 class AuthenticationTest extends TestCase
@@ -85,5 +86,13 @@ class AuthenticationTest extends TestCase
         $this->postJson('/api/v1/personnel/login', [])
             ->assertStatus(422)
             ->assertJsonValidationErrors(['personnel_id', 'birth_date']);
+    }
+
+    public function test_personnel_can_logout()
+    {
+        Sanctum::actingAs(Personnel::factory()->create(), [], 'personnels');
+        
+        $this->postJson('/api/v1/personnel/logout')
+            ->assertStatus(200);
     }
 }
