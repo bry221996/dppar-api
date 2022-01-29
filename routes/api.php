@@ -1,6 +1,7 @@
 <?php
 
-use App\Http\Controllers\Personnel\AuthController;
+use App\Http\Controllers\Personnel\AuthController as PersonnelAuthController;
+use App\Http\Controllers\Personnel\CheckinController as PersonnelCheckinController;
 use App\Http\Controllers\Personnel\PersonnelMpinController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -22,11 +23,13 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::group(['prefix' => 'v1'], function () {
     Route::group(['prefix' => 'personnel'], function () {
-        Route::post('login', [AuthController::class, 'login']);
+        Route::post('login', [PersonnelAuthController::class, 'login']);
 
         Route::group(['middleware' => 'auth:personnels'], function () {
-            Route::get('/details', [AuthController::class, 'details']);
+            Route::get('/details', [PersonnelAuthController::class, 'details']);
             Route::post('/mpin', [PersonnelMpinController::class, 'store']);
+
+            Route::get('/checkins', [PersonnelCheckinController::class, 'index']);
         });
     });
 });
