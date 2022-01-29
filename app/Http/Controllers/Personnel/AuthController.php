@@ -21,7 +21,7 @@ class AuthController extends Controller
     {
         return response([
             'message' => 'Successfully fetch personnel details', 
-            'data' => Auth::user()
+            'data' => Auth::guard('personnels')->user()
         ]);
     }
 }

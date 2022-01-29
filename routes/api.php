@@ -23,7 +23,7 @@ Route::group(['prefix' => 'v1'], function () {
     Route::group(['prefix' => 'personnel'], function () {
         Route::post('login', [AuthController::class, 'login']);
 
-        Route::group(['middleware' => 'auth:sanctum'], function () {
+        Route::group(['middleware' => 'auth:personnels'], function () {
             Route::get('/details', [AuthController::class, 'details']);
         });
     });

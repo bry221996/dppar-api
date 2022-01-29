@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\Personnel;
+
 return [
 
     /*
@@ -40,6 +42,10 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
+        'personnels' => [
+            'driver' => 'sanctum',
+            'provider' => 'personnels',
+        ],
     ],
 
     /*
@@ -63,6 +69,12 @@ return [
         'users' => [
             'driver' => 'eloquent',
             'model' => App\Models\User::class,
+        ],
+
+
+        'personnels' => [
+            'driver' => 'eloquent',
+            'model' => Personnel::class
         ],
 
         // 'users' => [

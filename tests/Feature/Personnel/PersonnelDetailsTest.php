@@ -13,7 +13,7 @@ class PersonnelDetailsTest extends TestCase
 
     public function test_logged_in_personnel_can_fetch_details()
     {
-        Sanctum::actingAs(Personnel::factory()->create());
+        Sanctum::actingAs(Personnel::factory()->create(), [], 'personnels');
         
         $this->getJson('/api/v1/personnel/details') 
             ->assertStatus(200)
