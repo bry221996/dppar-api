@@ -44,11 +44,11 @@ class LoginTest extends TestCase
             ->assertJsonStructure(['message']);
     }
 
-        /** @group admin */
-        public function test_users_can_not_login_with_empty_credentials()
-        {
-            $this->postJson('/api/v1/admin/login', [])
-                ->assertStatus(422)
-                ->assertJsonValidationErrors(['email', 'password']);
-        }
+    /** @group admin */
+    public function test_users_can_not_login_with_empty_credentials()
+    {
+        $this->postJson('/api/v1/admin/login', [])
+            ->assertStatus(422)
+            ->assertJsonValidationErrors(['email', 'password']);
+    }
 }

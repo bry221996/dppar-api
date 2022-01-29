@@ -18,6 +18,7 @@ class CreateUsersTable extends Migration
             $table->string('name');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
+            $table->enum('role', ['super_admin', 'regional_police_officer', 'provincial_police_officer', 'municipal_police_officer']);
             $table->string('password');
             $table->rememberToken();
             $table->timestamps();
