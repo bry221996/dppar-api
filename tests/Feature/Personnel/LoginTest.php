@@ -11,11 +11,16 @@ class LoginTest extends TestCase
 {
     use RefreshDatabase, WithFaker;
 
-    public function test_personnel_can_login_using_id_and_birthdate()
+    public function test_personnel_can_login_using_personnel_id_and_birthdate()
     {
         $personnel = Personnel::factory()->create();
 
-        $this->postJson('/api/v1/personnel/login', $personnel->toArray())
+        $data = [
+            'personnel_id' => $personnel->personnel_id,
+            'birth_date' => $personnel->birth_date
+        ];
+
+        $this->postJson('/api/v1/personnel/login', $data)
             ->assertStatus(200)
             ->assertJsonStructure([
                 'message',
@@ -23,11 +28,42 @@ class LoginTest extends TestCase
             ]);
     }
 
-    public function test_personnel_can_not_login_with_invalid_credentials()
+    public function test_personnel_can_login_using_personnel_id_and_mpin()
+    {
+        $personnel = Personnel::factory()->create();
+        
+        $data = [
+            'personnel_id' => $personnel->personnel_id,
+            'mpin' => '1234'
+        ];
+
+        $this->postJson('/api/v1/personnel/login', $data)
+            ->assertStatus(200)
+            ->assertJsonStructure([
+                'message',
+                'token'
+            ]);
+    }
+
+    public function test_personnel_can_not_login_with_invalid_personnel_id_and_birth_date()
     {
         $data = [
             'personnel_id' => $this->faker->bothify('##-???????'),
             'birth_date' => $this->faker->date(),
+        ];
+
+        $this->postJson('/api/v1/personnel/login', $data)
+            ->assertStatus(401)
+            ->assertJsonStructure(['message']);
+    }
+
+    public function test_personnel_can_not_login_with_invalid_personnel_id_and_pin()
+    {
+        $personnel = Personnel::factory()->create();
+        
+        $data = [
+            'personnel_id' => $personnel->personnel_id,
+            'mpin' => '4321'
         ];
 
         $this->postJson('/api/v1/personnel/login', $data)
