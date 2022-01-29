@@ -15,6 +15,12 @@ class PersonnelRepository extends Repository
     {
         return $this->model->where('personnel_id', $personnel_id)
             ->where('birth_date', $birth_date)
-            ->first();   
+            ->first();
+    }
+
+    public function getByPersonnelId(string $personnel_id)
+    {
+        return $this->model->where('personnel_id', $personnel_id)
+            ->first();
     }
 }
