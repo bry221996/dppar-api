@@ -29,4 +29,26 @@ class LoginTest extends TestCase
             ]);
     }
 
+    /** @group admin */
+    public function test_users_can_not_login_with_invalid_credentials()
+    {
+        $user = User::factory()->create();
+
+        $data = [
+            'email' => $user->email,
+            'password' => 'invalid-password',
+        ];
+
+        $this->postJson('/api/v1/admin/login', $data)
+            ->assertStatus(401)
+            ->assertJsonStructure(['message']);
+    }
+
+        /** @group admin */
+        public function test_users_can_not_login_with_empty_credentials()
+        {
+            $this->postJson('/api/v1/admin/login', [])
+                ->assertStatus(422)
+                ->assertJsonValidationErrors(['email', 'password']);
+        }
 }

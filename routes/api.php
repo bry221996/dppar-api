@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Personnel\AuthController as PersonnelAuthController;
 use App\Http\Controllers\Personnel\CheckinController as PersonnelCheckinController;
+use App\Http\Controllers\Admin\AuthController as AdminAuthController;
 use App\Http\Controllers\Personnel\PersonnelMpinController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -32,5 +33,9 @@ Route::group(['prefix' => 'v1'], function () {
             Route::get('/checkins', [PersonnelCheckinController::class, 'index']);
             Route::post('/checkins', [PersonnelCheckinController::class, 'store']);
         });
+    });
+
+    Route::group(['prefix' => 'admin'], function () {
+        Route::post('login', [AdminAuthController::class, 'login']);
     });
 });

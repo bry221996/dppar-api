@@ -12,4 +12,8 @@ class Personnel extends Authenticatable
     use HasFactory, HasApiTokens;
 
     protected $guarded = [];
+
+    protected $hidden = [
+        'mpin',
+    ];
 }
