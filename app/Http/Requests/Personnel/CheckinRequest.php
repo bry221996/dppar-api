@@ -30,7 +30,6 @@ class CheckinRequest extends FormRequest
             'image' => 'required|image',
             'type' => 'required|in:regular_checkin,aor,leave_of_absence,off_duty',
             'aor_type' => 'required_if:type,aor|in:hospital,travel,under_instruction,official_mission,conference,others',
-            'is_accounted' => 'boolean',
             'latitude' => 'required|numeric',
             'longitude' => 'required|numeric',
             'remarks' => 'required',
