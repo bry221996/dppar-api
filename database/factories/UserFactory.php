@@ -24,16 +24,47 @@ class UserFactory extends Factory
         ];
     }
 
-    /**
-     * Indicate that the model's email address should be unverified.
-     *
-     * @return \Illuminate\Database\Eloquent\Factories\Factory
-     */
     public function unverified()
     {
         return $this->state(function (array $attributes) {
             return [
                 'email_verified_at' => null,
+            ];
+        });
+    }
+
+    public function superAdmin()
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'role' => 'super_admin',
+            ];
+        });
+    }
+
+    public function regionalPoliceOfficer()
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'role' => 'regional_police_officer',
+            ];
+        });
+    }
+
+    public function provincialPoliceOfficer()
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'role' => 'provincial_police_officer',
+            ];
+        });
+    }
+
+    public function municipalPoliceOfficer()
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'role' => 'municipal_police_officer',
             ];
         });
     }
