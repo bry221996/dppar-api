@@ -10,4 +10,11 @@ class PasswordResetRepository extends Repository
     {
         parent::__construct($passwordReset);
     }
+
+    public function deleteByEmailAndToken(string $email, string $token)
+    {
+        $this->model->where('email', $email)
+            ->where('token', $token)
+            ->delete();
+    }
 }
