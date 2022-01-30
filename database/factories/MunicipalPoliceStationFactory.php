@@ -18,8 +18,8 @@ class MunicipalPoliceStationFactory extends Factory
             'provincial_police_office_id' => ProvincialPoliceOffice::factory()->create()->id,
             'name' => $this->faker->sentence,
             'municipality' => $this->faker->municipality,
-            'latitude' => $this->faker->latitude,
-            'longitude' => $this->faker->longitude,
+            'latitude' => $this->faker->latitude(12, 15),
+            'longitude' => $this->faker->longitude(120, 122),
         ];
     }
 }

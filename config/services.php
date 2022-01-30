@@ -30,4 +30,9 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
+    'open_cage' => [
+        'key' => env('OPEN_CAGE_API_KEY'),
+        'base_url' => env('OPEN_CAGE_BASE_URL')
+    ]
+
 ];
