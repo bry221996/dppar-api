@@ -18,10 +18,25 @@ class CreateUsersTable extends Migration
             $table->string('name');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
+            $table->unsignedBigInteger('regional_police_office_id')->nullable();
+            $table->unsignedBigInteger('provincial_police_office_id')->nullable();
+            $table->unsignedBigInteger('municipal_police_station_id')->nullable();
             $table->enum('role', ['super_admin', 'regional_police_officer', 'provincial_police_officer', 'municipal_police_officer']);
             $table->string('password');
             $table->rememberToken();
             $table->timestamps();
+
+            $table->foreign('municipal_police_station_id')
+                ->references('id')
+                ->on('municipal_police_stations');
+
+            $table->foreign('provincial_police_office_id')
+                ->references('id')
+                ->on('provincial_police_offices');
+
+            $table->foreign('regional_police_office_id')
+                ->references('id')
+                ->on('regional_police_offices');
         });
     }
 
