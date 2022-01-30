@@ -28,6 +28,8 @@ class PasswordResetController extends Controller
     {
         $request->validate([
             'email' => 'required|exists:users,email'
+        ], [
+            'email.exists' => 'Email not found.'
         ]);
 
         $passwordReset = $this->passwordResetRepository->create([
