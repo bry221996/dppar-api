@@ -3,6 +3,7 @@
 use App\Http\Controllers\Personnel\AuthController as PersonnelAuthController;
 use App\Http\Controllers\Personnel\CheckinController as PersonnelCheckinController;
 use App\Http\Controllers\Admin\AuthController as AdminAuthController;
+use App\Http\Controllers\Admin\PasswordResetController;
 use App\Http\Controllers\Personnel\PersonnelDashboardController;
 use App\Http\Controllers\Personnel\PersonnelMpinController;
 use Illuminate\Http\Request;
@@ -41,5 +42,6 @@ Route::group(['prefix' => 'v1'], function () {
 
     Route::group(['prefix' => 'admin'], function () {
         Route::post('login', [AdminAuthController::class, 'login']);
+        Route::post('forgot-password', [PasswordResetController::class, 'store']);
     });
 });
