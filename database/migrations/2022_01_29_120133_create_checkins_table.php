@@ -22,6 +22,8 @@ class CreateCheckinsTable extends Migration
             $table->boolean('is_accounted')->default(true);
             $table->decimal('latitude');
             $table->decimal('longitude');
+            $table->string('town')->nullable();
+            $table->string('province')->nullable();
             $table->text('remarks');
             $table->text('admin_remarks');
             $table->timestamps();
