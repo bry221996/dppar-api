@@ -29,11 +29,11 @@ class PasswordResetTest extends TestCase
         Notification::assertSentTo($user, PasswordResetNotification::class);
     }
 
-      /** @group admin */
-      public function test_non_existing_email_can_not_forgot_password()
-      {
-          $this->postJson('/api/v1/admin/forgot-password', ['email' => $this->faker->email])
-              ->assertStatus(422)
-              ->assertJsonValidationErrors(['email']);
-      }
+    /** @group admin */
+    public function test_non_existing_email_can_not_forgot_password()
+    {
+        $this->postJson('/api/v1/admin/forgot-password', ['email' => $this->faker->email])
+            ->assertStatus(422)
+            ->assertJsonValidationErrors(['email']);
+    }
 }
