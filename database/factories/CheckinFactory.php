@@ -19,8 +19,8 @@ class CheckinFactory extends Factory
             'image' => $this->faker->imageUrl(),
             'type' => $this->faker->randomElement(['regular_checkin', 'leave_of_absence', 'off_duty']),
             'is_accounted' => $this->faker->boolean,
-            'latitude' => $this->faker->latitude,
-            'longitude' => $this->faker->longitude,
+            'latitude' => $this->faker->latitude(12, 15),
+            'longitude' => $this->faker->longitude(120, 122),
             'remarks' => $this->faker->paragraph,
             'admin_remarks' => $this->faker->paragraph
         ];

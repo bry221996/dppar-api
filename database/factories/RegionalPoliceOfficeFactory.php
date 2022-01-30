@@ -16,8 +16,8 @@ class RegionalPoliceOfficeFactory extends Factory
         return [
             'name' => $this->faker->sentence,
             'region' => $this->faker->numerify('Region #'),
-            'latitude' => $this->faker->latitude,
-            'longitude' => $this->faker->longitude,
+            'latitude' => $this->faker->latitude(12, 15),
+            'longitude' => $this->faker->longitude(120, 122),
         ];
     }
 }
