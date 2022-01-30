@@ -6,11 +6,11 @@ use App\Services\Geocoder\GeocoderAddressInterface;
 
 class OpenCageAddress implements GeocoderAddressInterface
 {
-    protected $adressComponent;
+    protected $adressComponent = [];
 
-    public function __construct($adressComponent)
+    public function setAddressComponent(array $addressComponent)
     {
-        $this->adressComponent = $adressComponent;
+        $this->adressComponent = $addressComponent;
     }
 
     public function getTown()

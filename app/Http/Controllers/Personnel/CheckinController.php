@@ -32,11 +32,8 @@ class CheckinController extends Controller
         $data = $checkinRequest->validated();
 
         $address = (new OpenCageService())->reverse($data['latitude'], $data['longitude']);
-
-        if ($address) {
-            $data['town'] = $address->getTown();
-            $data['province'] = $address->getProvince();
-        }
+        $data['town'] = $address->getTown();
+        $data['province'] = $address->getProvince();
 
         $checkin = $this->checkinRepository->create($data);
 

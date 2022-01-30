@@ -17,8 +17,10 @@ class OpenCageService implements GeocoderInterface
         $this->api_key = config('services.open_cage.key');
     }
 
-    public function reverse(float $lat, float $long)
+    public function reverse(float $lat, float $long): OpenCageAddress
     {
+        $openCageAddress = new OpenCageAddress();
+
         $response = Http::get($this->base_url . '/geocode/v1/json', [
             'key' => $this->api_key,
             'q' => "$lat+$long"
@@ -29,11 +31,11 @@ class OpenCageService implements GeocoderInterface
 
             if ($responseJson['status']['code'] === 200 && isset($responseJson['results'])) {
                 if (count($responseJson['results'])) {
-                    return new OpenCageAddress($responseJson['results'][0]['components']);
+                    $openCageAddress->setAddressComponent($responseJson['results'][0]['components']);
                 }
             }
         }
 
-        return false;
+        return $openCageAddress;
     }
 }
