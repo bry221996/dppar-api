@@ -3,8 +3,10 @@
 namespace Tests\Feature\Admin;
 
 use App\Models\User;
+use App\Notifications\PasswordResetNotification;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Support\Facades\Notification;
 use Tests\TestCase;
 
 class PasswordResetTest extends TestCase
@@ -14,6 +16,8 @@ class PasswordResetTest extends TestCase
     /** @group admin */
     public function test_users_can_forgot_password()
     {
+        Notification::fake();
+
         $user = User::factory()->create();
         $data = ['email' => $user->email];
 
@@ -21,5 +25,7 @@ class PasswordResetTest extends TestCase
             ->assertStatus(200);
 
         $this->assertDatabaseHas('password_resets', $data);
+
+        Notification::assertSentTo($user, PasswordResetNotification::class);
     }
 }
