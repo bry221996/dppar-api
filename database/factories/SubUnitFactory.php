@@ -2,9 +2,10 @@
 
 namespace Database\Factories;
 
+use App\Models\Unit;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class RegionalPoliceOfficeFactory extends Factory
+class SubUnitFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -14,8 +15,10 @@ class RegionalPoliceOfficeFactory extends Factory
     public function definition()
     {
         return [
+            'unit_id' => Unit::factory()->create()->id,
             'name' => $this->faker->sentence,
-            'region' => $this->faker->numerify('Region #'),
+            'province' => $this->faker->province,
+            'type' => $this->faker->randomElement(['provincial', 'city']),
             'latitude' => $this->faker->latitude(12, 15),
             'longitude' => $this->faker->longitude(120, 122),
         ];
