@@ -27,6 +27,15 @@ class UserFactory extends Factory
         ];
     }
 
+    public function inactive()
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'status' => 'inactive',
+            ];
+        });
+    }
+
     public function unverified()
     {
         return $this->state(function (array $attributes) {

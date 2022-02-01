@@ -45,6 +45,21 @@ class AuthenticationTest extends TestCase
     }
 
     /** @group admin */
+    public function test_inactive_users_can_not_login()
+    {
+        $user = User::factory()->inactive()->create();
+
+        $data = [
+            'email' => $user->email,
+            'password' => 'password',
+        ];
+
+        $this->postJson('/api/v1/admin/login', $data)
+            ->assertStatus(401)
+            ->assertJsonStructure(['message']);
+    }
+
+    /** @group admin */
     public function test_users_can_not_login_with_empty_credentials()
     {
         $this->postJson('/api/v1/admin/login', [])
