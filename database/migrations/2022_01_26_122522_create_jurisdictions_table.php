@@ -17,13 +17,13 @@ class CreateJurisdictionsTable extends Migration
             $table->id();
             $table->string('name');
             $table->string('code');
-            $table->unsignedBigInteger('municipal_police_station_id');
+            $table->unsignedBigInteger('station_id');
             $table->decimal('radius');
             $table->timestamps();
 
-            $table->foreign('municipal_police_station_id')
+            $table->foreign('station_id')
                 ->references('id')
-                ->on('municipal_police_stations');
+                ->on('stations');
         });
     }
 
