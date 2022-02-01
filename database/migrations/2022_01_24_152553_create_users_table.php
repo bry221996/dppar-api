@@ -24,6 +24,7 @@ class CreateUsersTable extends Migration
             $table->enum('role', ['super_admin', 'regional_police_officer', 'provincial_police_officer', 'municipal_police_officer']);
             $table->string('password');
             $table->rememberToken();
+            $table->enum('status', ['active', 'inactive'])->default('active');
             $table->timestamps();
 
             $table->foreign('station_id')
