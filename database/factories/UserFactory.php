@@ -2,6 +2,9 @@
 
 namespace Database\Factories;
 
+use App\Models\Station;
+use App\Models\SubUnit;
+use App\Models\Unit;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
@@ -47,6 +50,7 @@ class UserFactory extends Factory
         return $this->state(function (array $attributes) {
             return [
                 'role' => 'regional_police_officer',
+                'unit_id' => Unit::factory()->create()->id
             ];
         });
     }
@@ -54,8 +58,13 @@ class UserFactory extends Factory
     public function provincialPoliceOfficer()
     {
         return $this->state(function (array $attributes) {
+            $unit = Unit::factory()->create();
+            $subUnit = SubUnit::factory()->create(['unit_id' => $unit->id])->create();
+
             return [
                 'role' => 'provincial_police_officer',
+                'unit_id' => $unit->id,
+                'sub_unit_id' => $subUnit->id
             ];
         });
     }
@@ -63,8 +72,15 @@ class UserFactory extends Factory
     public function municipalPoliceOfficer()
     {
         return $this->state(function (array $attributes) {
+            $unit = Unit::factory()->create();
+            $subUnit = SubUnit::factory()->create(['unit_id' => $unit->id])->create();
+            $station = Station::factory()->create(['sub_unit_id' => $subUnit->id])->create();
+
             return [
                 'role' => 'municipal_police_officer',
+                'unit_id' => $unit->id,
+                'sub_unit_id' => $subUnit->id,
+                'station_id' => $station->id
             ];
         });
     }
