@@ -51,6 +51,7 @@ Route::group(['prefix' => 'v1'], function () {
             Route::group(['middleware' => 'role:super_admin'], function () {
                 Route::post('/users', [UserController::class, 'store']);
                 Route::put('/users/{id}', [UserController::class, 'update']);
+                Route::delete('/users/{id}', [UserController::class, 'destroy']);
             });
         });
     });

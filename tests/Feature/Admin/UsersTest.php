@@ -101,4 +101,17 @@ class UsersTest extends TestCase
         $this->putJson("/api/v1/admin/users/$user->id", $data)
             ->assertStatus(200);
     }
+
+    public function test_super_admin_can_delete_user()
+    {
+        $superAdmin = User::factory()->superAdmin()->create();
+        Sanctum::actingAs($superAdmin, [], 'admins');
+
+        $user = User::factory()->create();
+
+        $this->deleteJson("/api/v1/admin/users/$user->id")
+            ->assertStatus(200);
+
+        $this->assertDatabaseHas('users', ['email' => $user->email, 'status' => 'inactive']);
+    }
 }

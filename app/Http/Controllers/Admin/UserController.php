@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Admin\LoginRequest;
 use App\Http\Requests\Admin\UserRequest;
 use App\Repositories\UserRepository;
 use Illuminate\Support\Facades\Hash;
@@ -36,6 +35,17 @@ class UserController extends Controller
         $user = $this->userRepository->find($user_id);
 
         $this->userRepository->update($user, $request->validated());
+
+        return response([
+            'message' => 'User updated successfully.',
+        ]);
+    }
+
+    public function destroy($user_id)
+    {
+        $user = $this->userRepository->findOrFail($user_id);
+
+        $this->userRepository->update($user, ['status' => 'inactive']);
 
         return response([
             'message' => 'User updated successfully.',
