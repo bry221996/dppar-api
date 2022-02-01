@@ -99,7 +99,6 @@ class UsersTest extends TestCase
         $data = User::factory()->make(['email' => $user->email])->toArray();
 
         $this->putJson("/api/v1/admin/users/$user->id", $data)
-            ->assertStatus(200)
-            ->dump();
+            ->assertStatus(200);
     }
 }

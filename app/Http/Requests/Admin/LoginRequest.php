@@ -31,7 +31,11 @@ class LoginRequest extends FormRequest
 
     public function authenticate()
     {
-        $token = auth()->attempt($this->only('email', 'password'));
+        $token = auth()->attempt([
+            'email' => $this->email,
+            'password' => $this->password,
+            'status' => 'active'
+        ]);
 
         if (!$token) abort(401, 'Invalid Credentials');
 
