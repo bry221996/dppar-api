@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Requests\Admin\Users;
+namespace App\Http\Requests\Admin;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
-class CreateUserRequest extends FormRequest
+class UserRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,8 +24,12 @@ class CreateUserRequest extends FormRequest
      */
     public function rules()
     {
+        $emailRule = $this->isMethod('post') ?
+            'required|unique:users,email|email' :
+            ['required',  'email',  Rule::unique('users', 'email')->ignore($this->id)];
+
         return [
-            'email' => 'required|unique:users,email|email',
+            'email' => $emailRule,
             'name' => 'required',
             'role' => 'required|in:super_admin,regional_police_officer,provincial_police_officer,municipal_police_officer',
             'unit_id' => 'prohibited_if:role,super_admin|required_if:role,regional_police_officer,provincial_police_officer,municipal_police_officer|exists:units,id',

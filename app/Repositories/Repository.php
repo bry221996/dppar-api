@@ -22,4 +22,9 @@ class Repository
     {
        return $entity->update($data);
     }
+
+    public function find($id)
+    {
+        return $this->model->find($id);
+    }
 }

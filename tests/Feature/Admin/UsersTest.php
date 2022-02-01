@@ -89,4 +89,17 @@ class UsersTest extends TestCase
         $this->postJson('/api/v1/admin/users', [])
             ->assertStatus(403);
     }
+
+    public function test_super_admin_can_update_user()
+    {
+        $superAdmin = User::factory()->superAdmin()->create();
+        Sanctum::actingAs($superAdmin, [], 'admins');
+
+        $user = User::factory()->create();
+        $data = User::factory()->make(['email' => $user->email])->toArray();
+
+        $this->putJson("/api/v1/admin/users/$user->id", $data)
+            ->assertStatus(200)
+            ->dump();
+    }
 }

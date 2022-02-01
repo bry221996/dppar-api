@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\LoginRequest;
-use App\Http\Requests\Admin\Users\CreateUserRequest;
+use App\Http\Requests\Admin\UserRequest;
 use App\Repositories\UserRepository;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
@@ -18,7 +18,7 @@ class UserController extends Controller
         $this->userRepository = $userRepository;
     }
 
-    public function store(CreateUserRequest $request)
+    public function store(UserRequest $request)
     {
         $data = $request->validated();
         $data['password'] = Hash::make(Str::random(8));
@@ -28,6 +28,17 @@ class UserController extends Controller
         return response([
             'message' => 'User created successfully.',
             'data' => $user
+        ]);
+    }
+
+    public function update(UserRequest $request,  $user_id)
+    {
+        $user = $this->userRepository->find($user_id);
+
+        $this->userRepository->update($user, $request->validated());
+
+        return response([
+            'message' => 'User updated successfully.',
         ]);
     }
 }
