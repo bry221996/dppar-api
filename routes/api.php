@@ -5,6 +5,7 @@ use App\Http\Controllers\Personnel\CheckinController as PersonnelCheckinControll
 use App\Http\Controllers\Admin\AuthController as AdminAuthController;
 use App\Http\Controllers\Admin\NewPasswordController;
 use App\Http\Controllers\Admin\PasswordResetController;
+use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Personnel\PersonnelDashboardController;
 use App\Http\Controllers\Personnel\PersonnelMpinController;
 use Illuminate\Http\Request;
@@ -45,5 +46,9 @@ Route::group(['prefix' => 'v1'], function () {
         Route::post('login', [AdminAuthController::class, 'login']);
         Route::post('forgot-password', [PasswordResetController::class, 'store']);
         Route::post('reset-password', [NewPasswordController::class, 'store']);
+
+        Route::group(['middleware' => 'auth:admins'], function () {
+            Route::post('/users', [UserController::class, 'store'])->middleware('role:super_admin');
+        });
     });
 });
