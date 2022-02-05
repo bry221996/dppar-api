@@ -17,7 +17,8 @@ class CheckinFactory extends Factory
         return [
             'personnel_id' => Personnel::factory()->create()->id,
             'image' => $this->faker->imageUrl(),
-            'type' => $this->faker->randomElement(['regular_checkin', 'leave_of_absence', 'off_duty']),
+            'type' => 'present',
+            'sub_type' => $this->faker->randomElement(['duty', 'under_instruction', 'conference', 'schooling', 'travel', 'off_duty']),
             'is_accounted' => $this->faker->boolean,
             'latitude' => $this->faker->latitude(12, 15),
             'longitude' => $this->faker->longitude(120, 122),
@@ -26,12 +27,12 @@ class CheckinFactory extends Factory
         ];
     }
 
-    public function outOfAreaOfResponsibility()
+    public function absent()
     {
         return $this->state(function (array $attributes) {
             return [
-                'type' => 'out_of_area_of_responsibility',
-                'aor_type' => $this->faker->randomElement(['hospital', 'travel', 'under_instruction', 'official_mission', 'conference', 'others']),
+                'type' => 'absent',
+                'sub_type' => $this->faker->randomElement(['leave', 'confined_in_hospital', 'sick', 'suspended']),
             ];
         });
     }

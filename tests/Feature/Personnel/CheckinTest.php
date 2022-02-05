@@ -32,7 +32,6 @@ class CheckinTest extends TestCase
                         'personnel_id',
                         'image',
                         'type',
-                        'out_of_area_of_responsibility_type',
                         'is_accounted',
                         'latitude',
                         'longitude',

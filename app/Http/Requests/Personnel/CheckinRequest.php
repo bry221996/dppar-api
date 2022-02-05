@@ -26,15 +26,25 @@ class CheckinRequest extends FormRequest
      */
     public function rules()
     {
-        return [
+        $rules = [
             'image' => 'required|image',
-            'type' => 'required|in:regular_checkin,out_of_area_of_responsibility,leave_of_absence,off_duty',
-            'out_of_area_of_responsibility_type' => 'required_if:type,out_of_area_of_responsibility|in:hospital,travel,under_instruction,official_mission,conference,others',
+            'type' => 'required|in:present,absent',
+            'sub_type' => 'required',
             'latitude' => 'required|numeric',
             'longitude' => 'required|numeric',
             'remarks' => 'required',
             'admin_remarks' => 'nullable'
         ];
+
+        if ($this->post('type') === 'present') {
+            $rules['sub_type'] = 'required|in:duty,under_instruction,conference,schooling,travel,off_duty';
+        }
+
+        if ($this->post('type') === 'absent') {
+            $rules['sub_type'] = 'required|in:leave,confined_in_hospital,sick,suspended';
+        }
+
+        return $rules;
     }
 
     public function validated()
