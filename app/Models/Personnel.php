@@ -16,4 +16,13 @@ class Personnel extends Authenticatable
     protected $hidden = [
         'mpin',
     ];
+
+    protected $appends = [
+        'has_pin'
+    ];
+
+    public function getHasPinAttribute()
+    {
+        return !! $this->mpin;
+    }
 }
