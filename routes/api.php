@@ -48,6 +48,9 @@ Route::group(['prefix' => 'v1'], function () {
         Route::post('reset-password', [NewPasswordController::class, 'store']);
 
         Route::group(['middleware' => 'auth:admins'], function () {
+            Route::get('me', [AdminAuthController::class, 'getMe']);
+            Route::post('logout', [AdminAuthController::class, 'logout']);
+
             Route::group(['middleware' => 'role:super_admin'], function () {
                 Route::post('/users', [UserController::class, 'store']);
                 Route::put('/users/{id}', [UserController::class, 'update']);

@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Admin;
 
+use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\ValidationException;
 
@@ -27,6 +28,7 @@ class LoginRequest extends FormRequest
         return [
             'email' => 'required',
             'password' => 'required',
+            'device' => 'required'
         ];
     }
 
@@ -44,6 +46,8 @@ class LoginRequest extends FormRequest
             ]);
         }
 
-        return $token;
+        $user = User::where('email', $this->email)->first();
+
+        return $user->createToken($this->device)->plainTextToken;
     }
 }

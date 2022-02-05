@@ -5,6 +5,7 @@ namespace Tests\Feature\Admin;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
 
 class AuthenticationTest extends TestCase
@@ -68,5 +69,23 @@ class AuthenticationTest extends TestCase
         $this->postJson('/api/v1/admin/login', [])
             ->assertStatus(422)
             ->assertJsonValidationErrors(['email', 'password']);
+    }
+
+    /** @group admin */
+    public function test_authenticated_admin_can_get_profile()
+    {
+        Sanctum::actingAs( User::factory()->create(), [], 'admins');
+
+        $this->getJson('/api/v1/admin/me')
+            ->assertStatus(200);
+    }
+
+    /** @group admin */
+    public function test_authenticated_admin_can_logout()
+    {
+        Sanctum::actingAs( User::factory()->create(), [], 'admins');
+
+        $this->postJson('/api/v1/admin/logout')
+            ->assertStatus(200);
     }
 }
