@@ -19,6 +19,7 @@ class AuthenticationTest extends TestCase
         $data = [
             'email' => $user->email,
             'password' => 'password',
+            'device' => $this->faker->uuid,
         ];
 
         $this->postJson('/api/v1/admin/login', $data)
@@ -37,6 +38,7 @@ class AuthenticationTest extends TestCase
         $data = [
             'email' => $user->email,
             'password' => 'invalid-password',
+            'device' => $this->faker->uuid,
         ];
 
         $this->postJson('/api/v1/admin/login', $data)
@@ -52,6 +54,7 @@ class AuthenticationTest extends TestCase
         $data = [
             'email' => $user->email,
             'password' => 'password',
+            'device' => $this->faker->uuid,
         ];
 
         $this->postJson('/api/v1/admin/login', $data)
