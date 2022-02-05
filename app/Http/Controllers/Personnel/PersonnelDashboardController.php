@@ -24,7 +24,7 @@ class PersonnelDashboardController extends Controller
             ->getLatestByPersonnelId($personnel->id, $request->latest_checkins_count ?? 3);
 
         return response([
-            'message' => 'MPIN successfully updated',
+            'message' => 'Personnel Dashboard',
             'personnel' => $personnel,
             'latest_checkins' => $latest_checkins
         ]);
