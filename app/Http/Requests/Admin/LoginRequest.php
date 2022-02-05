@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Admin;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\ValidationException;
 
 class LoginRequest extends FormRequest
 {
@@ -37,7 +38,11 @@ class LoginRequest extends FormRequest
             'status' => 'active'
         ]);
 
-        if (!$token) abort(401, 'Invalid Credentials');
+        if (!$token) {
+            throw ValidationException::withMessages([
+                'email' => ['The provided credentials are incorrect.'],
+            ]);
+        }
 
         return $token;
     }

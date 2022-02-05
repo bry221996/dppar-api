@@ -40,8 +40,8 @@ class AuthenticationTest extends TestCase
         ];
 
         $this->postJson('/api/v1/admin/login', $data)
-            ->assertStatus(401)
-            ->assertJsonStructure(['message']);
+            ->assertStatus(422)
+            ->assertJsonValidationErrors(['email']);
     }
 
     /** @group admin */
@@ -55,8 +55,8 @@ class AuthenticationTest extends TestCase
         ];
 
         $this->postJson('/api/v1/admin/login', $data)
-            ->assertStatus(401)
-            ->assertJsonStructure(['message']);
+            ->assertStatus(422)
+            ->assertJsonValidationErrors(['email']);
     }
 
     /** @group admin */
