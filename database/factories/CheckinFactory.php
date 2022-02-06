@@ -24,8 +24,8 @@ class CheckinFactory extends Factory
             'is_accounted' => $this->faker->boolean,
             'latitude' => $this->faker->latitude(12, 15),
             'longitude' => $this->faker->longitude(120, 122),
-            'remarks' => $this->faker->paragraph,
-            'admin_remarks' => $this->faker->paragraph
+            'remarks' => $this->faker->sentence,
+            'admin_remarks' => $this->faker->sentence
         ];
     }
 
