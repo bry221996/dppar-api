@@ -16,7 +16,7 @@ class UnitFactory extends Factory
         $region = $this->faker->numerify('Region #');
 
         return [
-            'name' =>  $region . 'Regional Police Office',
+            'name' =>  $region . ' Regional Police Office',
             'region' => $region,
             'latitude' => $this->faker->latitude(12, 15),
             'longitude' => $this->faker->longitude(120, 122),

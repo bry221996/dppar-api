@@ -18,7 +18,7 @@ class SubUnitFactory extends Factory
 
         return [
             'unit_id' => Unit::factory()->create()->id,
-            'name' => $province . 'Provincial Police Office',
+            'name' => $province . ' Provincial Police Office',
             'province' => $province,
             'type' => $this->faker->randomElement(['provincial', 'city']),
             'latitude' => $this->faker->latitude(12, 15),
