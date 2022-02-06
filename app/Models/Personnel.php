@@ -25,4 +25,9 @@ class Personnel extends Authenticatable
     {
         return !! $this->mpin;
     }
+
+    public function jurisdiction()
+    {
+        return $this->belongsTo(Jurisdiction::class);
+    }
 }

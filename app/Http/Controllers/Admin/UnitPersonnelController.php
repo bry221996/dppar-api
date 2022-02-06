@@ -20,9 +20,9 @@ class UnitPersonnelController extends Controller
         $this->personnelRepository = $personnelRepository;
     }
 
-    public function index(Request $request)
+    public function index(Request $request, $unit_id)
     {
-        $list = $this->unitRepository->list($request->per_page ?? 10);
+        $list = $this->personnelRepository->listByUnitId($unit_id, $request->per_page ?? 10);
 
         return response($list);
     }

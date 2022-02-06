@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\PersonnelController;
 use App\Http\Controllers\Admin\StationController;
 use App\Http\Controllers\Admin\SubUnitController;
 use App\Http\Controllers\Admin\UnitController;
+use App\Http\Controllers\Admin\UnitPersonnelController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Personnel\PersonnelDashboardController;
 use App\Http\Controllers\Personnel\PersonnelMpinController;
@@ -67,6 +68,11 @@ Route::group(['prefix' => 'v1'], function () {
 
                 Route::get('/personnels', [PersonnelController::class, 'index']);
             });
+
+            Route::group(['middleware' => ['role:regional_police_officer', 'access:unit_id']], function () {
+                Route::get('/units/{unit_id}/personnels', [UnitPersonnelController::class, 'index']);
+            });
         });
     });
 });
+// regional_police_officer,provincial_police_officer,municipal_police_officer'

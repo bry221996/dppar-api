@@ -23,4 +23,19 @@ class PersonnelRepository extends Repository
         return $this->model->where('personnel_id', $personnel_id)
             ->first();
     }
+
+    public function listByUnitId($unit_id, $per_page = 10)
+    {
+        return $this->model
+            ->whereHas('jurisdiction', function ($jurisdictionQuery) use ($unit_id) {
+                $jurisdictionQuery
+                    ->whereHas('station', function ($stationQuery) use ($unit_id) {
+                        $stationQuery
+                            ->whereHas('subUnit', function ($subUnitQuery) use ($unit_id) {
+                                $subUnitQuery->where('unit_id', $unit_id);
+                            });
+                    });
+            })
+            ->paginate($per_page);
+    }
 }
