@@ -54,22 +54,22 @@ class TestSeeder extends Seeder
                                         'sub_unit_id' => $subUnit->id,
                                         'station_id' => $station->id
                                     ]);
-                                
+
                                 Jurisdiction::factory()
                                     ->count(5)
                                     ->create(['station_id' => $station->id])
-                                    ->each(function ($jurisdiction)  {
+                                    ->each(function ($jurisdiction) {
                                         Personnel::factory()->count(5)
                                             ->create(['jurisdiction_id' => $jurisdiction->id])
                                             ->each(function ($personnel) {
                                                 Checkin::factory()
                                                     ->count(3)
-                                                    ->create(['personnel_id', $personnel->id]);
+                                                    ->create(['personnel_id' => $personnel->id]);
 
                                                 Checkin::factory()
                                                     ->absent()
                                                     ->count(2)
-                                                    ->create(['personnel_id', $personnel->id]);
+                                                    ->create(['personnel_id' => $personnel->id]);
                                             });
                                     });
                             });
