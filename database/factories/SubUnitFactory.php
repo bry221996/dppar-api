@@ -14,10 +14,12 @@ class SubUnitFactory extends Factory
      */
     public function definition()
     {
+        $province = $this->faker->province;
+
         return [
             'unit_id' => Unit::factory()->create()->id,
-            'name' => $this->faker->sentence,
-            'province' => $this->faker->province,
+            'name' => $province . 'Provincial Police Office',
+            'province' => $province,
             'type' => $this->faker->randomElement(['provincial', 'city']),
             'latitude' => $this->faker->latitude(12, 15),
             'longitude' => $this->faker->longitude(120, 122),

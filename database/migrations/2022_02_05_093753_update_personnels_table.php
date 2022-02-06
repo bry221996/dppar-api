@@ -13,10 +13,10 @@ class UpdatePersonnelsTable extends Migration
      */
     public function up()
     {
-        Schema::table('personnels', function (Blueprint $table) {
-            $table->string('image')->default('https://dppar.s3.ap-southeast-1.amazonaws.com/personnels/images/default.jpeg');
-            $table->string('mpin')->nullable()->change();
-        });
+        // Schema::table('personnels', function (Blueprint $table) {
+        //     $table->string('image')->default('https://dppar.s3.ap-southeast-1.amazonaws.com/personnels/images/default.jpeg');
+        //     $table->string('mpin')->nullable()->change();
+        // });
     }
 
     /**
@@ -26,9 +26,9 @@ class UpdatePersonnelsTable extends Migration
      */
     public function down()
     {
-        Schema::table('personnels', function (Blueprint $table) {
-            $table->dropColumn('image');
-            $table->string('mpin')->change();
-        });
+        // Schema::table('personnels', function (Blueprint $table) {
+        //     $table->dropColumn('image');
+        //     $table->string('mpin')->change();
+        // });
     }
 }

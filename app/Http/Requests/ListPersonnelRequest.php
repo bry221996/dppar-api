@@ -34,32 +34,17 @@ class ListPersonnelRequest extends FormRequest
 
         if ($user->is_regional_police_officer) {
             $rules['unit_id'] = 'prohibited';
-
-            $this->merge([
-                'unit_id' => $user->unit_id
-            ]);
         }
 
         if ($user->is_provincial_police_officer) {
             $rules['unit_id'] = 'prohibited';
             $rules['sub_unit_id'] = 'prohibited';
-
-            $this->merge([
-                'unit_id' => $user->unit_id,
-                'sub_unit_id' => $user->sub_unit_id,
-            ]);
         }
 
         if ($user->is_municipal_police_officer) {
             $rules['unit_id'] = 'prohibited';
             $rules['sub_unit_id'] = 'prohibited';
             $rules['station_id'] = 'prohibited';
-
-            $this->merge([
-                'unit_id' => $user->unit_id,
-                'sub_unit_id' => $user->sub_unit_id,
-                'station_id' => $user->station_id,
-            ]);
         }
 
         return $rules;

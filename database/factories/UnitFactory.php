@@ -13,9 +13,11 @@ class UnitFactory extends Factory
      */
     public function definition()
     {
+        $region = $this->faker->numerify('Region #');
+
         return [
-            'name' => $this->faker->sentence,
-            'region' => $this->faker->numerify('Region #'),
+            'name' =>  $region . 'Regional Police Office',
+            'region' => $region,
             'latitude' => $this->faker->latitude(12, 15),
             'longitude' => $this->faker->longitude(120, 122),
         ];

@@ -14,10 +14,12 @@ class StationFactory extends Factory
      */
     public function definition()
     {
+        $municipality = $this->faker->municipality;
+
         return [
             'sub_unit_id' => SubUnit::factory()->create()->id,
-            'name' => $this->faker->sentence,
-            'municipality' => $this->faker->municipality,
+            'name' => $municipality . 'Municipal Police Station',
+            'municipality' => $municipality,
             'latitude' => $this->faker->latitude(12, 15),
             'longitude' => $this->faker->longitude(120, 122),
         ];
