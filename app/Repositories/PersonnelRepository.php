@@ -50,4 +50,13 @@ class PersonnelRepository extends Repository
             })
             ->paginate($per_page);
     }
+
+    public function listByStationId($station_id, $per_page = 10)
+    {
+        return $this->model
+            ->whereHas('jurisdiction', function ($jurisdictionQuery) use ($station_id) {
+                $jurisdictionQuery->where('station_id', $station_id);
+            })
+            ->paginate($per_page);
+    }
 }

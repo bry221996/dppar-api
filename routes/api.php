@@ -7,7 +7,9 @@ use App\Http\Controllers\Admin\NewPasswordController;
 use App\Http\Controllers\Admin\PasswordResetController;
 use App\Http\Controllers\Admin\PersonnelController;
 use App\Http\Controllers\Admin\StationController;
+use App\Http\Controllers\Admin\StationPersonnelController;
 use App\Http\Controllers\Admin\SubUnitController;
+use App\Http\Controllers\Admin\SubUnitPersonnelController;
 use App\Http\Controllers\Admin\UnitController;
 use App\Http\Controllers\Admin\UnitPersonnelController;
 use App\Http\Controllers\Admin\UserController;
@@ -72,7 +74,14 @@ Route::group(['prefix' => 'v1'], function () {
             Route::group(['middleware' => ['role:regional_police_officer', 'access:unit_id']], function () {
                 Route::get('/units/{unit_id}/personnels', [UnitPersonnelController::class, 'index']);
             });
+
+            Route::group(['middleware' => ['role:provincial_police_officer', 'access:sub_unit_id']], function () {
+                Route::get('/sub-units/{sub_unit_id}/personnels', [SubUnitPersonnelController::class, 'index']);
+            });
+
+            Route::group(['middleware' => ['role:municipal_police_officer', 'access:station_id']], function () {
+                Route::get('/stations/{station_id}/personnels', [StationPersonnelController::class, 'index']);
+            });
         });
     });
 });
-// regional_police_officer,provincial_police_officer,municipal_police_officer'
