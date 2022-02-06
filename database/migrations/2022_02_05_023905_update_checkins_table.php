@@ -14,8 +14,8 @@ class UpdateCheckinsTable extends Migration
     public function up()
     {
         Schema::table('checkins', function (Blueprint $table) {
-            // $table->string('sub_type');
-            // $table->dropColumn('out_of_area_of_responsibility_type');
+            $table->string('sub_type');
+            $table->dropColumn('out_of_area_of_responsibility_type');
         });
     }
 
@@ -27,8 +27,8 @@ class UpdateCheckinsTable extends Migration
     public function down()
     {
         Schema::table('checkins', function (Blueprint $table) {
-            // $table->dropColumn('sub_type');
-            // $table->string('out_of_area_of_responsibility_type')->nullable();
+            $table->dropColumn('sub_type');
+            $table->string('out_of_area_of_responsibility_type')->nullable();
         });
     }
 }

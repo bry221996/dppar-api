@@ -23,9 +23,8 @@ class CreatePersonnelsTable extends Migration
             $table->unsignedBigInteger('jurisdiction_id');
             $table->string('mobile_number')->unique();
             $table->string('email')->unique();
-            $table->string('mpin')->nullable();
+            $table->string('mpin');
             $table->enum('type', ['uniformed', 'non_uniformed', 'intel', 'special', 'department_heads']);
-            $table->string('image')->default('https://dppar.s3.ap-southeast-1.amazonaws.com/personnels/images/default.jpeg');
             $table->timestamps();
 
             $table->foreign('jurisdiction_id')
