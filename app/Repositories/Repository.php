@@ -13,6 +13,11 @@ class Repository
         $this->model = $model;
     }
 
+    public function list(int $page_size = 10)
+    {
+        return $this->model->paginate($page_size);   
+    }
+
     public function create(array $data)
     {
         return $this->model->create($data);   

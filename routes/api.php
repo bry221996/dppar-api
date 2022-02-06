@@ -5,6 +5,10 @@ use App\Http\Controllers\Personnel\CheckinController as PersonnelCheckinControll
 use App\Http\Controllers\Admin\AuthController as AdminAuthController;
 use App\Http\Controllers\Admin\NewPasswordController;
 use App\Http\Controllers\Admin\PasswordResetController;
+use App\Http\Controllers\Admin\PersonnelController;
+use App\Http\Controllers\Admin\StationController;
+use App\Http\Controllers\Admin\SubUnitController;
+use App\Http\Controllers\Admin\UnitController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Personnel\PersonnelDashboardController;
 use App\Http\Controllers\Personnel\PersonnelMpinController;
@@ -52,9 +56,16 @@ Route::group(['prefix' => 'v1'], function () {
             Route::post('logout', [AdminAuthController::class, 'logout']);
 
             Route::group(['middleware' => 'role:super_admin'], function () {
+                Route::get('/units', [UnitController::class, 'index']);
+                Route::get('/sub-units', [SubUnitController::class, 'index']);
+                Route::get('/stations', [StationController::class, 'index']);
+
+                Route::get('/users', [UserController::class, 'index']);
                 Route::post('/users', [UserController::class, 'store']);
                 Route::put('/users/{id}', [UserController::class, 'update']);
                 Route::delete('/users/{id}', [UserController::class, 'destroy']);
+
+                Route::get('/personnels', [PersonnelController::class, 'index']);
             });
         });
     });
