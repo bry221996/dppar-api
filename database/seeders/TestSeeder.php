@@ -20,7 +20,7 @@ class TestSeeder extends Seeder
      */
     public function run()
     {
-        Unit::factory()->count(5)
+        Unit::factory()->count(2)
             ->create()
             ->each(function ($unit) {
                 User::factory()
@@ -30,7 +30,7 @@ class TestSeeder extends Seeder
 
                 // Create Sub Units.
                 SubUnit::factory()
-                    ->count(5)
+                    ->count(2)
                     ->create(['unit_id' => $unit->id])
                     ->each(function ($subUnit) use ($unit) {
                         User::factory()
@@ -43,12 +43,12 @@ class TestSeeder extends Seeder
 
                         // Create Stations
                         Station::factory()
-                            ->count(5)
+                            ->count(2)
                             ->create(['sub_unit_id' => $subUnit->id])
                             ->each(function ($station) use ($unit, $subUnit) {
                                 User::factory()
                                     ->provincialPoliceOfficer()
-                                    ->count(5)
+                                    ->count(2)
                                     ->create([
                                         'unit_id' => $unit->id,
                                         'sub_unit_id' => $subUnit->id,
@@ -56,19 +56,17 @@ class TestSeeder extends Seeder
                                     ]);
 
                                 Jurisdiction::factory()
-                                    ->count(5)
+                                    ->count(2)
                                     ->create(['station_id' => $station->id])
                                     ->each(function ($jurisdiction) {
-                                        Personnel::factory()->count(5)
+                                        Personnel::factory()->count(2)
                                             ->create(['jurisdiction_id' => $jurisdiction->id])
                                             ->each(function ($personnel) {
                                                 Checkin::factory()
-                                                    ->count(3)
                                                     ->create(['personnel_id' => $personnel->id]);
 
                                                 Checkin::factory()
                                                     ->absent()
-                                                    ->count(2)
                                                     ->create(['personnel_id' => $personnel->id]);
                                             });
                                     });
