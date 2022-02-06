@@ -10,4 +10,9 @@ class Jurisdiction extends Model
     use HasFactory;
 
     protected $guarded = [];
+
+    public function station()
+    {
+        return $this->belongsTo(Station::class);
+    }
 }

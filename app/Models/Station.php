@@ -10,4 +10,9 @@ class Station extends Model
     use HasFactory;
 
     protected $guarded = [];
+
+    public function subUnit()
+    {
+        return $this->belongsTo(SubUnit::class);
+    }
 }
