@@ -32,7 +32,7 @@ class TestSeeder extends Seeder
 
                 // Create Sub Units.
                 SubUnit::factory()
-                    ->count(5)
+                    ->count(3)
                     ->create(['unit_id' => $unit->id])
                     ->each(function ($subUnit) use ($unit) {
                         User::factory()
@@ -45,7 +45,7 @@ class TestSeeder extends Seeder
 
                         // Create Stations
                         Station::factory()
-                            ->count(10)
+                            ->count(3)
                             ->create(['sub_unit_id' => $subUnit->id])
                             ->each(function ($station) use ($unit, $subUnit) {
                                 User::factory()
@@ -61,7 +61,7 @@ class TestSeeder extends Seeder
                                     ->count(2)
                                     ->create(['station_id' => $station->id])
                                     ->each(function ($jurisdiction) {
-                                        Personnel::factory()->count(20)
+                                        Personnel::factory()->count(3)
                                             ->create(['jurisdiction_id' => $jurisdiction->id])
                                             ->each(function ($personnel) {
                                                 Checkin::factory()
