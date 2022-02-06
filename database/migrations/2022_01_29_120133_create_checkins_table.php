@@ -18,6 +18,7 @@ class CreateCheckinsTable extends Migration
             $table->unsignedBigInteger('personnel_id');
             $table->string('image');
             $table->string('type');
+            $table->string('out_of_area_of_responsibility_type')->nullable();
             $table->boolean('is_accounted')->default(true);
             $table->decimal('latitude');
             $table->decimal('longitude');
