@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Filters\PersonnelFilter;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ListPersonnelRequest;
 use App\Repositories\PersonnelRepository;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PersonnelController extends Controller
 {
@@ -15,9 +18,9 @@ class PersonnelController extends Controller
         $this->personnelRepository = $personnelRepository;
     }
 
-    public function index(Request $request)
+    public function index(ListPersonnelRequest $request, PersonnelFilter $personnelFilter)
     {
-        $list = $this->personnelRepository->list($request->per_page ?? 10);
+        $list = $this->personnelRepository->listWithFilters($personnelFilter, $request->per_page ?? 10);
 
         return response($list);
     }

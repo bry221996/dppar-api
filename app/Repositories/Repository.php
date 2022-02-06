@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Filters\Filters;
 use Illuminate\Database\Eloquent\Model;
 
 class Repository
@@ -16,6 +17,11 @@ class Repository
     public function list(int $page_size = 10)
     {
         return $this->model->paginate($page_size);   
+    }
+
+    public function listWithFilters(Filters $filters, int $page_size = 10)
+    {
+        return $this->model->filter($filters)->paginate($page_size);  
     }
 
     public function create(array $data)

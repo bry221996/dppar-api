@@ -37,4 +37,24 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function getIsSuperAdminAttribute()
+    {
+        return $this->role === 'super_admin';
+    }
+
+    public function getIsRegionalPoliceOfficerAttribute()
+    {
+        return $this->role === 'regional_police_officer';
+    }
+
+    public function getIsProvincialPoliceOfficerAttribute()
+    {
+        return $this->role === 'provincial_police_officer';
+    }
+
+    public function getIsMunicipalPoliceOfficerAttribute()
+    {
+        return $this->role === 'municipal_police_officer';
+    }
 }

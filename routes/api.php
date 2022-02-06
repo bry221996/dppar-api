@@ -58,6 +58,8 @@ Route::group(['prefix' => 'v1'], function () {
             Route::get('me', [AdminAuthController::class, 'getMe']);
             Route::post('logout', [AdminAuthController::class, 'logout']);
 
+            Route::get('/personnels', [PersonnelController::class, 'index']);
+
             Route::group(['middleware' => 'role:super_admin'], function () {
                 Route::get('/units', [UnitController::class, 'index']);
                 Route::get('/sub-units', [SubUnitController::class, 'index']);
@@ -67,20 +69,6 @@ Route::group(['prefix' => 'v1'], function () {
                 Route::post('/users', [UserController::class, 'store']);
                 Route::put('/users/{id}', [UserController::class, 'update']);
                 Route::delete('/users/{id}', [UserController::class, 'destroy']);
-
-                Route::get('/personnels', [PersonnelController::class, 'index']);
-            });
-
-            Route::group(['middleware' => ['role:regional_police_officer', 'access:unit_id']], function () {
-                Route::get('/units/{unit_id}/personnels', [UnitPersonnelController::class, 'index']);
-            });
-
-            Route::group(['middleware' => ['role:provincial_police_officer', 'access:sub_unit_id']], function () {
-                Route::get('/sub-units/{sub_unit_id}/personnels', [SubUnitPersonnelController::class, 'index']);
-            });
-
-            Route::group(['middleware' => ['role:municipal_police_officer', 'access:station_id']], function () {
-                Route::get('/stations/{station_id}/personnels', [StationPersonnelController::class, 'index']);
             });
         });
     });
