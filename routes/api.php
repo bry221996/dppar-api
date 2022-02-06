@@ -3,15 +3,13 @@
 use App\Http\Controllers\Personnel\AuthController as PersonnelAuthController;
 use App\Http\Controllers\Personnel\CheckinController as PersonnelCheckinController;
 use App\Http\Controllers\Admin\AuthController as AdminAuthController;
+use App\Http\Controllers\Admin\CheckinController;
 use App\Http\Controllers\Admin\NewPasswordController;
 use App\Http\Controllers\Admin\PasswordResetController;
 use App\Http\Controllers\Admin\PersonnelController;
 use App\Http\Controllers\Admin\StationController;
-use App\Http\Controllers\Admin\StationPersonnelController;
 use App\Http\Controllers\Admin\SubUnitController;
-use App\Http\Controllers\Admin\SubUnitPersonnelController;
 use App\Http\Controllers\Admin\UnitController;
-use App\Http\Controllers\Admin\UnitPersonnelController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Personnel\PersonnelDashboardController;
 use App\Http\Controllers\Personnel\PersonnelMpinController;
@@ -59,6 +57,7 @@ Route::group(['prefix' => 'v1'], function () {
             Route::post('logout', [AdminAuthController::class, 'logout']);
 
             Route::get('/personnels', [PersonnelController::class, 'index']);
+            Route::get('/checkins', [CheckinController::class, 'index']);
 
             Route::group(['middleware' => 'role:super_admin'], function () {
                 Route::get('/units', [UnitController::class, 'index']);

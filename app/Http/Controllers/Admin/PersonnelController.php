@@ -6,8 +6,6 @@ use App\Filters\PersonnelFilter;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ListPersonnelRequest;
 use App\Repositories\PersonnelRepository;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 class PersonnelController extends Controller
 {

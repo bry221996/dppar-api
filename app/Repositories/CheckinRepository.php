@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Filters\Filters;
 use App\Models\Checkin;
 
 class CheckinRepository extends Repository
@@ -23,5 +24,12 @@ class CheckinRepository extends Repository
             ->take($count)
             ->orderBy('created_at', 'desc')
             ->get();
+    }
+
+    public function listWithFilters(Filters $filters, int $page_size = 10)
+    {
+        return $this->model->filter($filters)
+            ->with('personnel:id,personnel_id,first_name,middle_name,last_name')
+            ->paginate($page_size);  
     }
 }
