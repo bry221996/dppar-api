@@ -20,6 +20,8 @@ class TestSeeder extends Seeder
      */
     public function run()
     {
+        User::factory()->create(['email' => 'super@admin.com']);
+
         Unit::factory()->count(10)
             ->create()
             ->each(function ($unit) {
