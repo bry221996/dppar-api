@@ -17,7 +17,9 @@ class StationFactory extends Factory
         $municipality = $this->faker->municipality;
 
         return [
-            'sub_unit_id' => SubUnit::factory()->create()->id,
+            'sub_unit_id' => function () {
+                return SubUnit::factory()->create()->id;
+            },
             'name' => $municipality . ' Municipal Police Station',
             'municipality' => $municipality,
             'latitude' => $this->faker->latitude(12, 15),

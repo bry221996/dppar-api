@@ -59,7 +59,9 @@ class UserFactory extends Factory
         return $this->state(function (array $attributes) {
             return [
                 'role' => 'regional_police_officer',
-                'unit_id' => Unit::factory()->create()->id
+                'unit_id' => function() {
+                    return Unit::factory()->create()->id;
+                }
             ];
         });
     }
@@ -67,13 +69,15 @@ class UserFactory extends Factory
     public function provincialPoliceOfficer()
     {
         return $this->state(function (array $attributes) {
-            $unit = Unit::factory()->create();
-            $subUnit = SubUnit::factory()->create(['unit_id' => $unit->id]);
 
             return [
                 'role' => 'provincial_police_officer',
-                'unit_id' => $unit->id,
-                'sub_unit_id' => $subUnit->id
+                'unit_id' => function () {
+                    return Unit::factory()->create()->id;
+                },
+                'sub_unit_id' => function () {
+                    return SubUnit::factory()->create()->id;
+                }
             ];
         });
     }
@@ -81,15 +85,17 @@ class UserFactory extends Factory
     public function municipalPoliceOfficer()
     {
         return $this->state(function (array $attributes) {
-            $unit = Unit::factory()->create();
-            $subUnit = SubUnit::factory()->create(['unit_id' => $unit->id]);
-            $station = Station::factory()->create(['sub_unit_id' => $subUnit->id]);
-
             return [
                 'role' => 'municipal_police_officer',
-                'unit_id' => $unit->id,
-                'sub_unit_id' => $subUnit->id,
-                'station_id' => $station->id
+                'unit_id' => function () {
+                    return Unit::factory()->create()->id;
+                },
+                'sub_unit_id' => function () {
+                    return SubUnit::factory()->create()->id;
+                },
+                'station_id' => function () {
+                    return Station::factory()->create()->id;
+                }
             ];
         });
     }

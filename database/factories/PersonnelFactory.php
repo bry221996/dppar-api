@@ -24,7 +24,9 @@ class PersonnelFactory extends Factory
             'email' => $this->faker->email,
             'mpin' => '$2y$10$ZuIK3W0OOO4auqoXeCddS.9wwkhHl/YymCNEQr/OgC.0bhMSbOtGW', // 1234,
             'type' => $this->faker->randomElement(['uniformed', 'non_uniformed', 'intel', 'special', 'department_heads']),
-            'jurisdiction_id' => Jurisdiction::factory()->create()->id,
+            'jurisdiction_id' => function () {
+                return Jurisdiction::factory()->create()->id;
+            },
         ];
     }
 }

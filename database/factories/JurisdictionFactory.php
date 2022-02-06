@@ -17,7 +17,9 @@ class JurisdictionFactory extends Factory
         return [
             'name' => $this->faker->words(3, true),
             'code' => $this->faker->bothify('### ???#?#?#?'),
-            'station_id' => Station::factory()->create()->id,
+            'station_id' => function () {
+                return Station::factory()->create()->id;
+            },
             'radius' => $this->faker->numberBetween(5, 10)
         ];
     }

@@ -20,7 +20,7 @@ class TestSeeder extends Seeder
      */
     public function run()
     {
-        Unit::factory()->count(2)
+        Unit::factory()->count(10)
             ->create()
             ->each(function ($unit) {
                 User::factory()
@@ -30,7 +30,7 @@ class TestSeeder extends Seeder
 
                 // Create Sub Units.
                 SubUnit::factory()
-                    ->count(2)
+                    ->count(5)
                     ->create(['unit_id' => $unit->id])
                     ->each(function ($subUnit) use ($unit) {
                         User::factory()
@@ -43,7 +43,7 @@ class TestSeeder extends Seeder
 
                         // Create Stations
                         Station::factory()
-                            ->count(2)
+                            ->count(10)
                             ->create(['sub_unit_id' => $subUnit->id])
                             ->each(function ($station) use ($unit, $subUnit) {
                                 User::factory()
@@ -59,7 +59,7 @@ class TestSeeder extends Seeder
                                     ->count(2)
                                     ->create(['station_id' => $station->id])
                                     ->each(function ($jurisdiction) {
-                                        Personnel::factory()->count(2)
+                                        Personnel::factory()->count(20)
                                             ->create(['jurisdiction_id' => $jurisdiction->id])
                                             ->each(function ($personnel) {
                                                 Checkin::factory()

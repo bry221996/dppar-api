@@ -17,7 +17,9 @@ class SubUnitFactory extends Factory
         $province = $this->faker->province;
 
         return [
-            'unit_id' => Unit::factory()->create()->id,
+            'unit_id' => function() {
+                return Unit::factory()->create()->id;
+            },
             'name' => $province . ' Provincial Police Office',
             'province' => $province,
             'type' => $this->faker->randomElement(['provincial', 'city']),

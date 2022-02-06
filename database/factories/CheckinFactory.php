@@ -15,7 +15,9 @@ class CheckinFactory extends Factory
     public function definition()
     {
         return [
-            'personnel_id' => Personnel::factory()->create()->id,
+            'personnel_id' => function () {
+                return Personnel::factory()->create()->id;
+            },
             'image' => $this->faker->imageUrl(),
             'type' => 'present',
             'sub_type' => $this->faker->randomElement(['duty', 'under_instruction', 'conference', 'schooling', 'travel', 'off_duty']),
