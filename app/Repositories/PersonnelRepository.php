@@ -38,4 +38,16 @@ class PersonnelRepository extends Repository
             })
             ->paginate($per_page);
     }
+
+    public function listBySubUnitId($sub_unit_id, $per_page = 10)
+    {
+        return $this->model
+            ->whereHas('jurisdiction', function ($jurisdictionQuery) use ($sub_unit_id) {
+                $jurisdictionQuery
+                    ->whereHas('station', function ($stationQuery) use ($sub_unit_id) {
+                        $stationQuery->where('sub_unit_id', $sub_unit_id);
+                    });
+            })
+            ->paginate($per_page);
+    }
 }
