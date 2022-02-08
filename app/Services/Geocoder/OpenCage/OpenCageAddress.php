@@ -19,13 +19,17 @@ class OpenCageAddress implements GeocoderAddressInterface
 
         if (isset($this->adressComponent['quarter'])) return $this->adressComponent['quarter'];
 
-        return isset($this->adressComponent['county']) ? $this->adressComponent['county'] : '';
+        if (isset($this->adressComponent['county'])) return $this->adressComponent['county'];
+
+        return isset($this->adressComponent['suburb']) ? $this->adressComponent['suburb'] : '';
     }
 
     public function getProvince()
     {
         if (isset($this->adressComponent['state'])) return $this->adressComponent['state'];
 
-        return isset($this->adressComponent['city']) ? $this->adressComponent['city'] : '';
+        if (isset($this->adressComponent['city'])) return $this->adressComponent['city'];
+
+        return isset($this->adressComponent['region']) ? $this->adressComponent['region'] : '';
     }
 }
