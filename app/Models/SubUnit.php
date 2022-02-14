@@ -2,12 +2,13 @@
 
 namespace App\Models;
 
+use App\Traits\WithSerializeDate;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class SubUnit extends Model
 {
-    use HasFactory;
+    use HasFactory, WithSerializeDate;
 
     protected $guarded = [];
 

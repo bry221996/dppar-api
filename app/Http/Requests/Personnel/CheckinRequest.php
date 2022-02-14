@@ -2,10 +2,13 @@
 
 namespace App\Http\Requests\Personnel;
 
+use App\Enums\CheckInSubType;
+use App\Enums\CheckInType;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
+use BenSampo\Enum\Rules\EnumValue;
 
 class CheckinRequest extends FormRequest
 {
@@ -27,21 +30,16 @@ class CheckinRequest extends FormRequest
     public function rules()
     {
         $rules = [
-            'image' => 'required|image',
-            'type' => 'required|in:present,absent',
-            'sub_type' => 'required',
+            'image' => 'image|required_if:type,' . CheckInType::PRESENT,
+            'type' => ['required', new EnumValue(CheckInType::class)],
+            'sub_type' => 'required_unless:type,' . CheckInType::OFF_DUTY,
             'latitude' => 'required|numeric',
             'longitude' => 'required|numeric',
-            'remarks' => 'required',
-            'admin_remarks' => 'nullable'
+            'remarks' => 'required_if:sub_type,' . CheckInSubType::OTHERS,
         ];
 
-        if ($this->post('type') === 'present') {
-            $rules['sub_type'] = 'required|in:duty,under_instruction,conference,schooling,travel,off_duty';
-        }
-
-        if ($this->post('type') === 'absent') {
-            $rules['sub_type'] = 'required|in:leave,confined_in_hospital,sick,suspended';
+        if ($this->post('type') === CheckInType::PRESENT || $this->post('type') === CheckInType::ABSENT) {
+            $rules['sub_type'] = 'required|in:' . implode(',', CheckInType::getSubType($this->post('type')));
         }
 
         return $rules;
