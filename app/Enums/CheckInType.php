@@ -19,6 +19,7 @@ final class CheckInType extends Enum
                     CheckInSubType::UNDER_INSTRUCTION,
                     CheckInSubType::CONFERENCE,
                     CheckInSubType::SCHOOLING,
+                    CheckInSubType::OTHERS
                 ];
                 break;
             case self::ABSENT:
@@ -27,6 +28,7 @@ final class CheckInType extends Enum
                     CheckInSubType::CONFINED_IN_HOSPITAL,
                     CheckInSubType::SICK,
                     CheckInSubType::SUSPENDED,
+                    CheckInSubType::OTHERS
                 ];
                 break;
             default:
