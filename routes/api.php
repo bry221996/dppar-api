@@ -61,6 +61,11 @@ Route::group(['prefix' => 'v1'], function () {
 
             Route::group(['middleware' => 'role:super_admin'], function () {
                 Route::get('/units', [UnitController::class, 'index']);
+                Route::post('/units', [UnitController::class, 'store']);
+                Route::put('/units/{unit}', [UnitController::class, 'update']);
+                Route::delete('/units/{unit}', [UnitController::class, 'destroy']);
+                Route::post('/units/{unit}/restore', [UnitController::class, 'restore']);
+
                 Route::get('/sub-units', [SubUnitController::class, 'index']);
                 Route::get('/stations', [StationController::class, 'index']);
 

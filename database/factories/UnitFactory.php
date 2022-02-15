@@ -20,6 +20,7 @@ class UnitFactory extends Factory
             'region' => $region,
             'latitude' => $this->faker->latitude(12, 15),
             'longitude' => $this->faker->longitude(120, 122),
+            'deleted_at' => null
         ];
     }
 }
