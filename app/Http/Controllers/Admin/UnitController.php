@@ -3,22 +3,26 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Repositories\UnitRepository;
+use App\Http\Requests\Admin\Unit\CreateRequest;
+use App\Models\Unit;
 use Illuminate\Http\Request;
 
 class UnitController extends Controller
 {
-    protected $unitRepository;
-
-    public function __construct(UnitRepository $unitRepository)
-    {
-        $this->unitRepository = $unitRepository;
-    }
-
     public function index(Request $request)
     {
-        $list = $this->unitRepository->list($request->per_page ?? 10);
+        $list = Unit::paginate($request->per_page ?? 10);
 
         return response($list);
+    }
+
+    public function store(CreateRequest $request)
+    {
+        $unit = Unit::create($request->validated());
+
+        return response([
+            'message' => 'Successfully create unit.',
+            'data' => $unit
+        ]);
     }
 }

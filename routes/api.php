@@ -61,6 +61,7 @@ Route::group(['prefix' => 'v1'], function () {
 
             Route::group(['middleware' => 'role:super_admin'], function () {
                 Route::get('/units', [UnitController::class, 'index']);
+                Route::post('/units', [UnitController::class, 'store']);
                 Route::get('/sub-units', [SubUnitController::class, 'index']);
                 Route::get('/stations', [StationController::class, 'index']);
 
