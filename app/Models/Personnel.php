@@ -28,8 +28,8 @@ class Personnel extends Authenticatable
         return !!$this->pin_updated_at;
     }
 
-    public function jurisdiction()
+    public function assignments()
     {
-        return $this->belongsTo(Jurisdiction::class);
+        return $this->hasMany(Assignment::class);
     }
 }
