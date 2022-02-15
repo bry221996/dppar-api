@@ -16,7 +16,8 @@ class Personnel extends Authenticatable
 
     protected $hidden = [
         'mpin',
-        'pin_updated_at'
+        'pin_updated_at',
+        'deleted_at'
     ];
 
     protected $appends = [
