@@ -36,7 +36,7 @@ class LoginRequest extends FormRequest
         return [
             'personnel_id' => 'required',
             'birth_date' => 'required_without:mpin|date|date_format:Y-m-d',
-            'mpin' => 'required_without:birth_date|size:4',
+            'mpin' => 'required_without:birth_date',
             'device' => 'required'
         ];
     }
@@ -46,7 +46,7 @@ class LoginRequest extends FormRequest
         $personnel = $this->birth_date ?
             $this->personnelRepository->getByPersonnelIdAndBirthDate($this->personnel_id, $this->birth_date) :
             $this->personnelRepository->getByPersonnelId($this->personnel_id);
-    
+
         if (!$personnel || ($personnel && $this->mpin && !Hash::check($this->mpin, $personnel->mpin))) return false;
 
         // Delete previous tokens on this device.
