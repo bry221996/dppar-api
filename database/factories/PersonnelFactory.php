@@ -2,6 +2,9 @@
 
 namespace Database\Factories;
 
+use App\Enums\GenderType;
+use App\Enums\PersonnelCategory;
+use App\Enums\PersonnelClassification;
 use App\Models\Jurisdiction;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -20,7 +23,14 @@ class PersonnelFactory extends Factory
         $defaultPin = Carbon::parse($birth_date);
 
         return [
+            'title' => $this->faker->title,
+            'qualifier' => $this->faker->randomElement(['Jr.', 'Sr.', 'III', 'IV', null]),
+            'badge_no' => $this->faker->bothify('##-???????'),
             'personnel_id' => $this->faker->bothify('##-???????'),
+            'designation' => $this->faker->jobTitle,
+            'category' => $this->faker->randomElement(PersonnelCategory::getAll()),
+            'classification' => $this->faker->randomElement(PersonnelClassification::getAll()),
+            'gender' => $this->faker->randomElement(GenderType::getAll()),
             'first_name' => $this->faker->firstName,
             'last_name' => $this->faker->lastName,
             'middle_name' => $this->faker->lastName,

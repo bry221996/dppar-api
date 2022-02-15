@@ -26,11 +26,17 @@ class PersonnelDetailsTest extends TestCase
                     'last_name',
                     'middle_name',
                     'email',
-                    'type',
                     'created_at',
                     'updated_at',
                     'id',
-                    'has_pin'
+                    'has_pin',
+                    'title',
+                    'qualifier',
+                    'badge_no',
+                    'designation',
+                    'category',
+                    'classification',
+                    'gender'
                 ]
             ]);
     }

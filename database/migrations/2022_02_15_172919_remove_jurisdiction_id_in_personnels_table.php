@@ -27,7 +27,7 @@ class RemoveJurisdictionIdInPersonnelsTable extends Migration
     public function down()
     {
         Schema::table('personnels', function (Blueprint $table) {
-            $table->unsignedBigInteger('jurisdiction_id');
+            $table->unsignedBigInteger('jurisdiction_id')->nullable();
 
             $table->foreign('jurisdiction_id')
                 ->references('id')
