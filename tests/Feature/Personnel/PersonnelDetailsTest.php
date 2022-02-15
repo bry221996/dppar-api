@@ -15,8 +15,8 @@ class PersonnelDetailsTest extends TestCase
     public function test_logged_in_personnel_can_fetch_details()
     {
         Sanctum::actingAs(Personnel::factory()->create(), [], 'personnels');
-        
-        $this->getJson('/api/v1/personnel/details') 
+
+        $this->getJson('/api/v1/personnel/details')
             ->assertStatus(200)
             ->assertJsonStructure([
                 'message',
@@ -26,11 +26,17 @@ class PersonnelDetailsTest extends TestCase
                     'last_name',
                     'middle_name',
                     'email',
-                    'type',
-                    'jurisdiction_id',
                     'created_at',
                     'updated_at',
-                    'id'
+                    'id',
+                    'has_pin',
+                    'title',
+                    'qualifier',
+                    'badge_no',
+                    'designation',
+                    'category',
+                    'classification',
+                    'gender'
                 ]
             ]);
     }

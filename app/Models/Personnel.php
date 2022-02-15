@@ -16,7 +16,8 @@ class Personnel extends Authenticatable
 
     protected $hidden = [
         'mpin',
-        'pin_updated_at'
+        'pin_updated_at',
+        'deleted_at'
     ];
 
     protected $appends = [
@@ -28,8 +29,8 @@ class Personnel extends Authenticatable
         return !!$this->pin_updated_at;
     }
 
-    public function jurisdiction()
+    public function assignments()
     {
-        return $this->belongsTo(Jurisdiction::class);
+        return $this->hasMany(Assignment::class);
     }
 }
