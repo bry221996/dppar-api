@@ -60,13 +60,12 @@ Route::group(['prefix' => 'v1'], function () {
             Route::get('/checkins', [CheckinController::class, 'index']);
 
             Route::group(['middleware' => 'role:super_admin'], function () {
-                Route::get('/units', [UnitController::class, 'index']);
-                Route::post('/units', [UnitController::class, 'store']);
-                Route::put('/units/{unit}', [UnitController::class, 'update']);
-                Route::delete('/units/{unit}', [UnitController::class, 'destroy']);
+                Route::resource('/units', UnitController::class)->except(['create', 'edit']);
                 Route::post('/units/{unit}/restore', [UnitController::class, 'restore']);
 
-                Route::get('/sub-units', [SubUnitController::class, 'index']);
+                Route::resource('/sub-units', SubUnitController::class)->except(['create', 'edit']);
+                Route::post('/sub-units/{sub_unit}/restore', [SubUnitController::class, 'restore']);
+
                 Route::get('/stations', [StationController::class, 'index']);
 
                 Route::get('/users', [UserController::class, 'index']);

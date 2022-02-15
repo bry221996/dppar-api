@@ -3,22 +3,59 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Repositories\SubUnitRepository;
+use App\Http\Requests\Admin\SubUnit\CreateRequest;
+use App\Http\Requests\Admin\SubUnit\UpdateRequest;
+use App\Models\SubUnit;
 use Illuminate\Http\Request;
 
 class SubUnitController extends Controller
 {
-    protected $subUnitRepository;
-
-    public function __construct(SubUnitRepository $subUnitRepository)
-    {
-        $this->subUnitRepository = $subUnitRepository;
-    }
-
     public function index(Request $request)
     {
-        $list = $this->subUnitRepository->list($request->per_page ?? 10);
+        $list = SubUnit::withTrashed()
+            ->paginate($request->per_page ?? 10);
 
         return response($list);
+    }
+
+    public function store(CreateRequest $request)
+    {
+        $sub_unit = SubUnit::create($request->validated());
+
+        return response([
+            'message' => 'Successfully create sub unit.',
+            'data' => $sub_unit
+        ]);
+    }
+
+    public function update(UpdateRequest $request, SubUnit $sub_unit)
+    {
+        $sub_unit->update($request->validated());
+
+        return response([
+            'message' => 'Successfully updated sub unit.',
+            'data' => $sub_unit
+        ]);
+    }
+
+    public function destroy(SubUnit $sub_unit)
+    {
+        $sub_unit->delete();
+
+        return response([
+            'message' => 'Successfully deleted sub unit.',
+            'data' => $sub_unit
+        ]);
+    }
+
+    public function restore($id)
+    {
+        $sub_unit = SubUnit::withTrashed()->findOrFail($id);
+        $sub_unit->restore();
+
+        return response([
+            'message' => 'Successfully restored sub unit.',
+            'data' => $sub_unit
+        ]);
     }
 }
