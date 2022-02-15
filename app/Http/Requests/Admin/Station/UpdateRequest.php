@@ -1,9 +1,7 @@
 <?php
 
-namespace App\Http\Requests\Admin\SubUnit;
+namespace App\Http\Requests\Admin\Station;
 
-use App\Enums\SubUnitType;
-use BenSampo\Enum\Rules\EnumValue;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -27,12 +25,11 @@ class UpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'unit_id' => 'required|exists:units,id',
-            'name' => ['required',  Rule::unique('sub_units', 'name')->ignore($this->sub_unit->id)],
-            'province' =>  ['required',  Rule::unique('sub_units', 'province')->ignore($this->sub_unit->id)],
+            'sub_unit_id' => 'required|exists:sub_units,id',
+            'name' => ['required',  Rule::unique('stations', 'name')->ignore($this->station->id)],
+            'municipality' => ['required',  Rule::unique('stations', 'municipality')->ignore($this->station->id)],
             'latitude' => 'required|numeric',
             'longitude' => 'required|numeric',
-            'type' => ['required', new EnumValue(SubUnitType::class)]
         ];
     }
 }
