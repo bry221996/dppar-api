@@ -3,8 +3,10 @@
 namespace Tests\Feature\Personnel;
 
 use App\Models\Personnel;
+use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Support\Facades\Hash;
 use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
 
@@ -19,7 +21,7 @@ class AuthenticationTest extends TestCase
 
         $data = [
             'personnel_id' => $personnel->personnel_id,
-            'birth_date' => $personnel->birth_date,
+            'mpin' => Carbon::parse($personnel->birth_date)->format('Ymd'),
             'device' => $this->faker->macAddress,
         ];
 
@@ -34,11 +36,15 @@ class AuthenticationTest extends TestCase
     /** @group personnel */
     public function test_personnel_can_login_using_personnel_id_and_mpin()
     {
-        $personnel = Personnel::factory()->create();
-        
+        $pin = $this->faker()->numerify('####');
+
+        $personnel = Personnel::factory()->create([
+            'mpin' => Hash::make($pin)
+        ]);
+
         $data = [
             'personnel_id' => $personnel->personnel_id,
-            'mpin' => '1234',
+            'mpin' => $pin,
             'device' => $this->faker->macAddress,
         ];
 
@@ -68,7 +74,7 @@ class AuthenticationTest extends TestCase
     public function test_personnel_can_not_login_with_invalid_personnel_id_and_pin()
     {
         $personnel = Personnel::factory()->create();
-        
+
         $data = [
             'personnel_id' => $personnel->personnel_id,
             'mpin' => '4321',
@@ -91,7 +97,7 @@ class AuthenticationTest extends TestCase
     public function test_personnel_can_logout()
     {
         Sanctum::actingAs(Personnel::factory()->create(), [], 'personnels');
-        
+
         $this->postJson('/api/v1/personnel/logout')
             ->assertStatus(200);
     }

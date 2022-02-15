@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Personnel;
 
 use App\Http\Controllers\Controller;
 use App\Repositories\PersonnelRepository;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -25,7 +26,10 @@ class PersonnelMpinController extends Controller
 
         $personnel = Auth::guard('personnels')->user();
 
-        $this->personnelRepository->update($personnel, ['mpin' => Hash::make($data['mpin'])]);
+        $this->personnelRepository->update($personnel, [
+            'mpin' => Hash::make($data['mpin']),
+            'pin_updated_at' => Carbon::now()->toDateTimeLocalString()
+        ]);
 
         return response(['message' => 'MPIN successfully updated']);
     }

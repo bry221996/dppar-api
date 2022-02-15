@@ -16,6 +16,7 @@ class Personnel extends Authenticatable
 
     protected $hidden = [
         'mpin',
+        'pin_updated_at'
     ];
 
     protected $appends = [
@@ -24,7 +25,7 @@ class Personnel extends Authenticatable
 
     public function getHasPinAttribute()
     {
-        return !! $this->mpin;
+        return !!$this->pin_updated_at;
     }
 
     public function jurisdiction()

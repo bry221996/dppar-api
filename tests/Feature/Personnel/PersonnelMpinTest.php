@@ -15,7 +15,8 @@ class PersonnelMpinTest extends TestCase
     /** @group personnel */
     public function test_personnel_can_update_mpin()
     {
-        Sanctum::actingAs(Personnel::factory()->create(), [], 'personnels');
+        $personnel = Personnel::factory()->create();
+        Sanctum::actingAs($personnel, [], 'personnels');
         $mpin = $this->faker()->numerify('####');
 
         $data = [
@@ -23,8 +24,12 @@ class PersonnelMpinTest extends TestCase
             'mpin_confirmation' => $mpin
         ];
 
+        $this->assertFalse($personnel->has_pin);
+
         $this->postJson('/api/v1/personnel/mpin', $data)
             ->assertStatus(200);
+
+        $this->assertTrue($personnel->has_pin);
     }
 
     /** @group personnel */
