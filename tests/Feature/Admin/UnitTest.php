@@ -100,4 +100,87 @@ class UnitTest extends TestCase
             ->assertStatus(422)
             ->assertJsonValidationErrors(['name', 'region', 'latitude', 'longitude']);
     }
+
+    /**
+     * @group admin
+     * @group unit
+     */
+    public function test_super_admin_can_update_unit()
+    {
+        $superAdmin = User::factory()->superAdmin()->create();
+        Sanctum::actingAs($superAdmin, [], 'admins');
+
+        $unit = Unit::factory()->create();
+        $data = Unit::factory()->make();
+
+        $this->putJson("/api/v1/admin/units/$unit->id", $data->toArray())
+            ->assertStatus(200)
+            ->assertJsonStructure([
+                'message',
+                'data' => ['id', 'name', 'region', 'latitude', 'longitude', 'updated_at', 'created_at']
+            ]);
+
+        $this->assertDatabaseHas('units', [
+            'name' => $data->name,
+            'region' => $data->region,
+        ]);
+    }
+
+    /**
+     * @group admin
+     * @group unit
+     */
+    public function test_super_admin_can_not_update_unit_with_empty_data()
+    {
+        $superAdmin = User::factory()->superAdmin()->create();
+        Sanctum::actingAs($superAdmin, [], 'admins');
+
+        $unit = Unit::factory()->create();
+
+        $this->putJson("/api/v1/admin/units/$unit->id", [])
+            ->assertStatus(422)
+            ->assertJsonValidationErrors(['name', 'region', 'latitude', 'longitude']);
+    }
+
+    /**
+     * @group admin
+     * @group unit
+     */
+    public function test_super_admin_can_delete_unit()
+    {
+        $superAdmin = User::factory()->superAdmin()->create();
+        Sanctum::actingAs($superAdmin, [], 'admins');
+
+        $unit = Unit::factory()->create();
+
+        $this->deleteJson("/api/v1/admin/units/$unit->id")
+            ->assertStatus(200)
+            ->assertJsonStructure([
+                'message',
+                'data' => ['id', 'name', 'region', 'latitude', 'longitude', 'updated_at', 'created_at']
+            ]);
+
+        $this->assertNotNull($unit->fresh()->deleted_at);
+    }
+
+    /**
+     * @group admin
+     * @group unit
+     */
+    public function test_super_admin_can_restore_unit()
+    {
+        $superAdmin = User::factory()->superAdmin()->create();
+        Sanctum::actingAs($superAdmin, [], 'admins');
+
+        $unit = Unit::factory()->create(['deleted_at' => now()]);
+
+        $this->postJson("/api/v1/admin/units/$unit->id/restore")
+            ->assertStatus(200)
+            ->assertJsonStructure([
+                'message',
+                'data' => ['id', 'name', 'region', 'latitude', 'longitude', 'updated_at', 'created_at']
+            ]);
+
+        $this->assertNull($unit->fresh()->deleted_at);
+    }
 }
