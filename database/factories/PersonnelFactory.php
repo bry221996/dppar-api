@@ -38,7 +38,6 @@ class PersonnelFactory extends Factory
             'mobile_number' => $this->faker->numerify('09#########'),
             'email' => $this->faker->email,
             'mpin' => Hash::make($defaultPin->format('Ymd')),
-            'type' => $this->faker->randomElement(['uniformed', 'non_uniformed', 'intel', 'special', 'department_heads']),
         ];
     }
 }
