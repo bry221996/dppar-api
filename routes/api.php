@@ -64,6 +64,7 @@ Route::group(['prefix' => 'v1'], function () {
                 Route::post('/units/{unit}/restore', [UnitController::class, 'restore']);
 
                 Route::resource('/sub-units', SubUnitController::class)->except(['create', 'edit']);
+                Route::post('/sub-units/{sub_unit}/restore', [SubUnitController::class, 'restore']);
 
                 Route::get('/stations', [StationController::class, 'index']);
 

@@ -19,7 +19,7 @@ class RestoreTest extends TestCase
      * @group controllers.admin.sub-unit
      * @group controllers.admin.sub-unit.restore
      */
-    public function test_super_admin_can_delete_sub_units()
+    public function test_super_admin_can_restore_sub_units()
     {
         $superAdmin = User::factory()->superAdmin()->create();
         Sanctum::actingAs($superAdmin, [], 'admins');
@@ -33,7 +33,7 @@ class RestoreTest extends TestCase
                 'data' => ['unit_id', 'name', 'province', 'type', 'latitude', 'longitude']
             ]);
 
-        $this->assertNotNull($sub_unit->fresh()->deleted_at);
+        $this->assertNull($sub_unit->fresh()->deleted_at);
     }
 
     /**
@@ -42,7 +42,7 @@ class RestoreTest extends TestCase
      * @group controllers.admin.sub-unit
      * @group controllers.admin.sub-unit.restore
      */
-    public function test_only_super_admin_can_delete_sub_units()
+    public function test_only_super_admin_can_restore_sub_units()
     {
         $rpo = User::factory()->regionalPoliceOfficer()->create();
 
