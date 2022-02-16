@@ -16,16 +16,16 @@ class CreateCheckinsTable extends Migration
         Schema::create('checkins', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('personnel_id');
-            $table->string('image');
+            $table->string('image')->nullable();
             $table->string('type');
-            $table->string('out_of_area_of_responsibility_type')->nullable();
+            $table->string('sub_type')->nullable();
             $table->boolean('is_accounted')->default(true);
-            $table->decimal('latitude');
-            $table->decimal('longitude');
+            $table->float('latitude', 12, 8);
+            $table->float('longitude', 12, 8);
             $table->string('town')->nullable();
             $table->string('province')->nullable();
-            $table->text('remarks');
-            $table->text('admin_remarks');
+            $table->text('remarks')->nullable();
+            $table->text('admin_remarks')->nullable();
             $table->timestamps();
 
             $table->foreign('personnel_id')
