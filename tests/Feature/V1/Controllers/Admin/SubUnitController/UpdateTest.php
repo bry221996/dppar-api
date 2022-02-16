@@ -32,7 +32,7 @@ class UpdateTest extends TestCase
             ->assertJsonFragment(['province' => $data->province])
             ->assertJsonStructure([
                 'message',
-                'data' => ['unit_id', 'name', 'province', 'type', 'latitude', 'longitude']
+                'data' => ['unit_id', 'name', 'province', 'type', 'code']
             ]);
     }
 
@@ -51,7 +51,7 @@ class UpdateTest extends TestCase
 
         $this->putJson("/api/v1/admin/sub-units/$sub_unit->id", [])
             ->assertStatus(422)
-            ->assertJsonValidationErrors(['unit_id', 'name', 'province', 'type', 'latitude', 'longitude']);
+            ->assertJsonValidationErrors(['unit_id', 'name', 'province', 'type', 'code']);
     }
 
     /**

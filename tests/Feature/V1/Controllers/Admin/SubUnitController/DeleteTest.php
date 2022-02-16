@@ -30,7 +30,7 @@ class DeleteTest extends TestCase
             ->assertSuccessful()
             ->assertJsonStructure([
                 'message',
-                'data' => ['unit_id', 'name', 'province', 'type', 'latitude', 'longitude']
+                'data' => ['unit_id', 'name', 'province', 'type', 'code']
             ]);
 
         $this->assertNotNull($sub_unit->fresh()->deleted_at);

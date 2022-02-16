@@ -30,8 +30,7 @@ class UpdateRequest extends FormRequest
             'unit_id' => 'required|exists:units,id',
             'name' => ['required',  Rule::unique('sub_units', 'name')->ignore($this->sub_unit->id)],
             'province' =>  ['required',  Rule::unique('sub_units', 'province')->ignore($this->sub_unit->id)],
-            'latitude' => 'required|numeric',
-            'longitude' => 'required|numeric',
+            'code' =>  ['required',  Rule::unique('sub_units', 'code')->ignore($this->sub_unit->id)],
             'type' => ['required', new EnumValue(SubUnitType::class)]
         ];
     }

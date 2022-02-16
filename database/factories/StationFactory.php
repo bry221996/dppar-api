@@ -22,8 +22,7 @@ class StationFactory extends Factory
             },
             'name' => $municipality . ' Municipal Police Station',
             'municipality' => $municipality,
-            'latitude' => $this->faker->latitude(12, 15),
-            'longitude' => $this->faker->longitude(120, 122),
+            'code' => $this->faker->swiftBicNumber,
         ];
     }
 }

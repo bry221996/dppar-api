@@ -17,14 +17,13 @@ class SubUnitFactory extends Factory
         $province = $this->faker->province;
 
         return [
-            'unit_id' => function() {
+            'unit_id' => function () {
                 return Unit::factory()->create()->id;
             },
             'name' => $province . ' Provincial Police Office',
             'province' => $province,
             'type' => $this->faker->randomElement(['provincial', 'city']),
-            'latitude' => $this->faker->latitude(12, 15),
-            'longitude' => $this->faker->longitude(120, 122),
+            'code' => $this->faker->swiftBicNumber,
         ];
     }
 }

@@ -18,10 +18,7 @@ class CreateStationsTable extends Migration
             $table->unsignedBigInteger('sub_unit_id');
             $table->string('name');
             $table->string('municipality');
-            $table->decimal('latitude');
-            $table->decimal('longitude');
-            $table->boolean('is_intel')->default(false);
-            $table->boolean('is_mobile_force')->default(false);
+            $table->string('code')->unique();
             $table->timestamps();
             $table->softDeletes();
 

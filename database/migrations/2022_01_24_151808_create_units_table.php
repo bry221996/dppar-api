@@ -17,10 +17,7 @@ class CreateUnitsTable extends Migration
             $table->id();
             $table->string('name');
             $table->string('region');
-            $table->decimal('latitude');
-            $table->decimal('longitude');
-            $table->boolean('is_intel')->default(false);
-            $table->boolean('is_mobile_force')->default(false);
+            $table->string('code')->unique();
             $table->timestamps();
             $table->softDeletes();
         });

@@ -26,8 +26,7 @@ class CreateRequest extends FormRequest
         return [
             'name' => 'required|unique:units,name',
             'region' => 'required|unique:units,region',
-            'latitude' => 'required|numeric',
-            'longitude' => 'required|numeric',
+            'code' => 'required|unique:units,code',
         ];
     }
 }

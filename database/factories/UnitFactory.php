@@ -18,8 +18,7 @@ class UnitFactory extends Factory
         return [
             'name' =>  $region . ' Regional Police Office',
             'region' => $region,
-            'latitude' => $this->faker->latitude(12, 15),
-            'longitude' => $this->faker->longitude(120, 122),
+            'code' => $this->faker->swiftBicNumber,
             'deleted_at' => null
         ];
     }

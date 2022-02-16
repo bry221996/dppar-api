@@ -65,7 +65,7 @@ class UnitTest extends TestCase
             ->assertStatus(200)
             ->assertJsonStructure([
                 'message',
-                'data' => ['id', 'name', 'region', 'latitude', 'longitude', 'updated_at', 'created_at']
+                'data' => ['id', 'name', 'region', 'code', 'updated_at', 'created_at']
             ]);
     }
 
@@ -98,7 +98,7 @@ class UnitTest extends TestCase
 
         $this->postJson('/api/v1/admin/units', [])
             ->assertStatus(422)
-            ->assertJsonValidationErrors(['name', 'region', 'latitude', 'longitude']);
+            ->assertJsonValidationErrors(['name', 'region', 'code']);
     }
 
     /**
@@ -117,7 +117,7 @@ class UnitTest extends TestCase
             ->assertStatus(200)
             ->assertJsonStructure([
                 'message',
-                'data' => ['id', 'name', 'region', 'latitude', 'longitude', 'updated_at', 'created_at']
+                'data' => ['id', 'name', 'region', 'code', 'updated_at', 'created_at']
             ]);
 
         $this->assertDatabaseHas('units', [
@@ -139,7 +139,7 @@ class UnitTest extends TestCase
 
         $this->putJson("/api/v1/admin/units/$unit->id", [])
             ->assertStatus(422)
-            ->assertJsonValidationErrors(['name', 'region', 'latitude', 'longitude']);
+            ->assertJsonValidationErrors(['name', 'region', 'code']);
     }
 
     /**
@@ -157,7 +157,7 @@ class UnitTest extends TestCase
             ->assertStatus(200)
             ->assertJsonStructure([
                 'message',
-                'data' => ['id', 'name', 'region', 'latitude', 'longitude', 'updated_at', 'created_at']
+                'data' => ['id', 'name', 'region', 'code', 'updated_at', 'created_at']
             ]);
 
         $this->assertNotNull($unit->fresh()->deleted_at);
@@ -178,7 +178,7 @@ class UnitTest extends TestCase
             ->assertStatus(200)
             ->assertJsonStructure([
                 'message',
-                'data' => ['id', 'name', 'region', 'latitude', 'longitude', 'updated_at', 'created_at']
+                'data' => ['id', 'name', 'region', 'code', 'updated_at', 'created_at']
             ]);
 
         $this->assertNull($unit->fresh()->deleted_at);

@@ -19,10 +19,7 @@ class CreateSubUnitsTable extends Migration
             $table->string('name');
             $table->string('province');
             $table->enum('type', ['provincial', 'city']);
-            $table->decimal('latitude');
-            $table->decimal('longitude');
-            $table->boolean('is_intel')->default(false);
-            $table->boolean('is_mobile_force')->default(false);
+            $table->string('code')->unique();
             $table->timestamps();
             $table->softDeletes();
 

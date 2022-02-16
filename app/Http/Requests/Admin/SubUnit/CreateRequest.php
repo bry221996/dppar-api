@@ -29,8 +29,7 @@ class CreateRequest extends FormRequest
             'unit_id' => 'required|exists:units,id',
             'name' => 'required|unique:sub_units,name',
             'province' => 'required|unique:sub_units,province',
-            'latitude' => 'required|numeric',
-            'longitude' => 'required|numeric',
+            'code' => 'required|unique:sub_units,code',
             'type' => ['required', new EnumValue(SubUnitType::class)]
         ];
     }

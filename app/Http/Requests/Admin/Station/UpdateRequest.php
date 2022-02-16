@@ -28,8 +28,7 @@ class UpdateRequest extends FormRequest
             'sub_unit_id' => 'required|exists:sub_units,id',
             'name' => ['required',  Rule::unique('stations', 'name')->ignore($this->station->id)],
             'municipality' => ['required',  Rule::unique('stations', 'municipality')->ignore($this->station->id)],
-            'latitude' => 'required|numeric',
-            'longitude' => 'required|numeric',
+            'code' => ['required',  Rule::unique('stations', 'code')->ignore($this->station->id)],
         ];
     }
 }

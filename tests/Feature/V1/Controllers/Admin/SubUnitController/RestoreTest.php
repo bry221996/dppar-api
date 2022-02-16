@@ -30,7 +30,7 @@ class RestoreTest extends TestCase
             ->assertSuccessful()
             ->assertJsonStructure([
                 'message',
-                'data' => ['unit_id', 'name', 'province', 'type', 'latitude', 'longitude']
+                'data' => ['unit_id', 'name', 'province', 'type', 'code']
             ]);
 
         $this->assertNull($sub_unit->fresh()->deleted_at);

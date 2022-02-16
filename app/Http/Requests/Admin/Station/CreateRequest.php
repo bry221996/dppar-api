@@ -27,8 +27,7 @@ class CreateRequest extends FormRequest
             'sub_unit_id' => 'required|exists:sub_units,id',
             'name' => 'required|unique:stations,name',
             'municipality' => 'required|unique:stations,municipality',
-            'latitude' => 'required|numeric',
-            'longitude' => 'required|numeric',
+            'code' => 'required|unique:stations,code',
         ];
     }
 }

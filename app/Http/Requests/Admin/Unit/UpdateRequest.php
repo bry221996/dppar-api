@@ -27,8 +27,7 @@ class UpdateRequest extends FormRequest
         return [
             'name' => ['required',  Rule::unique('units', 'name')->ignore($this->unit->id)],
             'region' =>  ['required',  Rule::unique('units', 'region')->ignore($this->unit->id)],
-            'latitude' => 'required|numeric',
-            'longitude' => 'required|numeric',
+            'code' =>  ['required',  Rule::unique('units', 'code')->ignore($this->unit->id)],
         ];
     }
 }
