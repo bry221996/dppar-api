@@ -96,6 +96,33 @@ class CheckinTest extends TestCase
             ]);
     }
 
+
+    /** @group personnel */
+    public function test_personnel_can_create_checkin_without_selfie()
+    {
+        $personnel = Personnel::factory()->create();
+        Sanctum::actingAs($personnel, [], 'personnels');
+
+        $data = Checkin::factory()->absent()->make()->toArray();
+
+        $this->postJson('/api/v1/personnel/checkins', $data)
+            ->assertStatus(200)
+            ->assertJsonStructure([
+                'message',
+                'data' => [
+                    'id',
+                    'image',
+                    'type',
+                    'latitude',
+                    'longitude',
+                    'remarks',
+                    'personnel_id',
+                    'created_at',
+                    'updated_at'
+                ]
+            ]);
+    }
+
     /** @group personnel */
     public function test_guess_can_not_create_checkin()
     {

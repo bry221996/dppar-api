@@ -35,7 +35,8 @@ class CheckinFactory extends Factory
         return $this->state(function (array $attributes) {
             return [
                 'type' => CheckInType::ABSENT,
-                'sub_type' => $this->faker->randomElement(CheckInType::getSubType(CheckInType::PRESENT)),
+                'image' => null,
+                'sub_type' => $this->faker->randomElement(CheckInType::getSubType(CheckInType::ABSENT)),
             ];
         });
     }
