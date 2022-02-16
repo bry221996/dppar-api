@@ -78,11 +78,12 @@ class TestSeeder extends Seeder
         collect(['1996-12-22', '1998-05-23', '1988-08-30', '2000-01-01', '2000-01-02', '2000-01-03', '2000-01-04'])
             ->each(function ($dev) use ($assignmentData) {
                 $personnel_id = Carbon::parse($dev)->format('Ymd');
-                $personnel = Personnel::create([
-                    'personnel_id' => $personnel_id,
-                    'birth_date' => $dev,
-                    'mpin' => Hash::make($personnel_id)
-                ]);
+                $personnel = Personnel::factory()
+                    ->create([
+                        'personnel_id' => $personnel_id,
+                        'birth_date' => $dev,
+                        'mpin' => Hash::make($personnel_id)
+                    ]);
                 $personnel->assignments()->create($assignmentData);
             });
     }
