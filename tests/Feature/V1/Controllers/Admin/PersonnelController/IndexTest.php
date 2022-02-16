@@ -75,7 +75,7 @@ class IndexTest extends TestCase
         $otherPersonnel = Personnel::factory()->create();
         Assignment::factory()->create(['personnel_id' => $otherPersonnel->id]);
 
-        $this->getJson("/api/v1/admin/personnels?unit_id=$unit->id")
+        $this->getJson("/api/v1/admin/personnels?filter[unit_id]=$unit->id")
             ->assertStatus(200)
             ->assertJsonFragment(['total' => $count])
             ->assertJsonFragment(['personnel_id' => $personnels->random()->personnel_id])
@@ -111,7 +111,7 @@ class IndexTest extends TestCase
         $otherPersonnel = Personnel::factory()->create();
         Assignment::factory()->create(['personnel_id' => $otherPersonnel->id]);
 
-        $this->getJson("/api/v1/admin/personnels?sub_unit_id=$sub_unit->id")
+        $this->getJson("/api/v1/admin/personnels?filter[sub_unit_id]=$sub_unit->id")
             ->assertStatus(200)
             ->assertJsonFragment(['total' => $count])
             ->assertJsonFragment(['personnel_id' => $personnels->random()->personnel_id])
@@ -146,7 +146,7 @@ class IndexTest extends TestCase
 
         $otherPersonnel = Personnel::factory()->create();
 
-        $this->getJson("/api/v1/admin/personnels?station_id=$station->id")
+        $this->getJson("/api/v1/admin/personnels?filter[station_id]=$station->id")
             ->assertStatus(200)
             ->assertJsonFragment(['total' => $count])
             ->assertJsonFragment(['personnel_id' => $personnels->random()->personnel_id])
