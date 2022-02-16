@@ -12,4 +12,9 @@ class Unit extends Model
     use HasFactory, SoftDeletes, WithSerializeDate;
 
     protected $guarded = [];
+
+    public function subUnits()
+    {
+        return $this->hasMany(SubUnit::class);
+    }
 }

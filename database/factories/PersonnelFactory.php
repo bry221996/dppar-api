@@ -5,7 +5,6 @@ namespace Database\Factories;
 use App\Enums\GenderType;
 use App\Enums\PersonnelCategory;
 use App\Enums\PersonnelClassification;
-use App\Models\Jurisdiction;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;

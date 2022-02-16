@@ -8,7 +8,9 @@ use App\Models\Station;
 use App\Models\SubUnit;
 use App\Models\Unit;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
 
 class TestSeeder extends Seeder
 {
@@ -64,6 +66,24 @@ class TestSeeder extends Seeder
                                     });
                             });
                     });
+            });
+
+        $station = Station::first();
+        $assignmentData = [
+            'unit_id' => $station->subUnit->unit_id,
+            'sub_unit_id' => $station->sub_unit_id,
+            'station_id' => $station->id
+        ];
+
+        collect(['1996-12-22', '1998-05-23', '1988-08-30', '2000-01-01', '2000-01-02', '2000-01-03', '2000-01-04'])
+            ->each(function ($dev) use ($assignmentData) {
+                $personnel_id = Carbon::parse($dev)->format('Ymd');
+                $personnel = Personnel::create([
+                    'personnel_id' => $personnel_id,
+                    'birth_date' => $dev,
+                    'mpin' => Hash::make($personnel_id)
+                ]);
+                $personnel->assignments()->create($assignmentData);
             });
     }
 }

@@ -17,4 +17,9 @@ class SubUnit extends Model
     {
         return $this->belongsTo(Unit::class);
     }
+
+    public function stations()
+    {
+        return $this->hasMany(Station::class);
+    }
 }
