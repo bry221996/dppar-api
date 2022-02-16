@@ -2,14 +2,13 @@
 
 namespace App\Models;
 
-use App\Filters\Filterable;
 use App\Traits\WithSerializeDate;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Checkin extends Model
 {
-    use HasFactory, Filterable, WithSerializeDate;
+    use HasFactory, WithSerializeDate;
 
     protected $guarded = [];
 
