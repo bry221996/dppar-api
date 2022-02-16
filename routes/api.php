@@ -70,6 +70,7 @@ Route::group(['prefix' => 'v1'], function () {
                 Route::post('/stations/{station}/restore', [StationController::class, 'restore']);
 
                 Route::resource('/personnels', PersonnelController::class)->except(['index', 'create', 'edit']);
+                Route::post('/personnels/{personnel}/restore', [PersonnelController::class, 'restore']);
 
                 Route::get('/users', [UserController::class, 'index']);
                 Route::post('/users', [UserController::class, 'store']);

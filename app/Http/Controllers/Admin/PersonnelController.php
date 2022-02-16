@@ -52,4 +52,25 @@ class PersonnelController extends Controller
             'data' => $personnel
         ]);
     }
+
+    public function destroy(Personnel $personnel)
+    {
+        $personnel->delete();
+
+        return response([
+            'message' => 'Personnel successfully deleted.',
+            'data' => $personnel
+        ]);
+    }
+
+    public function restore($id)
+    {
+        $personnel = Personnel::withTrashed()->findOrFail($id);
+        $personnel->restore();
+
+        return response([
+            'message' => 'Personnel successfully restored.',
+            'data' => $personnel
+        ]);
+    }
 }
