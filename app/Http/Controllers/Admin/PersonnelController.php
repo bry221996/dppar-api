@@ -6,6 +6,7 @@ use App\Filters\Personnel\PersonnelStationFilter;
 use App\Filters\Personnel\PersonnelSubUnitFilter;
 use App\Filters\Personnel\PersonnelUnitFilter;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\Personnel\CreateRequest;
 use App\Models\Personnel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -26,9 +27,16 @@ class PersonnelController extends Controller
             ])
             ->paginate($request->per_page ?? 10);
 
-        // $list = Personnel::filter($personnelFilter)
-        //     ->paginate($request->per_page ?? 10);
-
         return response($list);
+    }
+
+    public function store(CreateRequest $request)
+    {
+        $personnel = Personnel::create($request->personnelData());
+
+        return response([
+            'message' => 'Personnel successfully created.',
+            'data' => $personnel
+        ]);
     }
 }
