@@ -24,6 +24,7 @@ class CreateSubUnitsTable extends Migration
             $table->boolean('is_intel')->default(false);
             $table->boolean('is_mobile_force')->default(false);
             $table->timestamps();
+            $table->softDeletes();
 
             $table->foreign('unit_id')
                 ->references('id')
