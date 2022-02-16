@@ -2,15 +2,15 @@
 
 namespace App\Models;
 
-use App\Filters\Filterable;
 use App\Traits\WithSerializeDate;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class Personnel extends Authenticatable
 {
-    use HasFactory, HasApiTokens, Filterable, WithSerializeDate;
+    use HasFactory, HasApiTokens, WithSerializeDate, SoftDeletes;
 
     protected $guarded = [];
 

@@ -14,7 +14,8 @@
         "laravel/sanctum": "^2.14",
         "laravel/telescope": "^4.7",
         "laravel/tinker": "^2.5",
-        "league/flysystem-aws-s3-v3": "^1.0"
+        "league/flysystem-aws-s3-v3": "^1.0",
+        "spatie/laravel-query-builder": "^4.0"
     },
     "require-dev": {
         "facade/ignition": "^2.5",

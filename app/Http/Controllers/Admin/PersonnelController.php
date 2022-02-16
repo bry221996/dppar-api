@@ -2,18 +2,77 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Filters\PersonnelFilter;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\ListPersonnelRequest;
+
 use App\Models\Personnel;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Spatie\QueryBuilder\QueryBuilder;
+use Spatie\QueryBuilder\AllowedFilter;
+use App\Filters\Personnel\PersonnelStationFilter;
+use App\Filters\Personnel\PersonnelSubUnitFilter;
+use App\Filters\Personnel\PersonnelUnitFilter;
+
+use App\Http\Requests\Admin\Personnel\CreateRequest;
+use App\Http\Requests\Admin\Personnel\UpdateRequest;
 
 class PersonnelController extends Controller
 {
-    public function index(ListPersonnelRequest $request, PersonnelFilter $personnelFilter)
+    public function index(Request $request)
     {
-        $list = Personnel::filter($personnelFilter)
+        $user = Auth::guard('admins')->user();
+
+        $list = QueryBuilder::for(Personnel::class)
+            ->allowedFilters([
+                AllowedFilter::custom('unit_id', new PersonnelUnitFilter)->default($user->unit_id),
+                AllowedFilter::custom('sub_unit_id', new PersonnelSubUnitFilter)->default($user->sub_unit_id),
+                AllowedFilter::custom('station_id', new PersonnelStationFilter)->default($user->station_id),
+            ])
             ->paginate($request->per_page ?? 10);
 
         return response($list);
+    }
+
+    public function store(CreateRequest $request)
+    {
+        $personnel = Personnel::create($request->personnelData());
+
+        $personnel->assignments()->create($request->assignmentData());
+
+        return response([
+            'message' => 'Personnel successfully created.',
+            'data' => $personnel
+        ]);
+    }
+
+    public function update(UpdateRequest $request, Personnel $personnel)
+    {
+        $personnel->update($request->validated());
+
+        return response([
+            'message' => 'Personnel successfully updated.',
+            'data' => $personnel
+        ]);
+    }
+
+    public function destroy(Personnel $personnel)
+    {
+        $personnel->delete();
+
+        return response([
+            'message' => 'Personnel successfully deleted.',
+            'data' => $personnel
+        ]);
+    }
+
+    public function restore($id)
+    {
+        $personnel = Personnel::withTrashed()->findOrFail($id);
+        $personnel->restore();
+
+        return response([
+            'message' => 'Personnel successfully restored.',
+            'data' => $personnel
+        ]);
     }
 }
