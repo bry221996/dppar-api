@@ -30,29 +30,57 @@ class StoreTest extends TestCase
 
         $this->postJson('/api/v1/admin/personnels', $data)
             ->assertSuccessful()
-            ->dump();
-        // ->assertJsonFragment(['personnel_id' => $data['personnel_id']]);
-        // ->assertJsonStructure([
-        //     'message',
-        //     'data' => ['unit_id', 'name', 'province', 'type', 'latitude', 'longitude']
-        // ]);
+            ->assertJsonFragment(['personnel_id' => $data['personnel_id']])
+            ->assertJsonStructure([
+                'message',
+                'data' => [
+                    'title',
+                    'qualifier',
+                    'badge_no',
+                    'personnel_id',
+                    'designation',
+                    'category',
+                    'classification',
+                    'gender',
+                    'first_name',
+                    'last_name',
+                    'middle_name',
+                    'birth_date',
+                    'mobile_number',
+                    'email'
+                ]
+            ]);
     }
 
-    // /**
-    //  * @group controllers
-    //  * @group controllers.admin
-    //  * @group controllers.admin.personnel
-    //  * @group controllers.admin.personnel.store
-    //  */
-    // public function test_super_admin_can_not_create_sub_units_with_empty_data()
-    // {
-    //     $superAdmin = User::factory()->superAdmin()->create();
-    //     Sanctum::actingAs($superAdmin, [], 'admins');
+    /**
+     * @group controllers
+     * @group controllers.admin
+     * @group controllers.admin.personnel
+     * @group controllers.admin.personnel.store
+     */
+    public function test_super_admin_can_not_create_sub_units_with_empty_data()
+    {
+        $superAdmin = User::factory()->superAdmin()->create();
+        Sanctum::actingAs($superAdmin, [], 'admins');
 
-    //     $this->postJson('/api/v1/admin/personnels', [])
-    //         ->assertStatus(422)
-    //         ->assertJsonValidationErrors(['unit_id', 'name', 'province', 'type', 'latitude', 'longitude']);
-    // }
+        $this->postJson('/api/v1/admin/personnels', [])
+            ->assertStatus(422)
+            ->assertJsonValidationErrors([
+                'title',
+                'badge_no',
+                'personnel_id',
+                'designation',
+                'category',
+                'classification',
+                'gender',
+                'first_name',
+                'last_name',
+                'middle_name',
+                'birth_date',
+                'mobile_number',
+                'email'
+            ]);
+    }
 
 
     // /**

@@ -6,7 +6,9 @@ use App\Enums\GenderType;
 use App\Enums\PersonnelCategory;
 use App\Enums\PersonnelClassification;
 use BenSampo\Enum\Rules\EnumValue;
+use Carbon\Carbon;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Hash;
 
 class CreateRequest extends FormRequest
 {
@@ -42,16 +44,18 @@ class CreateRequest extends FormRequest
             'birth_date' => 'required|date|date_format:Y-m-d|before:now',
             'mobile_number' => 'required',
             'email' => 'required|email|unique:personnels,email',
-            'assignement' => 'required|array',
-            'assignement.unit_id' => 'required|exists:units,id',
-            'assignement.sub_unit_id' => 'exists:sub_units,id',
-            'assignement.station_id' => 'exists:stations,id',
+            'assignment' => 'required|array',
+            'assignment.unit_id' => 'required|exists:units,id',
+            'assignment.sub_unit_id' => 'nullable|exists:sub_units,id',
+            'assignment.station_id' => 'nullable|exists:stations,id',
         ];
     }
 
     public function personnelData(): array
     {
         $data = $this->validated();
+        $data['mpin'] = Hash::make(Carbon::parse($this->birth_date)->format('Ymd'));
+
         unset($data['assignment']);
         return $data;
     }

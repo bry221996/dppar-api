@@ -34,6 +34,8 @@ class PersonnelController extends Controller
     {
         $personnel = Personnel::create($request->personnelData());
 
+        $personnel->assignments()->create($request->assignmentData());
+
         return response([
             'message' => 'Personnel successfully created.',
             'data' => $personnel
