@@ -9,6 +9,7 @@ use BenSampo\Enum\Rules\EnumValue;
 use Carbon\Carbon;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 
 class CreateRequest extends FormRequest
 {
@@ -34,6 +35,7 @@ class CreateRequest extends FormRequest
             'qualifier' => 'nullable',
             'badge_no' => 'required|unique:personnels,badge_no',
             'personnel_id' => 'required|unique:personnels,personnel_id',
+            'image' => 'required|image',
             'designation' => 'required',
             'category' => ['required', new EnumValue(PersonnelCategory::class)],
             'classification' => ['required', new EnumValue(PersonnelClassification::class)],
@@ -55,6 +57,7 @@ class CreateRequest extends FormRequest
     {
         $data = $this->validated();
         $data['mpin'] = Hash::make(Carbon::parse($this->birth_date)->format('Ymd'));
+        $data['image'] = Storage::disk('s3')->url($this->file('image')->store('personnels', 's3'));
 
         unset($data['assignment']);
         return $data;
