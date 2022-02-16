@@ -16,6 +16,7 @@ class CheckinController extends Controller
         $personnel = Auth::guard('personnels')->user();
 
         $list =  Checkin::where('personnel_id', $personnel->id)
+            ->orderBy('created_at', 'desc')
             ->paginate($request->per_page);
 
         return response($list);
