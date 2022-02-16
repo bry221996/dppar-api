@@ -20,7 +20,18 @@ class TelescopeServiceProvider extends TelescopeApplicationServiceProvider
 
         $this->hideSensitiveRequestDetails();
 
+        Telescope::tag(function (IncomingEntry $entry) {
+            return $entry->isRequest()
+                ? [
+                    'status:' . $entry->content['response_status'],
+                    $entry->content['method'] . ' ' . $entry->content['uri']
+                ]
+                : [];
+        });
+
         Telescope::filter(function (IncomingEntry $entry) {
+            if ($entry->isRequest()) return $entry->content['uri'] !== '/';
+
             if ($this->app->environment('local') || $this->app->environment('development')) {
                 return true;
             }

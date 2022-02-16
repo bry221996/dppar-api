@@ -30,7 +30,7 @@ class CheckinRequest extends FormRequest
     public function rules()
     {
         $rules = [
-            'image' => 'image|required_if:type,' . CheckInType::PRESENT,
+            'image' => 'nullable|image|required_if:type,' . CheckInType::PRESENT,
             'type' => ['required', new EnumValue(CheckInType::class)],
             'sub_type' => 'required_unless:type,' . CheckInType::OFF_DUTY,
             'latitude' => 'required|numeric',
@@ -49,7 +49,10 @@ class CheckinRequest extends FormRequest
     {
         $data = parent::validated();
         $data['personnel_id'] = Auth::guard('personnels')->user()->id;
-        $data['image'] = Storage::disk('s3')->url($this->file('image')->store('checkins', 's3'));
+
+        if ($this->image && $this->hasFile('image')) {
+            $data['image'] = Storage::disk('s3')->url($this->file('image')->store('checkins', 's3'));
+        }
 
         return $data;
     }
