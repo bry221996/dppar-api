@@ -15,6 +15,8 @@ class UpdateImageColumnInCheckinsTable extends Migration
     {
         Schema::table('checkins', function (Blueprint $table) {
             $table->string('image')->nullable()->change();
+            $table->text('remarks')->nullable()->change();
+            $table->text('admin_remarks')->nullable()->change();
         });
     }
 
@@ -27,6 +29,8 @@ class UpdateImageColumnInCheckinsTable extends Migration
     {
         Schema::table('checkins', function (Blueprint $table) {
             $table->string('image')->change();
+            $table->text('remarks')->change();
+            $table->text('admin_remarks')->change();
         });
     }
 }
