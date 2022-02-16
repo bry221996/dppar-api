@@ -2,17 +2,20 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Filters\Personnel\PersonnelStationFilter;
-use App\Filters\Personnel\PersonnelSubUnitFilter;
-use App\Filters\Personnel\PersonnelUnitFilter;
+
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Admin\Personnel\CreateRequest;
-use App\Http\Requests\Admin\Personnel\UpdateRequest;
+
 use App\Models\Personnel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
+use Spatie\QueryBuilder\AllowedFilter;
+use App\Filters\Personnel\PersonnelStationFilter;
+use App\Filters\Personnel\PersonnelSubUnitFilter;
+use App\Filters\Personnel\PersonnelUnitFilter;
+
+use App\Http\Requests\Admin\Personnel\CreateRequest;
+use App\Http\Requests\Admin\Personnel\UpdateRequest;
 
 class PersonnelController extends Controller
 {
