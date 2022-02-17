@@ -28,6 +28,14 @@ class UnitController extends Controller
         ]);
     }
 
+    public function show(Unit $unit)
+    {
+        return response([
+            'message' => 'Successfully fetched unit.',
+            'data' => $unit
+        ]);
+    }
+
     public function update(UpdateRequest $request, Unit $unit)
     {
         $unit->update($request->validated());
