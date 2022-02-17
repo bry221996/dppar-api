@@ -37,6 +37,7 @@ class PersonnelFactory extends Factory
             'mobile_number' => $this->faker->numerify('09#########'),
             'email' => $this->faker->email,
             'mpin' => Hash::make($defaultPin->format('Ymd')),
+            'status' => 'active',
         ];
     }
 }

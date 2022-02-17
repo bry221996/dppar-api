@@ -24,6 +24,7 @@ class SubUnitFactory extends Factory
             'province' => $province,
             'type' => $this->faker->randomElement(['provincial', 'city']),
             'code' => $this->faker->swiftBicNumber,
+            'status' => 'active',
         ];
     }
 }

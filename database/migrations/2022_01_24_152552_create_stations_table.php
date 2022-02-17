@@ -19,6 +19,7 @@ class CreateStationsTable extends Migration
             $table->string('name');
             $table->string('municipality');
             $table->string('code')->unique();
+            $table->enum('status', ['active', 'inactive'])->default('active');
             $table->timestamps();
             $table->softDeletes();
 

@@ -30,7 +30,8 @@ class CreateRequest extends FormRequest
             'name' => 'required|unique:sub_units,name',
             'province' => 'required|unique:sub_units,province',
             'code' => 'required|unique:sub_units,code',
-            'type' => ['required', new EnumValue(SubUnitType::class)]
+            'type' => ['required', new EnumValue(SubUnitType::class)],
+            'status' => 'required|in:active,inactive'
         ];
     }
 }

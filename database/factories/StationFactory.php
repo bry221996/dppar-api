@@ -23,6 +23,7 @@ class StationFactory extends Factory
             'name' => $municipality . ' Municipal Police Station',
             'municipality' => $municipality,
             'code' => $this->faker->swiftBicNumber,
+            'status' => 'active',
         ];
     }
 }

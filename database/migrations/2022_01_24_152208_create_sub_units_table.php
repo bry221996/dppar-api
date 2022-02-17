@@ -20,6 +20,7 @@ class CreateSubUnitsTable extends Migration
             $table->string('province');
             $table->enum('type', ['provincial', 'city']);
             $table->string('code')->unique();
+            $table->enum('status', ['active', 'inactive'])->default('active');
             $table->timestamps();
             $table->softDeletes();
 

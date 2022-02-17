@@ -19,6 +19,7 @@ class UnitFactory extends Factory
             'name' =>  $region . ' Regional Police Office',
             'region' => $region,
             'code' => $this->faker->swiftBicNumber,
+            'status' => 'active',
             'deleted_at' => null
         ];
     }

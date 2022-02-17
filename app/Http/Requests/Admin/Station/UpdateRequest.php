@@ -29,6 +29,7 @@ class UpdateRequest extends FormRequest
             'name' => ['required',  Rule::unique('stations', 'name')->ignore($this->station->id)],
             'municipality' => ['required',  Rule::unique('stations', 'municipality')->ignore($this->station->id)],
             'code' => ['required',  Rule::unique('stations', 'code')->ignore($this->station->id)],
+            'status' => 'required|in:active,inactive'
         ];
     }
 }

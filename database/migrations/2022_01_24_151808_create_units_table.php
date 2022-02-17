@@ -18,6 +18,7 @@ class CreateUnitsTable extends Migration
             $table->string('name');
             $table->string('region');
             $table->string('code')->unique();
+            $table->enum('status', ['active', 'inactive'])->default('active');
             $table->timestamps();
             $table->softDeletes();
         });

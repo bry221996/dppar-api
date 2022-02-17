@@ -27,6 +27,7 @@ class CreateRequest extends FormRequest
             'name' => 'required|unique:units,name',
             'region' => 'required|unique:units,region',
             'code' => 'required|unique:units,code',
+            'status' => 'required|in:active,inactive'
         ];
     }
 }
