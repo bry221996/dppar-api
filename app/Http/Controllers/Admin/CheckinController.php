@@ -26,6 +26,7 @@ class CheckinController extends Controller
                 AllowedFilter::custom('sub_unit_id', new CheckinSubUnitFilter)->default($user->sub_unit_id),
                 AllowedFilter::custom('station_id', new CheckinStationFilter)->default($user->station_id),
             ])
+            ->with('personnel:id,personnel_id,first_name,middle_name,last_name')
             ->paginate($request->per_page ?? 10);
 
         return response($list);
