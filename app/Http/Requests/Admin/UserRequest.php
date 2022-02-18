@@ -26,7 +26,7 @@ class UserRequest extends FormRequest
     {
         $emailRule = $this->isMethod('post') ?
             'required|unique:users,email|email' :
-            ['required',  'email',  Rule::unique('users', 'email')->ignore($this->id)];
+            ['required',  'email',  Rule::unique('users', 'email')->ignore($this->user->id)];
 
         return [
             'email' => $emailRule,

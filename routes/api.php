@@ -72,10 +72,7 @@ Route::group(['prefix' => 'v1'], function () {
                 Route::resource('/personnels', PersonnelController::class)->except(['index', 'create', 'edit']);
                 Route::post('/personnels/{personnel}/restore', [PersonnelController::class, 'restore']);
 
-                Route::get('/users', [UserController::class, 'index']);
-                Route::post('/users', [UserController::class, 'store']);
-                Route::put('/users/{id}', [UserController::class, 'update']);
-                Route::delete('/users/{id}', [UserController::class, 'destroy']);
+                Route::resource('/users', UserController::class)->except(['create', 'edit']);
             });
         });
     });

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\UserRequest;
+use App\Models\User;
 use App\Repositories\UserRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -20,7 +21,7 @@ class UserController extends Controller
 
     public function index(Request $request)
     {
-        $list = $this->userRepository->list($request->per_page ?? 10);
+        $list = User::paginate($request->per_page ?? 10);
 
         return response($list);
     }
@@ -30,7 +31,7 @@ class UserController extends Controller
         $data = $request->validated();
         $data['password'] = Hash::make(Str::random(8));
 
-        $user =  $this->userRepository->create($data);
+        $user =  User::create($data);
 
         return response([
             'message' => 'User created successfully.',
@@ -38,25 +39,31 @@ class UserController extends Controller
         ]);
     }
 
-    public function update(UserRequest $request,  $user_id)
+    public function show(User $user)
     {
-        $user = $this->userRepository->find($user_id);
-
-        $this->userRepository->update($user, $request->validated());
-
         return response([
-            'message' => 'User updated successfully.',
+            'message' => 'User fetched successfully.',
+            'data' => $user
         ]);
     }
 
-    public function destroy($user_id)
+    public function update(UserRequest $request, User $user)
     {
-        $user = $this->userRepository->findOrFail($user_id);
-
-        $this->userRepository->update($user, ['status' => 'inactive']);
+        $user->update($request->validated());
 
         return response([
             'message' => 'User updated successfully.',
+            'data' => $user
+        ]);
+    }
+
+    public function destroy(User $user)
+    {
+        $user->delete();
+
+        return response([
+            'message' => 'User updated successfully.',
+            'data' => $user
         ]);
     }
 }
