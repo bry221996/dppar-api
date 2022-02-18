@@ -18,6 +18,14 @@ class SubUnitController extends Controller
         return response($list);
     }
 
+    public function show(SubUnit $sub_unit)
+    {
+        return response([
+            'message' => 'Successfully fetched sub unit.',
+            'data' => $sub_unit
+        ]);
+    }
+
     public function store(CreateRequest $request)
     {
         $sub_unit = SubUnit::create($request->validated());

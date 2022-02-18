@@ -18,6 +18,14 @@ class StationController extends Controller
         return response($list);
     }
 
+    public function show(Station $station)
+    {
+        return response([
+            'message' => 'Successfully fetched station.',
+            'data' => $station
+        ]);
+    }
+
     public function store(CreateRequest $request)
     {
         $station = Station::create($request->validated());
