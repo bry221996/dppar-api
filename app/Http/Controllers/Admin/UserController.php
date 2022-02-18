@@ -5,23 +5,25 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\UserRequest;
 use App\Models\User;
-use App\Repositories\UserRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
+use Spatie\QueryBuilder\AllowedFilter;
+use Spatie\QueryBuilder\QueryBuilder;
 
 class UserController extends Controller
 {
-    protected $userRepository;
-
-    public function __construct(UserRepository $userRepository)
-    {
-        $this->userRepository = $userRepository;
-    }
-
     public function index(Request $request)
     {
-        $list = User::paginate($request->per_page ?? 10);
+        $list = QueryBuilder::for(User::class)
+            ->allowedFilters([
+                AllowedFilter::exact('role'),
+                AllowedFilter::exact('status'),
+                AllowedFilter::exact('unit_id'),
+                AllowedFilter::exact('sub_unit_id'),
+                AllowedFilter::exact('station_id'),
+            ])
+            ->paginate($request->per_page ?? 10);
 
         return response($list);
     }
