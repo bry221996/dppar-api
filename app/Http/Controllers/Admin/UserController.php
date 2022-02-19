@@ -2,36 +2,44 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\Admin\UserRequest;
 use App\Models\User;
-use App\Repositories\UserRepository;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Str;
+use Spatie\QueryBuilder\QueryBuilder;
+use Spatie\QueryBuilder\AllowedFilter;
+use App\Http\Controllers\Controller;
+use App\Notifications\CredentialNotification;
+use App\Http\Requests\Admin\User\CreateRequest;
+use App\Http\Requests\Admin\User\UpdateRequest;
 
 class UserController extends Controller
 {
-    protected $userRepository;
-
-    public function __construct(UserRepository $userRepository)
-    {
-        $this->userRepository = $userRepository;
-    }
-
     public function index(Request $request)
     {
-        $list = User::paginate($request->per_page ?? 10);
+        $list = QueryBuilder::for(User::class)
+            ->allowedFilters([
+                AllowedFilter::exact('role'),
+                AllowedFilter::exact('status'),
+                AllowedFilter::exact('unit_id'),
+                AllowedFilter::exact('sub_unit_id'),
+                AllowedFilter::exact('station_id'),
+            ])
+            ->paginate($request->per_page ?? 10);
 
         return response($list);
     }
 
-    public function store(UserRequest $request)
+    public function store(CreateRequest $request)
     {
+        $generatedPassword = Str::random(8);
+
         $data = $request->validated();
-        $data['password'] = Hash::make(Str::random(8));
+        $data['password'] = Hash::make($generatedPassword);
 
         $user =  User::create($data);
+
+        $user->notify(new CredentialNotification($generatedPassword));
 
         return response([
             'message' => 'User created successfully.',
@@ -47,7 +55,7 @@ class UserController extends Controller
         ]);
     }
 
-    public function update(UserRequest $request, User $user)
+    public function update(UpdateRequest $request, User $user)
     {
         $user->update($request->validated());
 
