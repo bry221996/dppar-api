@@ -4,6 +4,7 @@ namespace App\Http\Requests\Personnel;
 
 use App\Enums\CheckInSubType;
 use App\Enums\CheckInType;
+use App\Services\Geocoder\OpenCage\OpenCageService;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -49,6 +50,11 @@ class CheckinRequest extends FormRequest
     {
         $data = parent::validated();
         $data['personnel_id'] = Auth::guard('personnels')->user()->id;
+
+        $address = (new OpenCageService())->reverse($data['latitude'], $data['longitude']);
+        $data['town'] = $address->getTown();
+        $data['province'] = $address->getProvince();
+        $data['address_component'] = json_encode($address->adressComponent);
 
         if ($this->image && $this->hasFile('image')) {
             $data['image'] = Storage::disk('s3')->url($this->file('image')->store('checkins', 's3'));

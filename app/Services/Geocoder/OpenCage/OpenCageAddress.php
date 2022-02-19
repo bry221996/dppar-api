@@ -6,7 +6,7 @@ use App\Services\Geocoder\GeocoderAddressInterface;
 
 class OpenCageAddress implements GeocoderAddressInterface
 {
-    protected $adressComponent = [];
+    public $adressComponent = [];
 
     public function setAddressComponent(array $addressComponent)
     {

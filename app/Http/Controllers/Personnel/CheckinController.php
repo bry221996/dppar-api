@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Personnel;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Personnel\CheckinRequest;
 use App\Models\Checkin;
-use App\Services\Geocoder\OpenCage\OpenCageService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -22,15 +21,9 @@ class CheckinController extends Controller
         return response($list);
     }
 
-    public function store(CheckinRequest $checkinRequest)
+    public function store(CheckinRequest $request)
     {
-        $data = $checkinRequest->validated();
-
-        $address = (new OpenCageService())->reverse($data['latitude'], $data['longitude']);
-        $data['town'] = $address->getTown();
-        $data['province'] = $address->getProvince();
-
-        $checkin = Checkin::create($data);
+        $checkin = Checkin::create($request->validated());
 
         return response([
             'message' => 'Successfully create checkin.',
