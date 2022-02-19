@@ -120,15 +120,14 @@ class IndexTest extends TestCase
         Sanctum::actingAs($superAdmin, [], 'admins');
         $unit = Unit::factory()->create();
 
-        $filteredSubUnits = SubUnit::factory()
-            ->count(3)
+        $filteredSubUnit = SubUnit::factory()
             ->create(['unit_id' => $unit->id]);
 
         $unfilteredSubUnits = SubUnit::factory()->count(3)->create();
 
         $this->getJson("/api/v1/admin/sub-units?filter[unit_id]=$unit->id")
             ->assertSuccessful()
-            ->assertJsonFragment(['province' => $filteredSubUnits->random()->province])
+            ->assertJsonFragment(['province' => $filteredSubUnit->province])
             ->assertJsonMissing(['province' => $unfilteredSubUnits->random()->province]);
     }
 
