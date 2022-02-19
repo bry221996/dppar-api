@@ -7,12 +7,18 @@ use App\Http\Requests\Admin\Unit\CreateRequest;
 use App\Http\Requests\Admin\Unit\UpdateRequest;
 use App\Models\Unit;
 use Illuminate\Http\Request;
+use Spatie\QueryBuilder\AllowedFilter;
+use Spatie\QueryBuilder\QueryBuilder;
 
 class UnitController extends Controller
 {
     public function index(Request $request)
     {
-        $list = Unit::withTrashed()
+        $list = QueryBuilder::for(Unit::class)
+            ->allowedFilters([
+                AllowedFilter::exact('status'),
+                AllowedFilter::scope('search')
+            ])
             ->paginate($request->per_page ?? 10);
 
         return response($list);
