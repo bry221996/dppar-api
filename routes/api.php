@@ -60,8 +60,7 @@ Route::group(['prefix' => 'v1'], function () {
             Route::get('/checkins', [CheckinController::class, 'index']);
 
             Route::group(['middleware' => 'role:super_admin'], function () {
-                Route::resource('/units', UnitController::class)->except(['create', 'edit']);
-                Route::post('/units/{unit}/restore', [UnitController::class, 'restore']);
+                Route::resource('/units', UnitController::class)->except(['create', 'edit', 'destroy']);
 
                 Route::resource('/sub-units', SubUnitController::class)->except(['create', 'edit']);
                 Route::post('/sub-units/{sub_unit}/restore', [SubUnitController::class, 'restore']);
