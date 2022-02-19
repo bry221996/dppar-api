@@ -2,7 +2,9 @@
 
 namespace App\Models;
 
+use App\Enums\UserRole;
 use App\Traits\WithSerializeDate;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -41,21 +43,29 @@ class User extends Authenticatable
 
     public function getIsSuperAdminAttribute()
     {
-        return $this->role === 'super_admin';
+        return $this->role === UserRole::SUPER_ADMIN;
     }
 
     public function getIsRegionalPoliceOfficerAttribute()
     {
-        return $this->role === 'regional_police_officer';
+        return $this->role === UserRole::REGIONAL_POLICE_OFFICER;
     }
 
     public function getIsProvincialPoliceOfficerAttribute()
     {
-        return $this->role === 'provincial_police_officer';
+        return $this->role === UserRole::PROVINCIAL_POLICE_OFFICER;
     }
 
     public function getIsMunicipalPoliceOfficerAttribute()
     {
-        return $this->role === 'municipal_police_officer';
+        return $this->role === UserRole::MUNICIPAL_POLICE_OFFICER;
+    }
+
+    public function scopeSearch(Builder $query, string $search)
+    {
+        return $query->where(function ($subQuery) use ($search) {
+            $subQuery->where('name', 'LIKE', "%$search%")
+                ->orWhere('email', 'LIKE', "%$search%");
+        });
     }
 }
