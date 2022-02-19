@@ -49,7 +49,7 @@ class CredentialNotification extends Notification implements ShouldQueue
             ->line('To access your account: Use this credentials')
             ->line("Email: $notifiable->email")
             ->line("Password: $this->password")
-            ->action('Go To CMS', 'http://dppar.ayahtek.com/')
+            ->action('Go To CMS', config('app.cms_url'))
             ->line('Thank you for using our application!');
     }
 
