@@ -60,7 +60,6 @@ class IndexTest extends TestCase
             ->assertJsonMissing(['region' => $unfilteredUnits->random()->region]);
     }
 
-
     /**
      * @group controllers
      * @group controllers.admin
