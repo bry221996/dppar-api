@@ -7,12 +7,20 @@ use App\Http\Requests\Admin\SubUnit\CreateRequest;
 use App\Http\Requests\Admin\SubUnit\UpdateRequest;
 use App\Models\SubUnit;
 use Illuminate\Http\Request;
+use Spatie\QueryBuilder\AllowedFilter;
+use Spatie\QueryBuilder\QueryBuilder;
 
 class SubUnitController extends Controller
 {
     public function index(Request $request)
     {
-        $list = SubUnit::withTrashed()
+        $list = QueryBuilder::for(SubUnit::class)
+            ->allowedFilters([
+                AllowedFilter::exact('type'),
+                AllowedFilter::exact('unit_id'),
+                AllowedFilter::exact('status'),
+                AllowedFilter::scope('search'),
+            ])
             ->paginate($request->per_page ?? 10);
 
         return response($list);

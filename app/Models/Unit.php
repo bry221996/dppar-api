@@ -23,7 +23,7 @@ class Unit extends Model
     {
         return $query->where(function ($subQuery) use ($search) {
             $subQuery->where('name', 'LIKE', "%$search%")
-                ->orWhere('email', 'LIKE', "%$search%")
+                ->orWhere('region', 'LIKE', "%$search%")
                 ->orWhere('code', 'LIKE', "%$search%");
         });
     }
