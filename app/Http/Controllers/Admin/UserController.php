@@ -24,6 +24,7 @@ class UserController extends Controller
                 AllowedFilter::exact('unit_id'),
                 AllowedFilter::exact('sub_unit_id'),
                 AllowedFilter::exact('station_id'),
+                AllowedFilter::scope('search'),
             ])
             ->paginate($request->per_page ?? 10);
 

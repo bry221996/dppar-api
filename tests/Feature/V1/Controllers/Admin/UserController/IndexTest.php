@@ -43,6 +43,32 @@ class IndexTest extends TestCase
      * @group controllers.admin.user
      * @group controllers.admin.user.index
      */
+    public function test_super_admin_can_list_users_with_search()
+    {
+        $superAdmin = User::factory()->superAdmin()->create();
+        Sanctum::actingAs($superAdmin, [], 'admins');
+
+        $filteredUser = User::factory()->create();
+        $unfilteredUsers = User::factory()->count(3)->create();
+
+        $this->getJson("/api/v1/admin/users?filter[search]=$filteredUser->email")
+            ->assertSuccessful()
+            ->assertJsonFragment(['email' => $filteredUser->email])
+            ->assertJsonMissing(['email' => $unfilteredUsers->random()->email]);
+
+
+        $this->getJson("/api/v1/admin/users?filter[search]=$filteredUser->name")
+            ->assertSuccessful()
+            ->assertJsonFragment(['name' => $filteredUser->name])
+            ->assertJsonMissing(['name' => $unfilteredUsers->random()->name]);
+    }
+
+    /**
+     * @group controllers
+     * @group controllers.admin
+     * @group controllers.admin.user
+     * @group controllers.admin.user.index
+     */
     public function test_super_admin_can_list_users_filtered_by_role()
     {
         $superAdmin = User::factory()->superAdmin()->create();

@@ -26,6 +26,7 @@ class CreateCheckinsTable extends Migration
             $table->string('province')->nullable();
             $table->text('remarks')->nullable();
             $table->text('admin_remarks')->nullable();
+            $table->json('address_component')->nullable();
             $table->timestamps();
 
             $table->foreign('personnel_id')

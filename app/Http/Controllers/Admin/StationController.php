@@ -6,13 +6,26 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Station\CreateRequest;
 use App\Http\Requests\Admin\Station\UpdateRequest;
 use App\Models\Station;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
+use Spatie\QueryBuilder\AllowedFilter;
+use Spatie\QueryBuilder\QueryBuilder;
 
 class StationController extends Controller
 {
     public function index(Request $request)
     {
-        $list = Station::withTrashed()
+        $list = QueryBuilder::for(Station::class)
+            ->allowedFilters([
+                AllowedFilter::exact('sub_unit_id'),
+                AllowedFilter::exact('status'),
+                AllowedFilter::scope('search'),
+                AllowedFilter::callback('unit_id', function (Builder $query, $value) {
+                    $query->whereHas('subUnit', function ($subUnitQuery) use ($value) {
+                        $subUnitQuery->where('unit_id', $value);
+                    });
+                }),
+            ])
             ->paginate($request->per_page ?? 10);
 
         return response($list);
