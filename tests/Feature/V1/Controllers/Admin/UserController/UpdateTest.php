@@ -10,7 +10,7 @@ use Laravel\Sanctum\Sanctum;
 use Illuminate\Support\Str;
 use Tests\TestCase;
 
-class Update extends TestCase
+class UpdateTest extends TestCase
 {
     use RefreshDatabase, WithFaker;
 
