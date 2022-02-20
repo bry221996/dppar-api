@@ -46,6 +46,7 @@ class UpdateRequest extends FormRequest
             'last_name' =>  'required',
             'middle_name' =>  'required',
             'birth_date' => 'required|date|date_format:Y-m-d|before:now',
+            'status' => 'required|in:active,inactive'
         ];
     }
 

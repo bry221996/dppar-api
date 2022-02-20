@@ -104,8 +104,8 @@ class IndexTest extends TestCase
 
         $this->getJson("/api/v1/admin/sub-units?filter[type]=$type")
             ->assertSuccessful()
-            ->assertJsonFragment(['province' => $filteredSubUnits->random()->province])
-            ->assertJsonMissing(['province' => $unfilteredSubUnits->random()->province]);
+            ->assertJsonFragment(['type' => $filteredSubUnits->random()->type])
+            ->assertJsonMissing(['type' => $unfilteredSubUnits->random()->type]);
     }
 
     /**
