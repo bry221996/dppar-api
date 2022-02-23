@@ -7,7 +7,7 @@ use BenSampo\Enum\Enum;
 final class CheckInType extends Enum
 {
     const PRESENT   = 'present';
-    const ABSENT    =  'absent';
+    const LEAVE     = 'leave';
     const OFF_DUTY  = 'off_duty';
 
     public static function getSubType(string $value): array
@@ -19,15 +19,6 @@ final class CheckInType extends Enum
                     CheckInSubType::UNDER_INSTRUCTION,
                     CheckInSubType::CONFERENCE,
                     CheckInSubType::SCHOOLING,
-                    CheckInSubType::OTHERS
-                ];
-                break;
-            case self::ABSENT:
-                return [
-                    CheckInSubType::LEAVE,
-                    CheckInSubType::CONFINED_IN_HOSPITAL,
-                    CheckInSubType::SICK,
-                    CheckInSubType::SUSPENDED,
                     CheckInSubType::OTHERS
                 ];
                 break;

@@ -103,7 +103,7 @@ class CheckinTest extends TestCase
         $personnel = Personnel::factory()->create();
         Sanctum::actingAs($personnel, [], 'personnels');
 
-        $data = Checkin::factory()->absent()->make()->toArray();
+        $data = Checkin::factory()->leave()->make()->toArray();
 
         $this->postJson('/api/v1/personnel/checkins', $data)
             ->assertStatus(200)

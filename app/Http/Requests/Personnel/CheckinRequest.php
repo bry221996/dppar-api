@@ -33,13 +33,13 @@ class CheckinRequest extends FormRequest
         $rules = [
             'image' => 'nullable|image|required_if:type,' . CheckInType::PRESENT,
             'type' => ['required', new EnumValue(CheckInType::class)],
-            'sub_type' => 'required_unless:type,' . CheckInType::OFF_DUTY,
+            'sub_type' => 'required_if:type,' . CheckInType::PRESENT,
             'latitude' => 'required|numeric',
             'longitude' => 'required|numeric',
             'remarks' => 'required_if:sub_type,' . CheckInSubType::OTHERS,
         ];
 
-        if ($this->post('type') === CheckInType::PRESENT || $this->post('type') === CheckInType::ABSENT) {
+        if ($this->post('type') === CheckInType::PRESENT) {
             $rules['sub_type'] = 'required|in:' . implode(',', CheckInType::getSubType($this->post('type')));
         }
 

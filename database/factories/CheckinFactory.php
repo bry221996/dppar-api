@@ -30,13 +30,13 @@ class CheckinFactory extends Factory
         ];
     }
 
-    public function absent()
+    public function leave()
     {
         return $this->state(function (array $attributes) {
             return [
-                'type' => CheckInType::ABSENT,
+                'type' => CheckInType::LEAVE,
                 'image' => null,
-                'sub_type' => $this->faker->randomElement(CheckInType::getSubType(CheckInType::ABSENT)),
+                'sub_type' => null,
             ];
         });
     }
