@@ -21,12 +21,14 @@ class CheckinController extends Controller
                 AllowedFilter::scope('search'),
                 AllowedFilter::exact('type')
             ])
+            ->select('id', 'personnel_id', 'image', 'type', 'sub_type', 'is_accounted', 'latitude', 'longitude', 'town', 'province', 'remarks', 'admin_remarks', 'created_at', 'updated_at')
             ->where('personnel_id', $personnel->id)
             ->orderBy('created_at', 'desc')
             ->paginate($request->per_page);
 
         return response($list);
     }
+
 
     public function store(CheckinRequest $request)
     {
