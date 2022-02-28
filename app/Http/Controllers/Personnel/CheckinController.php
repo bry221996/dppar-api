@@ -7,6 +7,8 @@ use App\Http\Requests\Personnel\CheckinRequest;
 use App\Models\Checkin;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Spatie\QueryBuilder\AllowedFilter;
+use Spatie\QueryBuilder\QueryBuilder;
 
 class CheckinController extends Controller
 {
@@ -14,7 +16,12 @@ class CheckinController extends Controller
     {
         $personnel = Auth::guard('personnels')->user();
 
-        $list =  Checkin::where('personnel_id', $personnel->id)
+        $list = QueryBuilder::for((Checkin::class))
+            ->allowedFilters([
+                AllowedFilter::scope('search'),
+                AllowedFilter::exact('type')
+            ])
+            ->where('personnel_id', $personnel->id)
             ->orderBy('created_at', 'desc')
             ->paginate($request->per_page);
 

@@ -30,6 +30,16 @@ class CheckinFactory extends Factory
         ];
     }
 
+    public function present()
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'type' => CheckInType::PRESENT,
+                'sub_type' => $this->faker->randomElement(CheckInType::getSubType(CheckInType::PRESENT)),
+            ];
+        });
+    }
+
     public function leave()
     {
         return $this->state(function (array $attributes) {
