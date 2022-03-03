@@ -1,0 +1,29 @@
+<?php
+
+namespace App\Http\Controllers\Admin;
+
+use App\Http\Controllers\Controller;
+use App\Models\Office;
+use Illuminate\Http\Request;
+use Spatie\QueryBuilder\AllowedFilter;
+use Spatie\QueryBuilder\QueryBuilder;
+
+class OfficeController extends Controller
+{
+    public function index(Request $request)
+    {
+        $list = QueryBuilder::for(Office::class)
+            ->allowedFilters([
+                AllowedFilter::exact('type'),
+                AllowedFilter::exact('status'),
+                AllowedFilter::exact('classification'),
+                AllowedFilter::exact('unit_id'),
+                AllowedFilter::exact('sub_unit_id'),
+                AllowedFilter::exact('station_id'),
+                AllowedFilter::scope('search'),
+            ])
+            ->paginate($request->per_page ?? 10);
+
+        return response($list);
+    }
+}

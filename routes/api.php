@@ -5,6 +5,7 @@ use App\Http\Controllers\Personnel\CheckinController as PersonnelCheckinControll
 use App\Http\Controllers\Admin\AuthController as AdminAuthController;
 use App\Http\Controllers\Admin\CheckinController;
 use App\Http\Controllers\Admin\NewPasswordController;
+use App\Http\Controllers\Admin\OfficeController;
 use App\Http\Controllers\Admin\PasswordResetController;
 use App\Http\Controllers\Admin\PersonnelController;
 use App\Http\Controllers\Admin\StationController;
@@ -72,6 +73,8 @@ Route::group(['prefix' => 'v1'], function () {
                 Route::post('/personnels/{personnel}/restore', [PersonnelController::class, 'restore']);
 
                 Route::resource('/users', UserController::class)->except(['create', 'edit']);
+                Route::resource('/offices', OfficeController::class)->except(['create', 'edit', 'destroy']);
+
             });
         });
     });
