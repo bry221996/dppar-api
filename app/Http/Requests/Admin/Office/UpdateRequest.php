@@ -33,8 +33,8 @@ class UpdateRequest extends FormRequest
             'type' => ['required', new EnumValue(OfficeType::class)],
             'classification' => ['required', new EnumValue(OfficeClassification::class)],
             'unit_id' => 'required|exists:units,id',
-            'sub_unit_id' => 'nullable|exists:sub_units,id',
-            'station_id' => 'nullable|exists:stations,id',
+            'sub_unit_id' => 'nullable|required_if:type,provincial,municipal|exists:sub_units,id',
+            'station_id' => 'nullable|required_if:type,municipal|exists:stations,id',
         ];
     }
 }
