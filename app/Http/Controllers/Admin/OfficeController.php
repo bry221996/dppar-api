@@ -39,6 +39,14 @@ class OfficeController extends Controller
         ]);
     }
 
+    public function show(Office $office)
+    {
+        return response([
+            'message' => 'Office successfully fetched.',
+            'data' => $office
+        ]);
+    }
+
     public function update(UpdateRequest $request, Office $office)
     {
         $office->update($request->validated());
