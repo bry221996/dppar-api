@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\Office\CreateRequest;
+use App\Http\Requests\Admin\Office\UpdateRequest;
 use App\Models\Office;
 use Illuminate\Http\Request;
 use Spatie\QueryBuilder\AllowedFilter;
@@ -25,5 +27,25 @@ class OfficeController extends Controller
             ->paginate($request->per_page ?? 10);
 
         return response($list);
+    }
+
+    public function store(CreateRequest $request)
+    {
+        $office = Office::create($request->validated());
+
+        return response([
+            'message' => 'Office successfully created.',
+            'data' => $office
+        ]);
+    }
+
+    public function update(UpdateRequest $request, Office $office)
+    {
+        $office->update($request->validated());
+
+        return response([
+            'message' => 'Office successfully updated.',
+            'data' => $office
+        ]);
     }
 }
