@@ -36,4 +36,23 @@ class UpdateRequest extends FormRequest
             'classifications.*' => 'required|distinct|exists:classifications,id'
         ];
     }
+
+    public function userData()
+    {
+        $data = $this->validated();
+        unset($data['classifications']);
+        unset($data['offices']);
+
+        return $data;
+    }
+
+    public function classificationsData()
+    {
+        return $this->classifications;
+    }
+
+    public function officesData()
+    {
+        return $this->offices ? $this->offices : [];
+    }
 }

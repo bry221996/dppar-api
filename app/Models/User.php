@@ -79,4 +79,9 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Classification::class, 'user_classifications');
     }
+
+    public function offices()
+    {
+        return $this->belongsToMany(Office::class, 'user_offices');
+    }
 }

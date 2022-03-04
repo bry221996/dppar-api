@@ -33,7 +33,28 @@ class CreateRequest extends FormRequest
             'station_id' => 'nullable|required_if:role,municipal_police_officer|exists:stations,id',
             'status' => 'required|in:active,inactive',
             'classifications' => 'required|array',
-            'classifications.*' => 'required|distinct|exists:classifications,id'
+            'classifications.*' => 'required|distinct|exists:classifications,id',
+            'offices' => 'array',
+            'offices.*' => 'required|distinct|exists:offices,id'
         ];
+    }
+
+    public function userData()
+    {
+        $data = $this->validated();
+        unset($data['classifications']);
+        unset($data['offices']);
+
+        return $data;
+    }
+
+    public function classificationsData()
+    {
+        return $this->classifications;
+    }
+
+    public function officesData()
+    {
+        return $this->offices ? $this->offices : [];
     }
 }

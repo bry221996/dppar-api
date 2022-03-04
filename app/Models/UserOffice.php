@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class UserClassification extends Model
+class UserOffice extends Model
 {
     public $timestamps = false;
 
