@@ -64,7 +64,7 @@ class IndexTest extends TestCase
      * @group controllers.admin.sub-unit
      * @group controllers.admin.sub-unit.index
      */
-    public function test_only_ppo_and_mpo_can_not_list_sub_units()
+    public function test_ppo_and_mpo_can_not_list_sub_units()
     {
         $ppo = User::factory()->provincialPoliceOfficer()->create();
 
