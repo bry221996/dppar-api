@@ -17,18 +17,12 @@ class SubUnitController extends Controller
     {
         $user = Auth::guard('admins')->user();
 
-        $unitIdFilter = AllowedFilter::exact('unit_id');
-
-        if ($user->unit_id) {
-            $unitIdFilter = $unitIdFilter->default($user->unit_id);
-        }
-
         $list = QueryBuilder::for(SubUnit::class)
             ->allowedFilters([
-                $unitIdFilter,
                 AllowedFilter::exact('type'),
                 AllowedFilter::exact('status'),
                 AllowedFilter::scope('search'),
+                AllowedFilter::exact('unit_id')->default($user->unit_id)
             ])
             ->paginate($request->per_page ?? 10);
 
