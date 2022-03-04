@@ -47,7 +47,9 @@ class LoginRequest extends FormRequest
             $this->personnelRepository->getByPersonnelIdAndBirthDate($this->personnel_id, $this->birth_date) :
             $this->personnelRepository->getByPersonnelId($this->personnel_id);
 
-        if (!$personnel || ($personnel && $this->mpin && !Hash::check($this->mpin, $personnel->mpin))) return false;
+        if (!$personnel) return false;
+
+        if ($personnel->is_inactive || ($personnel && $this->mpin && !Hash::check($this->mpin, $personnel->mpin))) return false;
 
         // Delete previous tokens on this device.
         $personnel->tokens()->where('name', $this->device)->delete();
