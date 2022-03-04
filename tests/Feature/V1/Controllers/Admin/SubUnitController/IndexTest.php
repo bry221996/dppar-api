@@ -42,15 +42,35 @@ class IndexTest extends TestCase
      * @group controllers.admin.sub-unit
      * @group controllers.admin.sub-unit.index
      */
-    public function test_only_super_admin_can_list_sub_units()
+    public function test_regional_police_officer_can_list_sub_units()
     {
-        $rpo = User::factory()->regionalPoliceOfficer()->create();
+        $regionalPoliceOfficer = User::factory()->regionalPoliceOfficer()->create();
+        Sanctum::actingAs($regionalPoliceOfficer, [], 'admins');
 
+        $filteredSubUnit = SubUnit::factory()
+            ->create(['unit_id' => $regionalPoliceOfficer->unit_id]);
+
+        $unfilteredSubUnits = SubUnit::factory()->count(3)->create();
+
+        $this->getJson("/api/v1/admin/sub-units")
+            ->assertSuccessful()
+            ->assertJsonFragment(['province' => $filteredSubUnit->province])
+            ->assertJsonMissing(['province' => $unfilteredSubUnits->random()->province]);
+    }
+
+    /**
+     * @group controllers
+     * @group controllers.admin
+     * @group controllers.admin.sub-unit
+     * @group controllers.admin.sub-unit.index
+     */
+    public function test_only_ppo_and_mpo_can_not_list_sub_units()
+    {
         $ppo = User::factory()->provincialPoliceOfficer()->create();
 
         $mpo = User::factory()->municipalPoliceOfficer()->create();
 
-        Sanctum::actingAs($this->faker->randomElement([$rpo, $ppo, $mpo]), [], 'admins');
+        Sanctum::actingAs($this->faker->randomElement([$ppo, $mpo]), [], 'admins');
 
         $this->getJson('/api/v1/admin/sub-units')
             ->assertForbidden();

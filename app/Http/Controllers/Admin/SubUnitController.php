@@ -7,6 +7,7 @@ use App\Http\Requests\Admin\SubUnit\CreateRequest;
 use App\Http\Requests\Admin\SubUnit\UpdateRequest;
 use App\Models\SubUnit;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
 
@@ -14,10 +15,12 @@ class SubUnitController extends Controller
 {
     public function index(Request $request)
     {
+        $user = Auth::guard('admins')->user();
+
         $list = QueryBuilder::for(SubUnit::class)
             ->allowedFilters([
                 AllowedFilter::exact('type'),
-                AllowedFilter::exact('unit_id'),
+                AllowedFilter::exact('unit_id')->default($user->unit_id),
                 AllowedFilter::exact('status'),
                 AllowedFilter::scope('search'),
             ])

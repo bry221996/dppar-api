@@ -60,10 +60,12 @@ Route::group(['prefix' => 'v1'], function () {
             Route::get('/personnels', [PersonnelController::class, 'index']);
             Route::get('/checkins', [CheckinController::class, 'index']);
 
+            Route::get('/sub-units', [SubUnitController::class, 'index'])->middleware('role:super_admin,regional_police_officer');
+
             Route::group(['middleware' => 'role:super_admin'], function () {
                 Route::resource('/units', UnitController::class)->except(['create', 'edit', 'destroy']);
 
-                Route::resource('/sub-units', SubUnitController::class)->except(['create', 'edit']);
+                Route::resource('/sub-units', SubUnitController::class)->except(['index', 'create', 'edit']);
                 Route::post('/sub-units/{sub_unit}/restore', [SubUnitController::class, 'restore']);
 
                 Route::resource('/stations', StationController::class)->except(['create', 'edit']);
@@ -74,7 +76,6 @@ Route::group(['prefix' => 'v1'], function () {
 
                 Route::resource('/users', UserController::class)->except(['create', 'edit']);
                 Route::resource('/offices', OfficeController::class)->except(['create', 'edit', 'destroy']);
-
             });
         });
     });
