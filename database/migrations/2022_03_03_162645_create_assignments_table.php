@@ -19,6 +19,7 @@ class CreateAssignmentsTable extends Migration
             $table->unsignedBigInteger('unit_id');
             $table->unsignedBigInteger('sub_unit_id')->nullable();
             $table->unsignedBigInteger('station_id')->nullable();
+            $table->unsignedBigInteger('office_id')->nullable();
             $table->timestamps();
 
             $table->foreign('personnel_id')
@@ -37,6 +38,10 @@ class CreateAssignmentsTable extends Migration
             $table->foreign('station_id')
                 ->references('id')
                 ->on('stations');
+
+            $table->foreign('office_id')
+                ->references('id')
+                ->on('offices');
         });
     }
 
