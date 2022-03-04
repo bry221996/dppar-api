@@ -35,7 +35,7 @@ class PersonnelDetailsTest extends TestCase
                     'badge_no',
                     'designation',
                     'category',
-                    'classification',
+                    'classification_id',
                     'gender'
                 ]
             ]);

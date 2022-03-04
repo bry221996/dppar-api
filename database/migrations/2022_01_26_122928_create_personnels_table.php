@@ -32,12 +32,16 @@ class CreatePersonnelsTable extends Migration
             $table->string('badge_no');
             $table->string('designation');
             $table->enum('category', PersonnelCategory::getAll());
-            $table->enum('classification', PersonnelClassification::getAll());
+            $table->unsignedBigInteger('classification_id');
             $table->enum('gender', GenderType::getAll());
             $table->timestamp('pin_updated_at')->nullable();
             $table->enum('status', ['active', 'inactive'])->default('active');
             $table->timestamps();
             $table->softDeletes();
+
+            $table->foreign('classification_id')
+                ->references('id')
+                ->on('classifications');
         });
     }
 

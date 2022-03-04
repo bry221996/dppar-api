@@ -25,7 +25,6 @@ class CreateOfficesTable extends Migration
             $table->timestamps();
             $table->softDeletes();
 
-
             $table->foreign('unit_id')
                 ->references('id')
                 ->on('units');

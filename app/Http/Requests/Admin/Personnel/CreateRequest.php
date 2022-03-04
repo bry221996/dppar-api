@@ -4,7 +4,6 @@ namespace App\Http\Requests\Admin\Personnel;
 
 use App\Enums\GenderType;
 use App\Enums\PersonnelCategory;
-use App\Enums\PersonnelClassification;
 use BenSampo\Enum\Rules\EnumValue;
 use Carbon\Carbon;
 use Illuminate\Foundation\Http\FormRequest;
@@ -38,7 +37,7 @@ class CreateRequest extends FormRequest
             'image' => 'required|image',
             'designation' => 'required',
             'category' => ['required', new EnumValue(PersonnelCategory::class)],
-            'classification' => ['required', new EnumValue(PersonnelClassification::class)],
+            'classification_id' => 'required|exists:classifications,id',
             'gender' => ['required', new EnumValue(GenderType::class)],
             'first_name' => 'required',
             'last_name' =>  'required',

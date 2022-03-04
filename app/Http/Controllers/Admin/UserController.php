@@ -35,10 +35,13 @@ class UserController extends Controller
     {
         $generatedPassword = Str::random(8);
 
-        $data = $request->validated();
+        $data = $request->userData();
         $data['password'] = Hash::make($generatedPassword);
 
         $user =  User::create($data);
+
+        $user->classifications()->sync($request->classificationsData());
+        $user->offices()->sync($request->officesData());
 
         $user->notify(new CredentialNotification($generatedPassword));
 
@@ -58,7 +61,12 @@ class UserController extends Controller
 
     public function update(UpdateRequest $request, User $user)
     {
-        $user->update($request->validated());
+        $data = $request->userData();
+
+        $user->update($data);
+
+        $user->classifications()->sync($request->classificationsData());
+        $user->offices()->sync($request->officesData());
 
         if ($user->fresh()->is_inactive) {
             $user->tokens()->delete();
