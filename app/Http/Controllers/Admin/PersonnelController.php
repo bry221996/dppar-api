@@ -49,6 +49,10 @@ class PersonnelController extends Controller
     {
         $personnel->update($request->validated());
 
+        if ($personnel->fresh()->is_inactive) {
+            $personnel->tokens()->delete();
+        }
+
         return response([
             'message' => 'Personnel successfully updated.',
             'data' => $personnel

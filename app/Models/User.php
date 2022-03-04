@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\StatusType;
 use App\Enums\UserRole;
 use App\Traits\WithSerializeDate;
 use Illuminate\Database\Eloquent\Builder;
@@ -54,6 +55,11 @@ class User extends Authenticatable
     public function getIsProvincialPoliceOfficerAttribute()
     {
         return $this->role === UserRole::PROVINCIAL_POLICE_OFFICER;
+    }
+
+    public function getIsInactiveAttribute()
+    {
+        return $this->status === StatusType::INACTIVE;
     }
 
     public function getIsMunicipalPoliceOfficerAttribute()

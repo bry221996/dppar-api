@@ -60,6 +60,10 @@ class UserController extends Controller
     {
         $user->update($request->validated());
 
+        if ($user->fresh()->is_inactive) {
+            $user->tokens()->delete();
+        }
+
         return response([
             'message' => 'User updated successfully.',
             'data' => $user

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\StatusType;
 use App\Traits\WithSerializeDate;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -27,6 +28,11 @@ class Personnel extends Authenticatable
     public function getHasPinAttribute()
     {
         return !!$this->pin_updated_at;
+    }
+
+    public function getIsInactiveAttribute()
+    {
+        return $this->status === StatusType::INACTIVE;
     }
 
     public function assignments()
