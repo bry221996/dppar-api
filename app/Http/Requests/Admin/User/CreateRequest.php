@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Admin\User;
 
+use App\Enums\PersonnelClassification;
 use Illuminate\Foundation\Http\FormRequest;
 
 class CreateRequest extends FormRequest
@@ -30,7 +31,9 @@ class CreateRequest extends FormRequest
             'unit_id' => 'nullable|required_if:role,regional_police_officer,provincial_police_officer,municipal_police_officer|exists:units,id',
             'sub_unit_id' => 'nullable|required_if:role,provincial_police_officer,municipal_police_officer|exists:sub_units,id',
             'station_id' => 'nullable|required_if:role,municipal_police_officer|exists:stations,id',
-            'status' => 'required|in:active,inactive'
+            'status' => 'required|in:active,inactive',
+            'classifications' => 'required|array',
+            'classifications.*' => 'required|distinct|exists:classifications,id'
         ];
     }
 }

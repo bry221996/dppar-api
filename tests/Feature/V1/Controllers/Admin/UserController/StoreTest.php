@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\V1\Controllers\Admin\UserController;
 
+use App\Enums\PersonnelClassification;
 use App\Enums\UserRole;
 use App\Models\User;
 use App\Notifications\CredentialNotification;
@@ -32,14 +33,17 @@ class StoreTest extends TestCase
 
         $state = Str::camel($this->faker()->randomElement(UserRole::getValues()));
 
-        $data = User::factory()->$state()->make();
+        $data = User::factory()->$state()->make()->toArray();
+        $data['classifications'] = [PersonnelClassification::REGULAR, PersonnelClassification::FLEXIBLE_TIME];
 
-        $this->postJson('/api/v1/admin/users', $data->toArray())
+        $this->postJson('/api/v1/admin/users', $data)
             ->assertSuccessful();
 
-        $this->assertDatabaseHas('users', ['email' => $data->email]);
+        $this->assertDatabaseHas('users', ['email' => $data['email']]);
 
-        $user = User::where('email', $data->email)->first();
+        $user = User::where('email', $data['email'])->first();
+
+        $this->assertEquals($user->classifications()->count(), count($data['classifications']));
 
         Notification::assertSentTo($user, CredentialNotification::class);
     }

@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\V1\Controllers\Admin\UserController;
 
+use App\Enums\PersonnelClassification;
 use App\Enums\UserRole;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -30,8 +31,12 @@ class UpdateTest extends TestCase
         $user = User::factory()->$state()->create();
         $data = User::factory()->$state()->make();
 
+        $data['classifications'] = [PersonnelClassification::REGULAR, PersonnelClassification::FLEXIBLE_TIME];
+
         $this->putJson("/api/v1/admin/users/$user->id", $data->toArray())
             ->assertSuccessful();
+
+        $this->assertEquals($user->classifications()->count(), count($data['classifications']));
 
         $this->assertDatabaseHas('users', ['email' => $data->email]);
     }

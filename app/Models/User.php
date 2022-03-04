@@ -74,4 +74,9 @@ class User extends Authenticatable
                 ->orWhere('email', 'LIKE', "%$search%");
         });
     }
+
+    public function classifications()
+    {
+        return $this->belongsToMany(Classification::class, 'user_classifications');
+    }
 }
