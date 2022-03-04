@@ -27,7 +27,7 @@ class UpdateTest extends TestCase
         $superAdmin = User::factory()->superAdmin()->create();
         Sanctum::actingAs($superAdmin, [], 'admins');
 
-        $state = Str::camel($this->faker()->randomElement(UserRole::getValues()));
+        $state = Str::camel(UserRole::REGIONAL_POLICE_OFFICER, UserRole::PROVINCIAL_POLICE_OFFICER, UserRole::MUNICIPAL_POLICE_OFFICER);
 
         $user = User::factory()->$state()->create();
         $data = User::factory()->$state()->make();
@@ -53,7 +53,7 @@ class UpdateTest extends TestCase
         $superAdmin = User::factory()->superAdmin()->create();
         Sanctum::actingAs($superAdmin, [], 'admins');
 
-        $state = Str::camel($this->faker()->randomElement(UserRole::getValues()));
+        $state = Str::camel(UserRole::REGIONAL_POLICE_OFFICER, UserRole::PROVINCIAL_POLICE_OFFICER, UserRole::MUNICIPAL_POLICE_OFFICER);
 
         $user = User::factory()->$state()->create();
         $data = User::factory()->$state()->make();
