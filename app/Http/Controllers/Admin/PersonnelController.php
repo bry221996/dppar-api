@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Filters\Personnel\PersonnelOfficeFilter;
 use App\Http\Controllers\Controller;
 
 use App\Models\Personnel;
@@ -27,6 +28,7 @@ class PersonnelController extends Controller
                 AllowedFilter::custom('unit_id', new PersonnelUnitFilter)->default($user->unit_id),
                 AllowedFilter::custom('sub_unit_id', new PersonnelSubUnitFilter)->default($user->sub_unit_id),
                 AllowedFilter::custom('station_id', new PersonnelStationFilter)->default($user->station_id),
+                AllowedFilter::custom('office_id', new PersonnelOfficeFilter),
             ])
             ->paginate($request->per_page ?? 10);
 
