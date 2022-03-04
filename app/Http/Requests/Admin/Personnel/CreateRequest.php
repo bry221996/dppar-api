@@ -51,6 +51,7 @@ class CreateRequest extends FormRequest
             'assignment.unit_id' => 'required|exists:units,id',
             'assignment.sub_unit_id' => 'nullable|exists:sub_units,id',
             'assignment.station_id' => 'nullable|exists:stations,id',
+            'assignment.office_id' => 'nullable|exists:offices,id',
         ];
     }
 
