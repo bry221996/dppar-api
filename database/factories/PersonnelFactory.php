@@ -28,7 +28,7 @@ class PersonnelFactory extends Factory
             'personnel_id' => $this->faker->bothify('##-???????'),
             'designation' => $this->faker->jobTitle,
             'category' => $this->faker->randomElement(PersonnelCategory::getAll()),
-            'classification' => $this->faker->randomElement(PersonnelClassification::getAll()),
+            'classification_id' => $this->faker->randomElement(PersonnelClassification::getValues()),
             'gender' => $this->faker->randomElement(GenderType::getAll()),
             'first_name' => $this->faker->firstName,
             'last_name' => $this->faker->lastName,

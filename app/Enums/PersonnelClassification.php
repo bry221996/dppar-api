@@ -6,11 +6,11 @@ use BenSampo\Enum\Enum;
 
 final class PersonnelClassification extends Enum
 {
-    const REGULAR       = 'regular';
-    const FLEXIBLE_TIME = 'flexible_time';
-    const SOCIAL_UNIT   = 'social_unit';
-    const MOBILE_FORCE  = 'mobile_force';
-    const UNIT_HEAD     = 'unit_head';
+    const REGULAR      = 1;
+    const FLEXIBLE_TIME = 2;
+    const SOCIAL_UNIT   = 3;
+    const MOBILE_FORCE  = 4;
+    const UNIT_HEAD     = 5;
 
     public static function getAll()
     {
