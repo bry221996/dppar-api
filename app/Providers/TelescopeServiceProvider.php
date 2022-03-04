@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Gate;
 use Laravel\Telescope\IncomingEntry;
 use Laravel\Telescope\Telescope;
 use Laravel\Telescope\TelescopeApplicationServiceProvider;
+use Illuminate\Support\Str;
 
 class TelescopeServiceProvider extends TelescopeApplicationServiceProvider
 {
@@ -30,7 +31,7 @@ class TelescopeServiceProvider extends TelescopeApplicationServiceProvider
         });
 
         Telescope::filter(function (IncomingEntry $entry) {
-            if ($entry->isRequest()) return $entry->content['uri'] !== '/';
+            if ($entry->isRequest()) return Str::contains($entry->content['uri'], 'api/');
 
             if ($this->app->environment('local') || $this->app->environment('development')) {
                 return true;
