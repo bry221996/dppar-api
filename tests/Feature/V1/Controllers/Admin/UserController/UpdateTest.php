@@ -56,18 +56,25 @@ class UpdateTest extends TestCase
         $state = Str::camel(UserRole::REGIONAL_POLICE_OFFICER, UserRole::PROVINCIAL_POLICE_OFFICER, UserRole::MUNICIPAL_POLICE_OFFICER);
 
         $user = User::factory()->$state()->create();
-        $data = User::factory()->$state()->make();
-
+        $userData = User::factory()->$state()->make();
+        $data = $userData->toArray();
         $data['classifications'] = [PersonnelClassification::REGULAR, PersonnelClassification::FLEXIBLE_TIME];
-        $data['offices'] = [Office::factory()->create()->id];
+        $data['offices'] = [
+            Office::factory()->create([
+                'type' => explode('_', $userData->role)[0],
+                'unit_id' => $userData->unit_id,
+                'sub_unit_id' => $userData->sub_unit_id,
+                'station_id' => $userData->station_id,
+            ])->id
+        ];
 
-        $this->putJson("/api/v1/admin/users/$user->id", $data->toArray())
+        $this->putJson("/api/v1/admin/users/$user->id", $data)
             ->assertSuccessful();
 
         $this->assertEquals($user->classifications()->count(), count($data['classifications']));
         $this->assertEquals($user->offices()->count(), count($data['offices']));
 
-        $this->assertDatabaseHas('users', ['email' => $data->email]);
+        $this->assertDatabaseHas('users', ['email' => $data['email']]);
     }
 
     /**
