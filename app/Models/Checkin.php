@@ -17,6 +17,18 @@ class Checkin extends Model
         'is_accounted' => 'boolean'
     ];
 
+    /**
+     * The "booted" method of the model.
+     *
+     * @return void
+     */
+    protected static function booted()
+    {
+        static::addGlobalScope('ancient', function (Builder $builder) {
+            $builder->where('type', '!=', 'inactive');
+        });
+    }
+
     public function personnel()
     {
         return $this->belongsTo(Personnel::class);

@@ -42,8 +42,7 @@ class InsertUnaccountedCheckins extends Command
      */
     public function handle()
     {
-        $unaccountedCheckins = Personnel::select('id')
-            ->where('status', 'active')
+        $unaccountedCheckins = Personnel::select('id', 'status')
             ->whereDate('created_at', '<=', $this->argument('date'))
             ->whereDoesntHave('checkins', function ($checkinQuery) {
                 return $checkinQuery->whereDate('created_at', $this->argument('date'));
@@ -52,7 +51,7 @@ class InsertUnaccountedCheckins extends Command
             ->map(function ($personnel) {
                 return [
                     'personnel_id' => $personnel->id,
-                    'type' => CheckInType::UNACCOUNTED,
+                    'type' => $personnel->status === 'active' ? CheckInType::UNACCOUNTED : 'inactive',
                     'created_at' => Carbon::parse($this->argument('date'))->endOf('day')->toDateTimeString(),
                     'updated_at' => Carbon::parse($this->argument('date'))->endOf('day')->toDateTimeString(),
                 ];
