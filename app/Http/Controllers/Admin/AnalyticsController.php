@@ -21,7 +21,7 @@ class AnalyticsController extends Controller
                         $classificationIds = $user->classifications->map(function ($classification) {
                             return $classification->id;
                         });
-                        $personnelSubQuery->whereIn('classication_id', $classificationIds);
+                        $personnelSubQuery->whereIn('classification_id', $classificationIds);
                     })
                     ->whereHas('assignments', function ($assignmentQuery) use ($user) {
                         $assignmentQuery
