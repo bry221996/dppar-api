@@ -60,6 +60,7 @@ Route::group(['prefix' => 'v1'], function () {
             Route::get('/personnels', [PersonnelController::class, 'index']);
             Route::get('/checkins', [CheckinController::class, 'index']);
 
+            Route::get('/offices', [OfficeController::class, 'index']);
             Route::get('/sub-units', [SubUnitController::class, 'index'])->middleware('role:super_admin,regional_police_officer');
             Route::get('/stations', [StationController::class, 'index'])->middleware('role:super_admin,regional_police_officer,provincial_police_officer');
 
@@ -76,7 +77,7 @@ Route::group(['prefix' => 'v1'], function () {
                 Route::post('/personnels/{personnel}/restore', [PersonnelController::class, 'restore']);
 
                 Route::resource('/users', UserController::class)->except(['create', 'edit']);
-                Route::resource('/offices', OfficeController::class)->except(['create', 'edit', 'destroy']);
+                Route::resource('/offices', OfficeController::class)->except(['index', 'create', 'edit', 'destroy']);
             });
         });
     });

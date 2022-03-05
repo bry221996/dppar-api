@@ -7,6 +7,7 @@ use App\Http\Requests\Admin\Office\CreateRequest;
 use App\Http\Requests\Admin\Office\UpdateRequest;
 use App\Models\Office;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
 
@@ -14,7 +15,10 @@ class OfficeController extends Controller
 {
     public function index(Request $request)
     {
-        $list = QueryBuilder::for(Office::class)
+        $user = Auth::guard('admins')->user();
+        $baseQuery = $user->is_super_admin ? Office::class : $user->offices();
+
+        $list = QueryBuilder::for($baseQuery)
             ->allowedFilters([
                 AllowedFilter::exact('type'),
                 AllowedFilter::exact('status'),

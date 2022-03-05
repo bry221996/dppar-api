@@ -46,26 +46,6 @@ class IndexTest extends TestCase
      * @group controllers.admin.office
      * @group controllers.admin.office.index
      */
-    public function test_only_super_admin_can_list_offices()
-    {
-        $rpo = User::factory()->regionalPoliceOfficer()->create();
-
-        $ppo = User::factory()->provincialPoliceOfficer()->create();
-
-        $mpo = User::factory()->municipalPoliceOfficer()->create();
-
-        Sanctum::actingAs($this->faker->randomElement([$rpo, $ppo, $mpo]), [], 'admins');
-
-        $this->getJson('/api/v1/admin/offices')
-            ->assertForbidden();
-    }
-
-    /**
-     * @group controllers
-     * @group controllers.admin
-     * @group controllers.admin.office
-     * @group controllers.admin.office.index
-     */
     public function test_super_admin_can_list_offices_filtered_by_status()
     {
         $superAdmin = User::factory()->superAdmin()->create();
@@ -240,7 +220,6 @@ class IndexTest extends TestCase
             ->assertJsonMissing(['name' => $unfilteredOffices->random()->name]);
     }
 
-
     /**
      * @group controllers
      * @group controllers.admin
@@ -259,5 +238,36 @@ class IndexTest extends TestCase
             ->assertSuccessful()
             ->assertJsonFragment(['name' => $filteredOffice->name])
             ->assertJsonMissing(['name' => $unfilteredOffices->random()->name]);
+    }
+
+    /**
+     * @group controllers
+     * @group controllers.admin
+     * @group controllers.admin.office
+     * @group controllers.admin.office.index
+     */
+    public function test_non_admin_user_can_list_offices()
+    {
+        $rpo = User::factory()->regionalPoliceOfficer()->create();
+        $ppo = User::factory()->provincialPoliceOfficer()->create();
+        $mpo = User::factory()->municipalPoliceOfficer()->create();
+        $user = $this->faker->randomElement([$rpo, $ppo, $mpo]);
+
+        Sanctum::actingAs($user, [], 'admins');
+
+        $count = $this->faker()->numberBetween(1, 3);
+
+        $assignedOffices = Office::factory()->count($count)->create();
+        $unassignedOffices = Office::factory()->count($count)->create();
+
+        $user->offices()->sync($assignedOffices->map(function ($office) {
+            return $office->id;
+        }));
+
+        $this->getJson('/api/v1/admin/offices')
+            ->assertStatus(200)
+            ->assertJsonCount($count, 'data')
+            ->assertJsonFragment(['name' => $assignedOffices->random()->name])
+            ->assertJsonMissing(['name' => $unassignedOffices->random()->name]);
     }
 }
