@@ -13,20 +13,20 @@ class CreateStationsTable extends Migration
      */
     public function up()
     {
-        Schema::create('stations', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('sub_unit_id');
-            $table->string('name');
-            $table->string('municipality');
-            $table->string('code')->unique();
-            $table->enum('status', ['active', 'inactive'])->default('active');
-            $table->timestamps();
-            $table->softDeletes();
+        // Schema::create('stations', function (Blueprint $table) {
+        //     $table->id();
+        //     $table->unsignedBigInteger('sub_unit_id');
+        //     $table->string('name');
+        //     $table->string('municipality');
+        //     $table->string('code')->unique();
+        //     $table->enum('status', ['active', 'inactive'])->default('active');
+        //     $table->timestamps();
+        //     $table->softDeletes();
 
-            $table->foreign('sub_unit_id')
-                ->references('id')
-                ->on('sub_units');
-        });
+        //     $table->foreign('sub_unit_id')
+        //         ->references('id')
+        //         ->on('sub_units');
+        // });
     }
 
     /**
@@ -36,6 +36,6 @@ class CreateStationsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('stations');
+        // Schema::dropIfExists('stations');
     }
 }
