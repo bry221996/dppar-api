@@ -14,6 +14,10 @@ class CreateUserOfficesTable extends Migration
     public function up()
     {
         Schema::create('user_offices', function (Blueprint $table) {
+            if (env('APP_ENV') !== 'testing') {
+                \Illuminate\Support\Facades\DB::statement('SET SESSION sql_require_primary_key=0');
+            }
+
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('office_id');
 
