@@ -2,7 +2,9 @@
 
 namespace Tests\Feature\V1\Controllers\Admin\PersonnelController;
 
+use App\Enums\PersonnelClassification;
 use App\Models\Assignment;
+use App\Models\Office;
 use App\Models\Personnel;
 use App\Models\Station;
 use App\Models\SubUnit;
@@ -167,7 +169,17 @@ class IndexTest extends TestCase
 
         $personnels = Personnel::factory()
             ->count($count)
-            ->create()
+            ->create(['classification_id' => PersonnelClassification::REGULAR])
+            ->each(function ($personnel) use ($unit) {
+                Assignment::factory()->create([
+                    'personnel_id' => $personnel->id,
+                    'unit_id' => $unit->id
+                ]);
+            });
+
+        $flexiblePersonnels = Personnel::factory()
+            ->count($count)
+            ->create(['classification_id' => PersonnelClassification::FLEXIBLE_TIME])
             ->each(function ($personnel) use ($unit) {
                 Assignment::factory()->create([
                     'personnel_id' => $personnel->id,
@@ -176,6 +188,7 @@ class IndexTest extends TestCase
             });
 
         $rpo = User::factory()->regionalPoliceOfficer()->create(['unit_id' => $unit->id]);
+        $rpo->classifications()->sync([PersonnelClassification::REGULAR]);
         Sanctum::actingAs($rpo, [], 'admins');
 
         $otherPersonnel = Personnel::factory()->create();
@@ -184,7 +197,55 @@ class IndexTest extends TestCase
             ->assertStatus(200)
             ->assertJsonFragment(['total' => $count])
             ->assertJsonFragment(['personnel_id' => $personnels->random()->personnel_id])
-            ->assertJsonMissing(['personnel_id' => $otherPersonnel->personnel_id]);
+            ->assertJsonMissing(['personnel_id' => $otherPersonnel->personnel_id])
+            ->assertJsonMissing(['personnel_id' => $flexiblePersonnels->random()->personnel_id]);
+    }
+
+    /**
+     * @group controllers
+     * @group controllers.admin
+     * @group controllers.admin.personnel
+     * @group controllers.admin.personnel.index
+     */
+    public function test_regional_police_officer_list_office_personnel()
+    {
+        $unit = Unit::factory()->create();
+        $office = Office::factory()->regional()->create(['unit_id' => $unit->id]);
+
+        $count = $this->faker()->numberBetween(1, 10);
+
+        $personnels = Personnel::factory()
+            ->count($count)
+            ->create(['classification_id' => PersonnelClassification::REGULAR])
+            ->each(function ($personnel) use ($office) {
+                Assignment::factory()->create([
+                    'personnel_id' => $personnel->id,
+                    'unit_id' => $office->unit_id,
+                    'office_id' => $office->id
+                ]);
+            });
+
+        $nonOfficePersonnels = Personnel::factory()
+            ->count($count)
+            ->create(['classification_id' => PersonnelClassification::REGULAR])
+            ->each(function ($personnel) use ($unit) {
+                Assignment::factory()->create([
+                    'personnel_id' => $personnel->id,
+                    'unit_id' => $unit->id
+                ]);
+            });
+
+        $rpo = User::factory()->regionalPoliceOfficer()->create(['unit_id' => $unit->id]);
+        $rpo->classifications()->sync([PersonnelClassification::REGULAR]);
+        $rpo->offices()->sync([$office->id]);
+
+        Sanctum::actingAs($rpo, [], 'admins');
+
+        $this->getJson("/api/v1/admin/personnels")
+            ->assertStatus(200)
+            ->assertJsonFragment(['total' => $count])
+            ->assertJsonFragment(['personnel_id' => $personnels->random()->personnel_id])
+            ->assertJsonMissing(['personnel_id' => $nonOfficePersonnels->random()->personnel_id]);
     }
 
     /**

@@ -23,6 +23,16 @@ class PersonnelController extends Controller
     {
         $user = Auth::guard('admins')->user();
 
+        $userOffices = $user->offices
+            ->map(function ($office) {
+                return $office->id;
+            });
+
+        $userAccessibleClassifications = $user->classifications
+            ->map(function ($classification) {
+                return $classification->id;
+            });
+
         $list = QueryBuilder::for(Personnel::class)
             ->allowedFilters([
                 AllowedFilter::custom('unit_id', new PersonnelUnitFilter)->default($user->unit_id),
@@ -30,6 +40,15 @@ class PersonnelController extends Controller
                 AllowedFilter::custom('station_id', new PersonnelStationFilter)->default($user->station_id),
                 AllowedFilter::custom('office_id', new PersonnelOfficeFilter),
             ])
+            ->with(['classification'])
+            ->when($userAccessibleClassifications->count(), function ($query) use ($userAccessibleClassifications) {
+                return $query->whereIn('classification_id', $userAccessibleClassifications->toArray());
+            })
+            ->when($userOffices->count(), function ($query) use ($userOffices) {
+                return $query->whereHas('assignments', function ($assignmentQuery) use ($userOffices) {
+                    $assignmentQuery->whereIn('office_id', $userOffices->toArray());
+                });
+            })
             ->paginate($request->per_page ?? 10);
 
         return response($list);
