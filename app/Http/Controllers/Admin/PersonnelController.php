@@ -37,7 +37,7 @@ class PersonnelController extends Controller
         $list = QueryBuilder::for(Personnel::class)
             ->allowedFilters([
                 AllowedFilter::exact('status'),
-                // AllowedFilter::scope('search'),
+                AllowedFilter::scope('search'),
                 AllowedFilter::custom('unit_id', new PersonnelUnitFilter)->default($user->unit_id),
                 AllowedFilter::custom('sub_unit_id', new PersonnelSubUnitFilter)->default($user->sub_unit_id),
                 AllowedFilter::custom('station_id', new PersonnelStationFilter)->default($user->station_id),

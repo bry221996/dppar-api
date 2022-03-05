@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Enums\StatusType;
 use App\Traits\WithSerializeDate;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Laravel\Sanctum\HasApiTokens;
@@ -43,5 +44,16 @@ class Personnel extends Authenticatable
     public function classification()
     {
         return $this->belongsTo(Classification::class);
+    }
+
+    public function scopeSearch(Builder $query, string $search)
+    {
+        return $query->where(function ($subQuery) use ($search) {
+            $subQuery->where('badge_no', 'LIKE', "%$search%")
+                ->orWhere('first_name', 'LIKE', "%$search%")
+                ->orWhere('last_name', 'LIKE', "%$search%")
+                ->orWhere('personnel_id', 'LIKE', "%$search%")
+                ->orWhere('middle_name', 'LIKE', "%$search%");
+        });
     }
 }

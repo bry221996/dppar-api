@@ -49,7 +49,6 @@ class IndexTest extends TestCase
             ->assertJsonFragment(['total' => $count]);
     }
 
-
     /**
      * @group controllers
      * @group controllers.admin
@@ -91,6 +90,39 @@ class IndexTest extends TestCase
             ->assertJsonFragment(['total' => $count])
             ->assertJsonFragment(['personnel_id' => $filteredPersonnels->random()->personnel_id])
             ->assertJsonMissing(['personnel_id' => $unfilteredPersonnels->random()->personnel_id]);
+    }
+
+    /**
+     * @group controllers
+     * @group controllers.admin
+     * @group controllers.admin.personnel
+     * @group controllers.admin.personnel.index
+     * @dataProvider searchablePropertyProvider
+     */
+    public function test_super_admin_can_get_personnel_list_with_search($searchableProperty)
+    {
+        $superAdmin = User::factory()->superAdmin()->create();
+        Sanctum::actingAs($superAdmin, [], 'admins');
+
+        $searchedPersonnel = Personnel::factory()->create();
+        $personnel = Personnel::factory()->create();
+        $search = $searchedPersonnel->$searchableProperty;
+
+        $this->getJson("/api/v1/admin/personnels?filter[search]=$search")
+            ->assertStatus(200)
+            ->assertJsonFragment(['personnel_id' => $searchedPersonnel->personnel_id])
+            ->assertJsonMissing(['personnel_id' => $personnel->personnel_id]);
+    }
+
+    public function searchablePropertyProvider()
+    {
+        return [
+            ['badge_no'],
+            ['first_name'],
+            ['last_name'],
+            ['middle_name'],
+            ['personnel_id'],
+        ];
     }
 
     /**
