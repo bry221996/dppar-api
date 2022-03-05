@@ -14,6 +14,7 @@ use Spatie\QueryBuilder\QueryBuilder;
 use App\Filters\Checkin\CheckinUnitFilter;
 use App\Filters\Checkin\CheckinSubUnitFilter;
 use App\Filters\Checkin\CheckinStationFilter;
+use App\Http\Requests\Admin\Checkin\UpdateRequest;
 
 class CheckinController extends Controller
 {
@@ -53,5 +54,17 @@ class CheckinController extends Controller
             ->paginate($request->per_page ?? 10);
 
         return response($list);
+    }
+
+    public function update(UpdateRequest $request)
+    {
+        Checkin::whereIn('id', $request->ids)
+            ->update([
+                'type' => $request->type,
+                'sub_type' => $request->sub_type,
+                'admin_remarks' => $request->remarks
+            ]);
+
+        return response(['message' => 'Checkins successfully updated']);
     }
 }
