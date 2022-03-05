@@ -13,21 +13,21 @@ class CreateSubUnitsTable extends Migration
      */
     public function up()
     {
-        // Schema::create('sub_units', function (Blueprint $table) {
-        //     $table->id();
-        //     $table->unsignedBigInteger('unit_id');
-        //     $table->string('name');
-        //     $table->string('province');
-        //     $table->enum('type', ['provincial', 'city']);
-        //     $table->string('code')->unique();
-        //     $table->enum('status', ['active', 'inactive'])->default('active');
-        //     $table->timestamps();
-        //     $table->softDeletes();
+        Schema::create('sub_units', function (Blueprint $table) {
+            $table->id();
+            $table->unsignedBigInteger('unit_id');
+            $table->string('name');
+            $table->string('province');
+            $table->enum('type', ['provincial', 'city']);
+            $table->string('code')->unique();
+            $table->enum('status', ['active', 'inactive'])->default('active');
+            $table->timestamps();
+            $table->softDeletes();
 
-        //     $table->foreign('unit_id')
-        //         ->references('id')
-        //         ->on('units');
-        // });
+            $table->foreign('unit_id')
+                ->references('id')
+                ->on('units');
+        });
     }
 
     /**
@@ -37,6 +37,6 @@ class CreateSubUnitsTable extends Migration
      */
     public function down()
     {
-        // Schema::dropIfExists('sub_units');
+        Schema::dropIfExists('sub_units');
     }
 }

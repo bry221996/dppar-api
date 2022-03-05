@@ -13,15 +13,15 @@ class CreateUnitsTable extends Migration
      */
     public function up()
     {
-        // Schema::create('units', function (Blueprint $table) {
-        //     $table->id();
-        //     $table->string('name');
-        //     $table->string('region');
-        //     $table->string('code')->unique();
-        //     $table->enum('status', ['active', 'inactive'])->default('active');
-        //     $table->timestamps();
-        //     $table->softDeletes();
-        // });
+        Schema::create('units', function (Blueprint $table) {
+            $table->id();
+            $table->string('name');
+            $table->string('region');
+            $table->string('code')->unique();
+            $table->enum('status', ['active', 'inactive'])->default('active');
+            $table->timestamps();
+            $table->softDeletes();
+        });
     }
 
     /**
@@ -31,6 +31,6 @@ class CreateUnitsTable extends Migration
      */
     public function down()
     {
-        // Schema::dropIfExists('units');
+        Schema::dropIfExists('units');
     }
 }
