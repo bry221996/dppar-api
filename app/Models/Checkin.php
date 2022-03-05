@@ -34,6 +34,11 @@ class Checkin extends Model
         return $this->belongsTo(Personnel::class);
     }
 
+    public function taggedBy()
+    {
+        return $this->belongsTo(User::class, 'tagged_as_absent_by', 'id');
+    }
+
     public function scopeSearch(Builder $query, string $search)
     {
         return $query->where(function ($subQuery) use ($search) {

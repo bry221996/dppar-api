@@ -46,5 +46,7 @@ class UpdateTest extends TestCase
         $this->assertEquals($checkins->random()->fresh()->type, $data['type']);
         $this->assertEquals($checkins->random()->fresh()->sub_type, $data['sub_type']);
         $this->assertEquals($checkins->random()->fresh()->admin_remarks, $data['remarks']);
+        $this->assertEquals($checkins->random()->fresh()->tagged_as_absent_by, $superAdmin->id);
+        $this->assertNotNull($checkins->random()->fresh()->tagged_as_absent_at);
     }
 }
