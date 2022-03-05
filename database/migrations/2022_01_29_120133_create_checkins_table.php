@@ -27,11 +27,17 @@ class CreateCheckinsTable extends Migration
             $table->text('remarks')->nullable();
             $table->text('admin_remarks')->nullable();
             $table->json('address_component')->nullable();
+            $table->unsignedBigInteger('tagged_as_absent_by')->nullable();
+            $table->timestamp('tagged_as_absent_at')->nullable();
             $table->timestamps();
 
             $table->foreign('personnel_id')
                 ->references('id')
                 ->on('personnels');
+
+            $table->foreign('tagged_as_absent_by')
+                ->references('id')
+                ->on('users');
         });
     }
 
