@@ -26,6 +26,7 @@ class UserController extends Controller
                 AllowedFilter::exact('station_id'),
                 AllowedFilter::scope('search'),
             ])
+            ->with(['offices:id,name', 'classifications:id,name'])
             ->paginate($request->per_page ?? 10);
 
         return response($list);
@@ -53,6 +54,8 @@ class UserController extends Controller
 
     public function show(User $user)
     {
+        $user->loadMissing(['offices:id,name', 'classifications:id,name']);
+
         return response([
             'message' => 'User fetched successfully.',
             'data' => $user
