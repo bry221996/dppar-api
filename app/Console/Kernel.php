@@ -19,7 +19,7 @@ class Kernel extends ConsoleKernel
         $date = Carbon::now()->subDay()->format('Y-m-d');
 
         $schedule->command("insert:unaccounted_checkins '{$date}'")
-            ->dailyAt('00:05');
+            ->dailyAt('00:10');
     }
 
     /**
