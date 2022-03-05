@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\AnalyticsController;
 use App\Http\Controllers\Personnel\AuthController as PersonnelAuthController;
 use App\Http\Controllers\Personnel\CheckinController as PersonnelCheckinController;
 use App\Http\Controllers\Admin\AuthController as AdminAuthController;
@@ -59,6 +60,7 @@ Route::group(['prefix' => 'v1'], function () {
 
             Route::get('/personnels', [PersonnelController::class, 'index']);
             Route::get('/checkins', [CheckinController::class, 'index']);
+            Route::get('/analytics', [AnalyticsController::class, 'index']);
 
             Route::get('/offices', [OfficeController::class, 'index']);
             Route::get('/sub-units', [SubUnitController::class, 'index'])->middleware('role:super_admin,regional_police_officer');

@@ -9,6 +9,7 @@ final class CheckInType extends Enum
     const PRESENT   = 'present';
     const LEAVE     = 'leave';
     const OFF_DUTY  = 'off_duty';
+    const UNACCOUNTED = 'unaccounted';
 
     public static function getSubType(string $value): array
     {
