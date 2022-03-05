@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\V1\Controllers\Admin\Checkin;
 
+use App\Enums\CheckInType;
 use App\Models\Checkin;
 use App\Models\Personnel;
 use App\Models\Station;
@@ -135,6 +136,33 @@ class IndexTest extends TestCase
             ->assertStatus(200)
             ->assertJsonFragment(['total' => $count])
             ->assertJsonFragment(['personnel_id' => $checkins->random()->personnel_id])
+            ->assertJsonMissing(['personnel_id' => $otherCheckin->personnel_id]);
+    }
+
+    /**
+     * @group controllers
+     * @group controllers.admin
+     * @group controllers.admin.checkin
+     * @group controllers.admin.checkin.index
+     */
+    public function test_super_admin_can_filter_checkin_list_by_type()
+    {
+        $superAdmin = User::factory()->superAdmin()->create();
+        Sanctum::actingAs($superAdmin, [], 'admins');
+        $type = CheckInType::getRandomValue();
+
+        $count = $this->faker()->numberBetween(1, 3);
+
+        $filteredCheckins = Checkin::factory()
+            ->count($count)
+            ->create(['type' => $type]);
+
+        $otherCheckin = Checkin::factory()->create();
+
+        $this->getJson("/api/v1/admin/checkins?filter[type]=$type")
+            ->assertStatus(200)
+            ->assertJsonFragment(['total' => $count])
+            ->assertJsonFragment(['personnel_id' => $filteredCheckins->random()->personnel_id])
             ->assertJsonMissing(['personnel_id' => $otherCheckin->personnel_id]);
     }
 
