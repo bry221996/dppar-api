@@ -9,6 +9,7 @@ use App\Models\Station;
 use App\Models\SubUnit;
 use App\Models\Unit;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Laravel\Sanctum\Sanctum;
@@ -38,6 +39,7 @@ class IndexTest extends TestCase
             ->assertJsonFragment(['total' => $count])
             ->assertJsonFragment(['id' => $checkins->random()->id]);
     }
+
 
     /**
      * @group controllers
@@ -164,6 +166,71 @@ class IndexTest extends TestCase
             ->assertJsonFragment(['total' => $count])
             ->assertJsonFragment(['personnel_id' => $filteredCheckins->random()->personnel_id])
             ->assertJsonMissing(['personnel_id' => $otherCheckin->personnel_id]);
+    }
+
+    /**
+     * @group controllers
+     * @group controllers.admin
+     * @group controllers.admin.checkin
+     * @group controllers.admin.checkin.index
+     */
+    public function test_admin_can_list_checkins_with_start_date_and_end_date()
+    {
+        $superAdmin = User::factory()->superAdmin()->create();
+        Sanctum::actingAs($superAdmin, [], 'admins');
+
+        $startDate = Carbon::now()->subWeek()->format('Y-m-d');
+        $endDate = Carbon::now()->addWeek()->format('Y-m-d');
+
+        $count = $this->faker()->numberBetween(1, 3);
+
+        $filteredCheckins = Checkin::factory()->count($count)->create();
+
+        $unfilteredCheckins = Checkin::factory()->count($count)->create(['created_at' => now()->subMonth()]);
+
+        $this->getJson("/api/v1/admin/checkins?filter[start_date]=$startDate&filter[end_date]=$endDate")
+            ->assertStatus(200)
+            ->assertJsonFragment(['total' => $count])
+            ->assertJsonFragment(['personnel_id' => $filteredCheckins->random()->personnel_id])
+            ->assertJsonMissing(['personnel_id' => $unfilteredCheckins->random()->personnel_id]);
+    }
+
+    /**
+     * @group controllers
+     * @group controllers.admin
+     * @group controllers.admin.checkin
+     * @group controllers.admin.checkin.index
+     * @dataProvider searchablePersonnelPropertyProvider
+     */
+    public function test_admin_can_get_checkin_list_with_searched_personnel($searchableProperty)
+    {
+        $superAdmin = User::factory()->superAdmin()->create();
+        Sanctum::actingAs($superAdmin, [], 'admins');
+
+        $searchedPersonnel = Personnel::factory()->create();
+        $otherPersonnel = Personnel::factory()->create();
+
+        $count = $this->faker()->numberBetween(1, 3);
+        Checkin::factory()->count($count)->create(['personnel_id' => $searchedPersonnel->id]);
+        Checkin::factory()->count($count)->create(['personnel_id' => $otherPersonnel->id]);
+        $search = $searchedPersonnel->$searchableProperty;
+
+        $this->getJson("/api/v1/admin/checkins?filter[personnel]=$search")
+            ->assertSuccessful()
+            ->assertJsonFragment(['total' => $count])
+            ->assertJsonFragment(['personnel_id' => $searchedPersonnel->personnel_id])
+            ->assertJsonMissing(['personnel_id' => $otherPersonnel->personnel_id]);
+    }
+
+    public function searchablePersonnelPropertyProvider()
+    {
+        return [
+            ['badge_no'],
+            ['first_name'],
+            ['last_name'],
+            ['middle_name'],
+            ['personnel_id'],
+        ];
     }
 
     /**

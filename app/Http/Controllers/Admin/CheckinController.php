@@ -39,6 +39,9 @@ class CheckinController extends Controller
                 AllowedFilter::custom('station_id', new CheckinStationFilter)->default($user->station_id),
                 AllowedFilter::custom('office_id', new CheckinOfficeFilter)->default(implode(',', $userOffices)),
                 AllowedFilter::exact('type'),
+                AllowedFilter::scope('personnel'),
+                AllowedFilter::scope('start_date'),
+                AllowedFilter::scope('end_date'),
             ])
             ->when($userAccessibleClassifications->count(), function ($query) use ($userAccessibleClassifications) {
                 return $query->whereHas('personnel', function ($personnelQuery) use ($userAccessibleClassifications) {
@@ -46,7 +49,7 @@ class CheckinController extends Controller
                 });
             })
             ->with('personnel:id,personnel_id,first_name,middle_name,last_name')
-
+            ->orderBy('created_at', 'DESC')
             ->paginate($request->per_page ?? 10);
 
         return response($list);

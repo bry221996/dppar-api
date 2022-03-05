@@ -29,4 +29,27 @@ class Checkin extends Model
                 ->orWhereDate('created_at', $search);
         });
     }
+
+    public function scopePersonnel(Builder $query, string $search)
+    {
+        return $query->whereHas('personnel', function ($personnelQuery) use ($search) {
+            return $personnelQuery->where(function ($subQuery) use ($search) {
+                $subQuery->where('badge_no', 'LIKE', "%$search%")
+                    ->orWhere('first_name', 'LIKE', "%$search%")
+                    ->orWhere('last_name', 'LIKE', "%$search%")
+                    ->orWhere('personnel_id', 'LIKE', "%$search%")
+                    ->orWhere('middle_name', 'LIKE', "%$search%");
+            });
+        });
+    }
+
+    public function scopeStartDate(Builder $query, $date)
+    {
+        return $query->whereDate('created_at', '>=', $date);
+    }
+
+    public function scopeEndDate(Builder $query, $date)
+    {
+        return $query->whereDate('created_at', '<=', $date);
+    }
 }
