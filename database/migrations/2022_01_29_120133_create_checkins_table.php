@@ -20,8 +20,8 @@ class CreateCheckinsTable extends Migration
             $table->string('type');
             $table->string('sub_type')->nullable();
             $table->boolean('is_accounted')->default(true);
-            $table->float('latitude', 12, 8);
-            $table->float('longitude', 12, 8);
+            $table->float('latitude', 12, 8)->nullable();
+            $table->float('longitude', 12, 8)->nullable();
             $table->string('town')->nullable();
             $table->string('province')->nullable();
             $table->text('remarks')->nullable();
