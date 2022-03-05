@@ -11,7 +11,7 @@ class AnalyticsController extends Controller
 {
     public function index()
     {
-        $user = Auth::guard('admin')->user();
+        $user = Auth::guard('admins')->user();
         $user->loadMissing(['offices:id,name', 'classifications:id,name']);
 
         $query = Checkin::when(!$user->is_super_admin, function ($query) use ($user) {
