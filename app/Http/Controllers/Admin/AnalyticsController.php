@@ -17,7 +17,7 @@ class AnalyticsController extends Controller
         $query = Checkin::when(!$user->is_super_admin, function ($query) use ($user) {
             $query->whereHas('personnel', function ($personnelQuery) use ($user) {
                 $personnelQuery
-                    ->when($user->classifications->count(), function ($personnelSubQuery) {
+                    ->when($user->classifications->count(), function ($personnelSubQuery) use ($user) {
                         $classificationIds = $user->classifications->map(function ($classification) {
                             return $classification->id;
                         });
