@@ -28,7 +28,7 @@ class IndexTest extends TestCase
         $superAdmin = User::factory()->superAdmin()->create();
         Sanctum::actingAs($superAdmin, [], 'admins');
 
-        $count = $this->faker()->numberBetween(1, 10);
+        $count = $this->faker()->numberBetween(1, 3);
 
         $checkins = Checkin::factory()->count($count)->create();
 
@@ -53,7 +53,7 @@ class IndexTest extends TestCase
         $personnel = Personnel::factory()->create();
         $personnel->assignments()->create(['unit_id' => $unit->id]);
 
-        $count = $this->faker()->numberBetween(1, 10);
+        $count = $this->faker()->numberBetween(1, 3);
         $checkins = Checkin::factory()
             ->count($count)
             ->create(['personnel_id' => $personnel->id]);
@@ -83,7 +83,7 @@ class IndexTest extends TestCase
         $personnel = Personnel::factory()->create();
         $personnel->assignments()->create(['unit_id' => $unit->id, 'sub_unit_id' => $subUnit->id]);
 
-        $count = $this->faker()->numberBetween(1, 10);
+        $count = $this->faker()->numberBetween(1, 3);
         $checkins = Checkin::factory()
             ->count($count)
             ->create(['personnel_id' => $personnel->id]);
@@ -124,7 +124,7 @@ class IndexTest extends TestCase
                 'station_id' => $station->id
             ]);
 
-        $count = $this->faker()->numberBetween(1, 10);
+        $count = $this->faker()->numberBetween(1, 3);
         $checkins = Checkin::factory()
             ->count($count)
             ->create(['personnel_id' => $personnel->id]);
@@ -150,7 +150,7 @@ class IndexTest extends TestCase
         $personnel = Personnel::factory()->create();
         $personnel->assignments()->create(['unit_id' => $unit->id]);
 
-        $count = $this->faker()->numberBetween(1, 10);
+        $count = $this->faker()->numberBetween(1, 3);
         $checkins = Checkin::factory()
             ->count($count)
             ->create(['personnel_id' => $personnel->id]);
@@ -180,7 +180,7 @@ class IndexTest extends TestCase
         $personnel = Personnel::factory()->create();
         $personnel->assignments()->create(['unit_id' => $unit->id, 'sub_unit_id' => $subUnit->id]);
 
-        $count = $this->faker()->numberBetween(1, 10);
+        $count = $this->faker()->numberBetween(1, 3);
         $checkins = Checkin::factory()
             ->count($count)
             ->create(['personnel_id' => $personnel->id]);
@@ -226,7 +226,7 @@ class IndexTest extends TestCase
                 'station_id' => $station->id
             ]);
 
-        $count = $this->faker()->numberBetween(1, 10);
+        $count = $this->faker()->numberBetween(1, 3);
         $checkins = Checkin::factory()
             ->count($count)
             ->create(['personnel_id' => $personnel->id]);

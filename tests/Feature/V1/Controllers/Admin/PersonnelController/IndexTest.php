@@ -32,7 +32,7 @@ class IndexTest extends TestCase
 
         $unit = Unit::factory()->create();
 
-        $count = $this->faker()->numberBetween(1, 10);
+        $count = $this->faker()->numberBetween(1, 3);
 
         Personnel::factory()
             ->count($count)
@@ -49,6 +49,50 @@ class IndexTest extends TestCase
             ->assertJsonFragment(['total' => $count]);
     }
 
+
+    /**
+     * @group controllers
+     * @group controllers.admin
+     * @group controllers.admin.personnel
+     * @group controllers.admin.personnel.index
+     */
+    public function test_super_admin_can_get_personnel_list_by_status()
+    {
+        $superAdmin = User::factory()->superAdmin()->create();
+        Sanctum::actingAs($superAdmin, [], 'admins');
+        $status = $this->faker()->randomElement(['active', 'inactive']);
+
+        $unit = Unit::factory()->create();
+
+        $count = $this->faker()->numberBetween(1, 3);
+
+        $filteredPersonnels = Personnel::factory()
+            ->count($count)
+            ->create(['status' => $status])
+            ->each(function ($personnel) use ($unit) {
+                Assignment::factory()->create([
+                    'personnel_id' => $personnel->id,
+                    'unit_id' => $unit->id
+                ]);
+            });
+
+        $unfilteredPersonnels = Personnel::factory()
+            ->count($count)
+            ->create(['status' => $status === 'active' ? 'inactive' : 'active'])
+            ->each(function ($personnel) use ($unit) {
+                Assignment::factory()->create([
+                    'personnel_id' => $personnel->id,
+                    'unit_id' => $unit->id
+                ]);
+            });
+
+        $this->getJson("/api/v1/admin/personnels?filter[status]=$status")
+            ->assertStatus(200)
+            ->assertJsonFragment(['total' => $count])
+            ->assertJsonFragment(['personnel_id' => $filteredPersonnels->random()->personnel_id])
+            ->assertJsonMissing(['personnel_id' => $unfilteredPersonnels->random()->personnel_id]);
+    }
+
     /**
      * @group controllers
      * @group controllers.admin
@@ -62,7 +106,7 @@ class IndexTest extends TestCase
 
         $unit = Unit::factory()->create();
 
-        $count = $this->faker()->numberBetween(1, 10);
+        $count = $this->faker()->numberBetween(1, 3);
 
         $personnels = Personnel::factory()
             ->count($count)
@@ -84,7 +128,6 @@ class IndexTest extends TestCase
             ->assertJsonMissing(['personnel_id' => $otherPersonnel->personnel_id]);
     }
 
-
     /**
      * @group controllers
      * @group controllers.admin
@@ -97,7 +140,7 @@ class IndexTest extends TestCase
         Sanctum::actingAs($superAdmin, [], 'admins');
 
         $sub_unit = SubUnit::factory()->create();
-        $count = $this->faker()->numberBetween(1, 10);
+        $count = $this->faker()->numberBetween(1, 3);
 
         $personnels = Personnel::factory()
             ->count($count)
@@ -132,7 +175,7 @@ class IndexTest extends TestCase
         Sanctum::actingAs($superAdmin, [], 'admins');
 
         $station = Station::factory()->create();
-        $count = $this->faker()->numberBetween(1, 10);
+        $count = $this->faker()->numberBetween(1, 3);
 
         $personnels = Personnel::factory()
             ->count($count)
@@ -165,7 +208,7 @@ class IndexTest extends TestCase
     {
         $unit = Unit::factory()->create();
 
-        $count = $this->faker()->numberBetween(1, 10);
+        $count = $this->faker()->numberBetween(1, 3);
 
         $personnels = Personnel::factory()
             ->count($count)
@@ -212,7 +255,7 @@ class IndexTest extends TestCase
         $unit = Unit::factory()->create();
         $office = Office::factory()->regional()->create(['unit_id' => $unit->id]);
 
-        $count = $this->faker()->numberBetween(1, 10);
+        $count = $this->faker()->numberBetween(1, 3);
 
         $personnels = Personnel::factory()
             ->count($count)
@@ -257,7 +300,7 @@ class IndexTest extends TestCase
     public function test_provincial_police_officer_list_personnel()
     {
         $sub_unit = SubUnit::factory()->create();
-        $count = $this->faker()->numberBetween(1, 10);
+        $count = $this->faker()->numberBetween(1, 3);
 
         $personnels = Personnel::factory()
             ->count($count)
@@ -297,7 +340,7 @@ class IndexTest extends TestCase
     {
 
         $station = Station::factory()->create();
-        $count = $this->faker()->numberBetween(1, 10);
+        $count = $this->faker()->numberBetween(1, 3);
 
         $personnels = Personnel::factory()
             ->count($count)

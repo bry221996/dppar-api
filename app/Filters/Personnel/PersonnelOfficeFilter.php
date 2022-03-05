@@ -11,7 +11,7 @@ class PersonnelOfficeFilter implements Filter
     {
         return $query->when($value, function ($subQuery) use ($value) {
             $subQuery->whereHas('assignments', function ($assignmentQuery) use ($value) {
-                $assignmentQuery->where('office_id', $value);
+                $assignmentQuery->whereIn('office_id', explode(',', $value));
             });
         });
     }

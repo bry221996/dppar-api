@@ -26,7 +26,8 @@ class PersonnelController extends Controller
         $userOffices = $user->offices
             ->map(function ($office) {
                 return $office->id;
-            });
+            })
+            ->toArray();
 
         $userAccessibleClassifications = $user->classifications
             ->map(function ($classification) {
@@ -35,19 +36,16 @@ class PersonnelController extends Controller
 
         $list = QueryBuilder::for(Personnel::class)
             ->allowedFilters([
+                AllowedFilter::exact('status'),
+                // AllowedFilter::scope('search'),
                 AllowedFilter::custom('unit_id', new PersonnelUnitFilter)->default($user->unit_id),
                 AllowedFilter::custom('sub_unit_id', new PersonnelSubUnitFilter)->default($user->sub_unit_id),
                 AllowedFilter::custom('station_id', new PersonnelStationFilter)->default($user->station_id),
-                AllowedFilter::custom('office_id', new PersonnelOfficeFilter),
+                AllowedFilter::custom('office_id', new PersonnelOfficeFilter)->default(implode(',', $userOffices))
             ])
             ->with(['classification'])
             ->when($userAccessibleClassifications->count(), function ($query) use ($userAccessibleClassifications) {
                 return $query->whereIn('classification_id', $userAccessibleClassifications->toArray());
-            })
-            ->when($userOffices->count(), function ($query) use ($userOffices) {
-                return $query->whereHas('assignments', function ($assignmentQuery) use ($userOffices) {
-                    $assignmentQuery->whereIn('office_id', $userOffices->toArray());
-                });
             })
             ->paginate($request->per_page ?? 10);
 
