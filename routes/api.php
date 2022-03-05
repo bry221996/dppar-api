@@ -61,6 +61,7 @@ Route::group(['prefix' => 'v1'], function () {
             Route::get('/checkins', [CheckinController::class, 'index']);
 
             Route::get('/sub-units', [SubUnitController::class, 'index'])->middleware('role:super_admin,regional_police_officer');
+            Route::get('/stations', [StationController::class, 'index'])->middleware('role:super_admin,regional_police_officer,provincial_police_officer');
 
             Route::group(['middleware' => 'role:super_admin'], function () {
                 Route::resource('/units', UnitController::class)->except(['create', 'edit', 'destroy']);
@@ -68,7 +69,7 @@ Route::group(['prefix' => 'v1'], function () {
                 Route::resource('/sub-units', SubUnitController::class)->except(['index', 'create', 'edit']);
                 Route::post('/sub-units/{sub_unit}/restore', [SubUnitController::class, 'restore']);
 
-                Route::resource('/stations', StationController::class)->except(['create', 'edit']);
+                Route::resource('/stations', StationController::class)->except(['index', 'create', 'edit']);
                 Route::post('/stations/{station}/restore', [StationController::class, 'restore']);
 
                 Route::resource('/personnels', PersonnelController::class)->except(['index', 'create', 'edit']);

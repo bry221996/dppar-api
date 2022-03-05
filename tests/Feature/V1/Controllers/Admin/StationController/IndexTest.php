@@ -8,6 +8,7 @@ use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Laravel\Sanctum\Sanctum;
+use NunoMaduro\Collision\Adapters\Phpunit\State;
 use Tests\TestCase;
 
 class IndexTest extends TestCase
@@ -41,15 +42,67 @@ class IndexTest extends TestCase
      * @group controllers.admin.station
      * @group controllers.admin.station.index
      */
-    public function test_only_super_admin_can_list_stations()
+    public function test_regional_police_officer_can_list_stations()
     {
-        $rpo = User::factory()->regionalPoliceOfficer()->create();
+        $regionalPoliceOfficer = User::factory()->regionalPoliceOfficer()->create();
+        Sanctum::actingAs($regionalPoliceOfficer, [], 'admins');
 
-        $ppo = User::factory()->provincialPoliceOfficer()->create();
 
+        $subUnit = SubUnit::factory()->create(['unit_id' => $regionalPoliceOfficer->unit_id]);
+
+        $filteredStation = Station::factory()
+            ->create(['sub_unit_id' => $subUnit->id]);
+
+        $unfilteredStations = Station::factory()->count(3)->create();
+
+        $this->getJson("/api/v1/admin/stations")
+            ->assertSuccessful()
+            ->assertJsonFragment(['code' => $filteredStation->code])
+            ->assertJsonMissing(['code' => $unfilteredStations->random()->code]);
+    }
+
+    /**
+     * @group controllers
+     * @group controllers.admin
+     * @group controllers.admin.station
+     * @group controllers.admin.station.index
+     */
+    public function test_provincial_police_officer_can_list_stations()
+    {
+        $subUnit = SubUnit::factory()->create();
+
+        $provincialPoliceOfficer = User::factory()->provincialPoliceOfficer()->create([
+            'unit_id' => $subUnit->unit_id,
+            'sub_unit_id' => $subUnit->id
+        ]);
+
+        Sanctum::actingAs($provincialPoliceOfficer, [], 'admins');
+
+        $filteredStation = Station::factory()
+            ->create(['sub_unit_id' => $subUnit->id]);
+
+        $unfilteredStations = Station::factory()->count(3)->create();
+        $otherSubUnit = SubUnit::factory()->create(['unit_id' => $subUnit->unit_id]);
+        $otherStation = Station::factory()->create(['sub_unit_id' => $otherSubUnit->id]);
+
+        $this->getJson("/api/v1/admin/stations")
+            ->assertSuccessful()
+            ->assertJsonFragment(['code' => $filteredStation->code])
+            ->assertJsonMissing(['code' => $unfilteredStations->random()->code])
+            ->assertJsonMissing(['code' => $otherStation->code]);
+    }
+
+    /**
+     * @group controllers
+     * @group controllers.admin
+     * @group controllers.admin.station
+     * @group controllers.admin.station.index
+     */
+    public function test_municipal_officer_can_list_stations()
+    {
         $mpo = User::factory()->municipalPoliceOfficer()->create();
 
-        Sanctum::actingAs($this->faker->randomElement([$rpo, $ppo, $mpo]), [], 'admins');
+        Sanctum::actingAs($mpo, [], 'admins');
 
         $this->getJson('/api/v1/admin/stations')
             ->assertForbidden();
