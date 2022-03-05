@@ -60,6 +60,7 @@ Route::group(['prefix' => 'v1'], function () {
 
             Route::get('/personnels', [PersonnelController::class, 'index']);
             Route::get('/checkins', [CheckinController::class, 'index']);
+            Route::put('/checkins', [CheckinController::class, 'update']);
             Route::get('/analytics', [AnalyticsController::class, 'index']);
 
             Route::get('/offices', [OfficeController::class, 'index']);

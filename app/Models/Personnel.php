@@ -41,6 +41,11 @@ class Personnel extends Authenticatable
         return $this->hasMany(Assignment::class);
     }
 
+    public function checkins()
+    {
+        return $this->hasMany(Checkin::class);
+    }
+
     public function classification()
     {
         return $this->belongsTo(Classification::class);

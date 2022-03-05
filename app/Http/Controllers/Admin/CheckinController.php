@@ -14,6 +14,7 @@ use Spatie\QueryBuilder\QueryBuilder;
 use App\Filters\Checkin\CheckinUnitFilter;
 use App\Filters\Checkin\CheckinSubUnitFilter;
 use App\Filters\Checkin\CheckinStationFilter;
+use App\Http\Requests\Admin\Checkin\UpdateRequest;
 
 class CheckinController extends Controller
 {
@@ -48,10 +49,24 @@ class CheckinController extends Controller
                     return $personnelQuery->whereIn('classification_id', $userAccessibleClassifications->toArray());
                 });
             })
-            ->with('personnel:id,personnel_id,first_name,middle_name,last_name')
+            ->with(['personnel:id,personnel_id,first_name,middle_name,last_name', 'taggedBy:id,name'])
             ->orderBy('created_at', 'DESC')
             ->paginate($request->per_page ?? 10);
 
         return response($list);
+    }
+
+    public function update(UpdateRequest $request)
+    {
+        Checkin::whereIn('id', $request->ids)
+            ->update([
+                'type' => $request->type,
+                'sub_type' => $request->sub_type,
+                'admin_remarks' => $request->remarks,
+                'tagged_as_absent_by' => Auth::guard('admins')->id(),
+                'tagged_as_absent_at' => now()->toDateTimeString()
+            ]);
+
+        return response(['message' => 'Checkins successfully updated']);
     }
 }
