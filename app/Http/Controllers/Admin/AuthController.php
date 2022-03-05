@@ -19,6 +19,8 @@ class AuthController extends Controller
     {
         $data = Auth::guard('admins')->user();
 
+        $data->loadMissing(['offices:id,name', 'classifications:id,name']);
+
         return response([
             'message' => 'User profile',
             'data' => $data
