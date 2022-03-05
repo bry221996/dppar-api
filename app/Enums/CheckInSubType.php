@@ -21,5 +21,5 @@ final class CheckInSubType extends Enum
     const UNDER_DETENTION       = 'under_detention';
     const LOSSES                = 'losses';
     const TERMINATED            = 'terminated';
-    const DECEASED              = 'deceased'
+    const DECEASED              = 'deceased';
 }
