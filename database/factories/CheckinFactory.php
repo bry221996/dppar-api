@@ -60,4 +60,14 @@ class CheckinFactory extends Factory
             ];
         });
     }
+
+    public function unaccounted()
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'type' => CheckInType::UNACCOUNTED,
+                'sub_type' => null
+            ];
+        });
+    }
 }
