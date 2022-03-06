@@ -36,6 +36,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::group(['prefix' => 'v1'], function () {
     Route::group(['prefix' => 'personnel'], function () {
         Route::post('login', [PersonnelAuthController::class, 'login']);
+        Route::post('/mpin/reset', [PersonnelMpinController::class, 'reset']);
 
         Route::group(['middleware' => 'auth:personnels'], function () {
             Route::post('/logout', [PersonnelAuthController::class, 'logout']);
@@ -43,7 +44,6 @@ Route::group(['prefix' => 'v1'], function () {
             Route::get('/dashboard', [PersonnelDashboardController::class, 'index']);
             Route::get('/details', [PersonnelAuthController::class, 'details']);
             Route::post('/mpin', [PersonnelMpinController::class, 'store']);
-            Route::delete('/mpin', [PersonnelMpinController::class, 'destroy']);
 
             Route::get('/checkins', [PersonnelCheckinController::class, 'index']);
             Route::post('/checkins', [PersonnelCheckinController::class, 'store']);

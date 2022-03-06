@@ -29,13 +29,35 @@ class DestroyTest extends TestCase
             'pin_updated_at' => now()
         ]);
 
-        Sanctum::actingAs($personnel, [], 'personnels');
-
-        $this->deleteJson('/api/v1/personnel/mpin')
+        $this->postJson('/api/v1/personnel/mpin/reset', [
+            'personnel_id' => $personnel->personnel_id,
+            'birth_date' => $personnel->birth_date
+        ])
             ->assertSuccessful()
             ->assertJsonStructure(['message']);
 
         $this->assertTrue(Hash::check(Carbon::parse($personnel->birth_date)->format('Ymd'), $personnel->fresh()->mpin));
         $this->assertNull($personnel->fresh()->pin_updated_at);
+    }
+
+    /**
+     * @group controllers
+     * @group controllers.personnel
+     * @group controllers.personnel.mpin
+     * @group controllers.personnel.mpin.destroy
+     */
+    public function test_personnel_can_not_reset_mpin_with_invalid_info()
+    {
+        $personnel = Personnel::factory()->create();
+
+        $personnel->update([
+            'mpin' => Hash::make('1234'),
+            'pin_updated_at' => now()
+        ]);
+
+        $this->postJson('/api/v1/personnel/mpin/reset', [
+            'personnel_id' => $personnel->personnel_id,
+            'birth_date' => now()->toDateString()
+        ])->assertStatus(400);
     }
 }

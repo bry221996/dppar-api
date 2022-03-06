@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Personnel;
 
 use App\Http\Controllers\Controller;
+use App\Models\Personnel;
 use App\Repositories\PersonnelRepository;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -34,9 +35,20 @@ class PersonnelMpinController extends Controller
         return response(['message' => 'MPIN successfully updated']);
     }
 
-    public function destroy()
+    public function reset(Request $request)
     {
-        $personnel = Auth::guard('personnels')->user();
+        $request->validate([
+            'personnel_id' => 'required',
+            'birth_date' => 'required'
+        ]);
+
+        $personnel = Personnel::where('personnel_id', $request->personnel_id)
+            ->where('birth_date', $request->birth_date)
+            ->first();
+
+        if (!$personnel) {
+            return response(['message' => 'Personnel not found.'], 400);
+        }
 
         $personnel->update([
             'mpin' => Hash::make(Carbon::parse($personnel->birth_date)->format('Ymd')),
