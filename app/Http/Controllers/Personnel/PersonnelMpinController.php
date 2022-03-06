@@ -43,10 +43,13 @@ class PersonnelMpinController extends Controller
         ]);
 
         $personnel = Personnel::where('personnel_id', $request->personnel_id)
-            ->where('birth_date', $request->birth_date)
             ->first();
 
         if (!$personnel) {
+            return response(['message' => 'Personnel not found.'], 400);
+        }
+
+        if (Carbon::parse($personnel->birth_date)->format('Ymd') !== $request->birth_date) {
             return response(['message' => 'Personnel not found.'], 400);
         }
 

@@ -31,7 +31,7 @@ class DestroyTest extends TestCase
 
         $this->postJson('/api/v1/personnel/mpin/reset', [
             'personnel_id' => $personnel->personnel_id,
-            'birth_date' => $personnel->birth_date
+            'birth_date' => Carbon::parse($personnel->birth_date)->format('Ymd'),
         ])
             ->assertSuccessful()
             ->assertJsonStructure(['message']);
