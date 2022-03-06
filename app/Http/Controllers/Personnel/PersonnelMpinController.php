@@ -33,4 +33,16 @@ class PersonnelMpinController extends Controller
 
         return response(['message' => 'MPIN successfully updated']);
     }
+
+    public function destroy()
+    {
+        $personnel = Auth::guard('personnels')->user();
+
+        $personnel->update([
+            'mpin' => Hash::make(Carbon::parse($personnel->birth_date)->format('Ymd')),
+            'pin_updated_at' => null,
+        ]);
+
+        return response(['message' => 'MPIN successfully reset.']);
+    }
 }
