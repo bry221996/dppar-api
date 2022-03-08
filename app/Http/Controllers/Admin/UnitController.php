@@ -19,6 +19,7 @@ class UnitController extends Controller
                 AllowedFilter::exact('status'),
                 AllowedFilter::scope('search')
             ])
+            ->orderBy('created_at', 'desc')
             ->paginate($request->per_page ?? 10);
 
         return response($list);

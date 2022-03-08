@@ -28,6 +28,7 @@ class OfficeController extends Controller
                 AllowedFilter::exact('station_id'),
                 AllowedFilter::scope('search'),
             ])
+            ->orderBy('created_at', 'desc')
             ->paginate($request->per_page ?? 10);
 
         return response($list);

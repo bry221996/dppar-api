@@ -24,6 +24,7 @@ class SubUnitController extends Controller
                 AllowedFilter::scope('search'),
                 AllowedFilter::exact('unit_id')->default($user->unit_id)
             ])
+            ->orderBy('created_at', 'desc')
             ->paginate($request->per_page ?? 10);
 
         return response($list);

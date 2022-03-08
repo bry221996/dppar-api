@@ -27,6 +27,7 @@ class UserController extends Controller
                 AllowedFilter::scope('search'),
             ])
             ->with(['offices:id,name', 'classifications:id,name'])
+            ->orderBy('created_at', 'desc')
             ->paginate($request->per_page ?? 10);
 
         return response($list);

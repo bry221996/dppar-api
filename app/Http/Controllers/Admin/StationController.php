@@ -29,6 +29,7 @@ class StationController extends Controller
                     });
                 })->default($user->unit_id)
             ])
+            ->orderBy('created_at', 'desc')
             ->paginate($request->per_page ?? 10);
 
         return response($list);
