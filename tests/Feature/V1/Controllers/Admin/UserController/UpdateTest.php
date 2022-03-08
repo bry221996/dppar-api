@@ -6,8 +6,10 @@ use App\Enums\PersonnelClassification;
 use App\Enums\UserRole;
 use App\Models\Office;
 use App\Models\User;
+use App\Notifications\CredentialNotification;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Support\Facades\Notification;
 use Laravel\Sanctum\Sanctum;
 use Illuminate\Support\Str;
 use Tests\TestCase;
@@ -24,6 +26,8 @@ class UpdateTest extends TestCase
      */
     public function test_super_admin_can_update_user()
     {
+        Notification::fake();
+
         $superAdmin = User::factory()->superAdmin()->create();
         Sanctum::actingAs($superAdmin, [], 'admins');
 
@@ -40,6 +44,8 @@ class UpdateTest extends TestCase
         $this->assertEquals($user->classifications()->count(), count($data['classifications']));
 
         $this->assertDatabaseHas('users', ['email' => $data->email]);
+
+        Notification::assertSentTo($user, CredentialNotification::class);
     }
 
     /**
@@ -50,6 +56,8 @@ class UpdateTest extends TestCase
      */
     public function test_super_admin_can_update_user_with_office()
     {
+        Notification::fake();
+
         $superAdmin = User::factory()->superAdmin()->create();
         Sanctum::actingAs($superAdmin, [], 'admins');
 
