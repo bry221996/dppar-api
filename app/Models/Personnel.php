@@ -26,6 +26,10 @@ class Personnel extends Authenticatable
         'has_pin'
     ];
 
+    protected $casts = [
+        'is_intel' => 'boolean'
+    ];
+
     public function getHasPinAttribute()
     {
         return !!$this->pin_updated_at;
