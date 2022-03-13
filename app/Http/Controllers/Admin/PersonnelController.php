@@ -80,11 +80,14 @@ class PersonnelController extends Controller
 
     public function update(UpdateRequest $request, Personnel $personnel)
     {
-        $personnel->update($request->personnelData());
+        $data = $request->personnelData();
+        $needLogout = $personnel->personnel_id !== $data['personnel_id'] || $personnel->birth_date !== $data['birth_date'];
+
+        $personnel->update($data);
 
         $personnel->assignments()->first()->update($request->assignmentData());
 
-        if ($personnel->fresh()->is_inactive) {
+        if ($personnel->fresh()->is_inactive && $needLogout) {
             $personnel->tokens()->delete();
         }
 
