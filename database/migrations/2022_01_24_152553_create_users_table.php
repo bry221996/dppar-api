@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Schema;
 class CreateUsersTable extends Migration
 {
     /**
-     * Run the migrations.
+     * Run the migrations.er
      *
      * @return void
      */
@@ -25,6 +25,7 @@ class CreateUsersTable extends Migration
             $table->string('password');
             $table->rememberToken();
             $table->enum('status', ['active', 'inactive'])->default('active');
+            $table->boolean('is_intel')->default(false);
             $table->softDeletes();
             $table->timestamps();
 

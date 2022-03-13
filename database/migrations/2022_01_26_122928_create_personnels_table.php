@@ -36,6 +36,7 @@ class CreatePersonnelsTable extends Migration
             $table->enum('gender', GenderType::getAll());
             $table->timestamp('pin_updated_at')->nullable();
             $table->enum('status', ['active', 'inactive'])->default('active');
+            $table->boolean('is_intel')->default(false);
             $table->timestamps();
             $table->softDeletes();
 
