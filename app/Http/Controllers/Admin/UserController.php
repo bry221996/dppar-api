@@ -66,15 +66,16 @@ class UserController extends Controller
     public function update(UpdateRequest $request, User $user)
     {
         $data = $request->userData();
-
-        if ($user->email !== $data['email']) {
-            $generatedPassword = Str::random(8);
-            $data['password'] = Hash::make($generatedPassword);
-        }
+        $oldEmail  = $user->email;
 
         $user->update($data);
 
-        $user->fresh()->notify(new CredentialNotification($generatedPassword));
+        if ($oldEmail !== $data['email']) {
+            $generatedPassword = Str::random(8);
+            $data['password'] = Hash::make($generatedPassword);
+
+            $user->fresh()->notify(new CredentialNotification($generatedPassword));
+        }
 
         $user->classifications()->sync($request->classificationsData());
         $user->offices()->sync($request->officesData());
