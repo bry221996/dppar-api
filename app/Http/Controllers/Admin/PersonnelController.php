@@ -53,6 +53,16 @@ class PersonnelController extends Controller
         return response($list);
     }
 
+    public function show(Personnel $personnel)
+    {
+        $personnel->loadMissing('assignments');
+
+        return response([
+            'message' => 'Personnel successfully fetched.',
+            'data' => $personnel
+        ]);
+    }
+
     public function store(CreateRequest $request)
     {
         $personnel = Personnel::create($request->personnelData());
