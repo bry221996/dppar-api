@@ -30,12 +30,15 @@ class UpdateTest extends TestCase
         Sanctum::actingAs($superAdmin, [], 'admins');
 
         $personnel = Personnel::factory()->create();
+        Assignment::factory()->create(['personnel_id' => $personnel->id]);
 
         $data = Personnel::factory()
             ->make([
                 'new_image' =>  UploadedFile::fake()->image('personnel.jpeg')
             ])
             ->toArray();
+
+        $data['assignment'] = Assignment::factory()->make()->toArray();
 
         $this->putJson("/api/v1/admin/personnels/$personnel->id", $data)
             ->assertSuccessful()
@@ -73,12 +76,15 @@ class UpdateTest extends TestCase
         Sanctum::actingAs($superAdmin, [], 'admins');
 
         $personnel = Personnel::factory()->create();
+        Assignment::factory()->create(['personnel_id' => $personnel->id]);
 
         $data = Personnel::factory()
             ->make([
                 'image' =>  $this->faker()->imageUrl
             ])
             ->toArray();
+
+        $data['assignment'] = Assignment::factory()->make()->toArray();
 
         $this->putJson("/api/v1/admin/personnels/$personnel->id", $data)
             ->assertSuccessful()

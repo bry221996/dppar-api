@@ -45,11 +45,16 @@ class UpdateRequest extends FormRequest
             'last_name' =>  'required',
             'middle_name' =>  'required',
             'birth_date' => 'required|date|date_format:Y-m-d|before:now',
-            'status' => 'required|in:active,inactive'
+            'status' => 'required|in:active,inactive',
+            'assignment' => 'required|array',
+            'assignment.unit_id' => 'required|exists:units,id',
+            'assignment.sub_unit_id' => 'nullable|exists:sub_units,id',
+            'assignment.station_id' => 'nullable|exists:stations,id',
+            'assignment.office_id' => 'nullable|exists:offices,id',
         ];
     }
 
-    public function validated()
+    public function personnelData(): array
     {
         $data = parent::validated();
 
@@ -58,6 +63,14 @@ class UpdateRequest extends FormRequest
             unset($data['new_image']);
         }
 
+        unset($data['assignment']);
+
         return $data;
+    }
+
+
+    public function assignmentData(): array
+    {
+        return $this->validated()['assignment'];
     }
 }

@@ -67,7 +67,9 @@ class PersonnelController extends Controller
 
     public function update(UpdateRequest $request, Personnel $personnel)
     {
-        $personnel->update($request->validated());
+        $personnel->update($request->personnelData());
+
+        $personnel->assignments()->first()->update($request->assignmentData());
 
         if ($personnel->fresh()->is_inactive) {
             $personnel->tokens()->delete();
