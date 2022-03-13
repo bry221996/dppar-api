@@ -44,6 +44,11 @@ class CheckinController extends Controller
                 AllowedFilter::scope('start_date'),
                 AllowedFilter::scope('end_date'),
             ])
+            ->when(!$user->is_super_admin && !$user->is_intel, function ($query) {
+                return $query->whereHas('personnel', function ($personnelQuery) {
+                    return $personnelQuery->where('is_intel', 0);
+                });
+            })
             ->when($userAccessibleClassifications->count(), function ($query) use ($userAccessibleClassifications) {
                 return $query->whereHas('personnel', function ($personnelQuery) use ($userAccessibleClassifications) {
                     return $personnelQuery->whereIn('classification_id', $userAccessibleClassifications->toArray());

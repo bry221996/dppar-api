@@ -24,7 +24,8 @@ class UserFactory extends Factory
             'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
             'remember_token' => Str::random(10),
             'role' => $this->faker->randomElement(['super_admin']),
-            'status' => 'active'
+            'status' => 'active',
+            'is_intel' => false
         ];
     }
 
@@ -60,7 +61,7 @@ class UserFactory extends Factory
         return $this->state(function (array $attributes) {
             return [
                 'role' => 'regional_police_officer',
-                'unit_id' => function() {
+                'unit_id' => function () {
                     return Unit::factory()->create()->id;
                 }
             ];

@@ -45,6 +45,7 @@ class UpdateRequest extends FormRequest
             'last_name' =>  'required',
             'middle_name' =>  'required',
             'birth_date' => 'required|date|date_format:Y-m-d|before:now',
+            'is_intel' => 'required|boolean',
             'status' => 'required|in:active,inactive',
             'assignment' => 'required|array',
             'assignment.unit_id' => 'required|exists:units,id',

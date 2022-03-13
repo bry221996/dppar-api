@@ -38,6 +38,7 @@ class PersonnelFactory extends Factory
             'email' => $this->faker->email,
             'mpin' => Hash::make($defaultPin->format('Ymd')),
             'status' => 'active',
+            'is_intel' => false
         ];
     }
 }

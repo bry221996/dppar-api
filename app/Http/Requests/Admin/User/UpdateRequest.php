@@ -32,6 +32,7 @@ class UpdateRequest extends FormRequest
             'sub_unit_id' => 'nullable|required_if:role,provincial_police_officer,municipal_police_officer|exists:sub_units,id',
             'station_id' => 'nullable|required_if:role,municipal_police_officer|exists:stations,id',
             'status' => 'required|in:active,inactive',
+            'is_intel' => 'required|boolean',
             'classifications' => 'required_if:role,regional_police_officer,provincial_police_officer,municipal_police_officer|array|prohibited_if:role,super_admin',
             'classifications.*' => 'required|distinct|exists:classifications,id',
             'offices' => 'array|prohibited_if:role,super_admin',

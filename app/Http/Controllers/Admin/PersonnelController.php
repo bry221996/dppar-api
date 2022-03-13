@@ -47,6 +47,9 @@ class PersonnelController extends Controller
             ->when($userAccessibleClassifications->count(), function ($query) use ($userAccessibleClassifications) {
                 return $query->whereIn('classification_id', $userAccessibleClassifications->toArray());
             })
+            ->when(!$user->is_super_admin && !$user->is_intel, function ($query) {
+                return $query->where('is_intel', false);
+            })
             ->orderBy('created_at', 'desc')
             ->paginate($request->per_page ?? 10);
 

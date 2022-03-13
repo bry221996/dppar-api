@@ -46,6 +46,7 @@ class CreateRequest extends FormRequest
             'mobile_number' => 'required',
             'email' => 'required|email|unique:personnels,email',
             'status' => 'required|in:active,inactive',
+            'is_intel' => 'required|boolean',
             'assignment' => 'required|array',
             'assignment.unit_id' => 'required|exists:units,id',
             'assignment.sub_unit_id' => 'nullable|exists:sub_units,id',
