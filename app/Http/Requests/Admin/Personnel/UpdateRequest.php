@@ -60,9 +60,9 @@ class UpdateRequest extends FormRequest
 
         if ($this->hasFile('new_image') && !$this->has('image')) {
             $data['image'] = Storage::disk('s3')->url($this->file('new_image')->store('personnels', 's3'));
-            unset($data['new_image']);
         }
 
+        unset($data['new_image']);
         unset($data['assignment']);
 
         return $data;
