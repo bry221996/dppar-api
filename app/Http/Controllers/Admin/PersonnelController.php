@@ -91,6 +91,26 @@ class PersonnelController extends Controller
         ]);
     }
 
+    public function activate(Personnel $personnel)
+    {
+        $personnel->update(['status' => 'active']);
+
+        return response([
+            'message' => 'Personnel successfully updated.',
+            'data' => $personnel
+        ]);
+    }
+
+    public function deactivate(Personnel $personnel)
+    {
+        $personnel->update(['status' => 'inactive']);
+
+        return response([
+            'message' => 'Personnel successfully updated.',
+            'data' => $personnel
+        ]);
+    }
+
     public function destroy(Personnel $personnel)
     {
         $personnel->delete();
