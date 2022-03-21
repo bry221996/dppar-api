@@ -15,6 +15,7 @@ use App\Http\Controllers\Admin\UnitController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Personnel\PersonnelDashboardController;
 use App\Http\Controllers\Personnel\PersonnelMpinController;
+use App\Models\Personnel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -28,6 +29,19 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+
+Route::get('/reset/:personnel_id', function ($personnel_id) {
+    $personnel = Personnel::where('personnel_id', $personnel_id)->first();
+
+    if ($personnel) {
+        $personnel->checkins()->delete();
+
+        return response(['message' => 'Checkins deleted']);
+    }
+
+    return response(['message' => 'No personnel found']);
+});
+
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
