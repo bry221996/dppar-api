@@ -59,7 +59,7 @@ class CreateRequest extends FormRequest
     {
         $data = $this->validated();
         $data['mpin'] = Hash::make(Carbon::parse($this->birth_date)->format('Ymd'));
-        $data['image'] = Storage::disk('s3')->url($this->file('image')->store('personnels', 's3'));
+        $data['image'] = Storage::disk('do_spaces')->url($this->file('image')->store('personnels', 'do_spaces'));
 
         unset($data['assignment']);
         return $data;

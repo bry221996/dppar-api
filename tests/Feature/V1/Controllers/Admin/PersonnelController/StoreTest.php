@@ -24,7 +24,7 @@ class StoreTest extends TestCase
      */
     public function test_super_admin_can_create_personnel()
     {
-        Storage::fake('s3');
+        Storage::fake('do_spaces');
 
         $superAdmin = User::factory()->superAdmin()->create();
         Sanctum::actingAs($superAdmin, [], 'admins');

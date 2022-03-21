@@ -57,7 +57,7 @@ class CheckinRequest extends FormRequest
         $data['address_component'] = json_encode($address->adressComponent);
 
         if ($this->image && $this->hasFile('image')) {
-            $data['image'] = Storage::disk('s3')->url($this->file('image')->store('checkins', 's3'));
+            $data['image'] = Storage::disk('do_spaces')->url($this->file('image')->store('checkins', 'do_spaces'));
         }
 
         return $data;

@@ -24,7 +24,7 @@ class UpdateTest extends TestCase
      */
     public function test_super_admin_can_update_personnel_with_new_image()
     {
-        Storage::fake('s3');
+        Storage::fake('do_spaces');
 
         $superAdmin = User::factory()->superAdmin()->create();
         Sanctum::actingAs($superAdmin, [], 'admins');

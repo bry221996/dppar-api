@@ -23,7 +23,7 @@ class StoreTest extends TestCase
      */
     public function test_personnel_can_create_checkin()
     {
-        Storage::fake('s3');
+        Storage::fake('do_spaces');
 
         $personnel = Personnel::factory()->create();
         Sanctum::actingAs($personnel, [], 'personnels');
