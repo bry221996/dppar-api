@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Personnel;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,4 +16,17 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
+});
+
+
+Route::get('/reset/:personnel_id', function ($personnel_id) {
+    $personnel = Personnel::where('personnel_id', $personnel_id)->first();
+
+    if ($personnel) {
+        $personnel->checkins()->delete();
+
+        return response(['message' => 'Checkins deleted']);
+    }
+
+    return response(['message' => 'No personnel found']);
 });
