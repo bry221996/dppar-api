@@ -14,7 +14,8 @@ class Checkin extends Model
     protected $guarded = [];
 
     protected $casts = [
-        'is_accounted' => 'boolean'
+        'is_accounted' => 'boolean',
+        'from_offline_sync' => 'boolean'
     ];
 
     /**

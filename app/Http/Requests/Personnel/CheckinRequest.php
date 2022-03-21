@@ -37,6 +37,7 @@ class CheckinRequest extends FormRequest
             'latitude' => 'required|numeric',
             'longitude' => 'required|numeric',
             'remarks' => 'required_if:sub_type,' . CheckInSubType::OTHERS,
+            'created_at' => 'nullable|date|date_format:Y-m-d H:i:s'
         ];
 
         if ($this->post('type') === CheckInType::PRESENT) {
@@ -55,6 +56,7 @@ class CheckinRequest extends FormRequest
         $data['town'] = $address->getTown();
         $data['province'] = $address->getProvince();
         $data['address_component'] = json_encode($address->adressComponent);
+        $data['from_offline_sync'] = !!$this->created_at;
 
         if ($this->image && $this->hasFile('image')) {
             $data['image'] = Storage::disk('do_spaces')->url($this->file('image')->store('checkins', 'do_spaces'));

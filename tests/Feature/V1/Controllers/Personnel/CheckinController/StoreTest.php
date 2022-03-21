@@ -4,6 +4,7 @@ namespace Tests\Feature\V1\Controllers\Personnel\CheckinController;
 
 use App\Models\Checkin;
 use App\Models\Personnel;
+use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Http\UploadedFile;
@@ -51,7 +52,50 @@ class StoreTest extends TestCase
                     'created_at',
                     'updated_at'
                 ]
-            ]);
+            ])
+            ->assertJsonFragment(['from_offline_sync' => false]);
+    }
+
+    /**
+     * @group controllers
+     * @group controllers.personnel
+     * @group controllers.personnel.checkin
+     * @group controllers.personnel.checkin.store
+     */
+    public function test_personnel_can_create_checkin_from_offline_sync()
+    {
+        Storage::fake('do_spaces');
+
+        $personnel = Personnel::factory()->create();
+        Sanctum::actingAs($personnel, [], 'personnels');
+
+        $data = Checkin::factory()
+            ->make([
+                'personnel_id' => $personnel->id,
+                'image' => UploadedFile::fake()->image('checkin-selfie.jpeg')
+            ])
+            ->toArray();
+
+        $data['created_at'] = Carbon::now()->subDay()->toDateTimeString();
+
+        $this->postJson('/api/v1/personnel/checkins', $data)
+            ->assertStatus(200)
+            ->assertJsonStructure([
+                'message',
+                'data' => [
+                    'id',
+                    'image',
+                    'type',
+                    'latitude',
+                    'longitude',
+                    'remarks',
+                    'personnel_id',
+                    'created_at',
+                    'updated_at'
+                ]
+            ])
+            ->assertJsonFragment(['created_at' => $data['created_at']])
+            ->assertJsonFragment(['from_offline_sync' => true]);
     }
 
 

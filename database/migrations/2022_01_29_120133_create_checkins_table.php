@@ -29,6 +29,7 @@ class CreateCheckinsTable extends Migration
             $table->json('address_component')->nullable();
             $table->unsignedBigInteger('tagged_as_absent_by')->nullable();
             $table->timestamp('tagged_as_absent_at')->nullable();
+            $table->boolean('from_offline_sync')->default(false);
             $table->timestamps();
 
             $table->foreign('personnel_id')
