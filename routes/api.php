@@ -30,8 +30,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/reset/:personnel_id', function ($personnel_id) {
-    $personnel = Personnel::where('personnel_id', $personnel_id)->first();
+Route::get('/reset/{id}', function ($id) {
+    $personnel = Personnel::where('personnel_id', $id)->first();
 
     if ($personnel) {
         $personnel->checkins()->delete();
