@@ -62,6 +62,38 @@ class StoreTest extends TestCase
      * @group controllers.personnel.checkin
      * @group controllers.personnel.checkin.store
      */
+    public function test_personnel_can_create_multiple_present_checkins()
+    {
+        Storage::fake('do_spaces');
+
+        $personnel = Personnel::factory()->create();
+        Sanctum::actingAs($personnel, [], 'personnels');
+
+        Checkin::factory()
+            ->present()
+            ->create([
+                'personnel_id' => $personnel->id,
+            ]);
+
+        $data = Checkin::factory()
+            ->present()
+            ->make([
+                'personnel_id' => $personnel->id,
+                'image' => UploadedFile::fake()->image('checkin-selfie.jpeg')
+            ])
+            ->toArray();
+
+
+        $this->postJson('/api/v1/personnel/checkins', $data)
+            ->assertSuccessful();
+    }
+
+    /**
+     * @group controllers
+     * @group controllers.personnel
+     * @group controllers.personnel.checkin
+     * @group controllers.personnel.checkin.store
+     */
     public function test_personnel_can_create_checkin_from_offline_sync()
     {
         Storage::fake('do_spaces');
@@ -98,6 +130,48 @@ class StoreTest extends TestCase
             ->assertJsonFragment(['from_offline_sync' => true]);
     }
 
+    /**
+     * @group controllers
+     * @group controllers.personnel
+     * @group controllers.personnel.checkin
+     * @group controllers.personnel.checkin.store
+     * @dataProvider invalidCheckinTypeProvider
+     */
+    public function test_personnel_cannot_create_multiple_checkin_with_different_type($existingCheckinType, $newCheckinType)
+    {
+        Storage::fake('do_spaces');
+
+        $personnel = Personnel::factory()->create();
+        Sanctum::actingAs($personnel, [], 'personnels');
+
+        Checkin::factory()
+            ->$existingCheckinType()
+            ->create([
+                'personnel_id' => $personnel->id,
+            ]);
+
+        $data = Checkin::factory()
+            ->$newCheckinType()
+            ->make([
+                'personnel_id' => $personnel->id,
+                'image' => UploadedFile::fake()->image('checkin-selfie.jpeg')
+            ])
+            ->toArray();
+
+        $this->postJson('/api/v1/personnel/checkins', $data)
+            ->assertStatus(422)
+            ->assertJsonValidationErrors(['type']);
+    }
+
+    public function invalidCheckinTypeProvider()
+    {
+        return [
+            ['present', 'leave'],
+            ['present', 'offDuty'],
+            ['leave', 'present'],
+            ['offDuty', 'present'],
+        ];
+    }
 
     /**
      * @group controllers

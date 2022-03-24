@@ -4,6 +4,7 @@ namespace App\Http\Requests\Personnel;
 
 use App\Enums\CheckInSubType;
 use App\Enums\CheckInType;
+use App\Rules\CheckinTypeRule;
 use App\Services\Geocoder\OpenCage\OpenCageService;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
@@ -32,7 +33,7 @@ class CheckinRequest extends FormRequest
     {
         $rules = [
             'image' => 'nullable|image|required_if:type,' . CheckInType::PRESENT,
-            'type' => ['required', new EnumValue(CheckInType::class)],
+            'type' => ['required', new EnumValue(CheckInType::class), new CheckinTypeRule],
             'sub_type' => 'required_if:type,' . CheckInType::PRESENT,
             'latitude' => 'required|numeric',
             'longitude' => 'required|numeric',
