@@ -21,7 +21,8 @@ final class CheckInType extends Enum
                     CheckInSubType::UNDER_INSTRUCTION,
                     CheckInSubType::CONFERENCE,
                     CheckInSubType::SCHOOLING,
-                    CheckInSubType::OTHERS
+                    CheckInSubType::OTHERS,
+                    CheckInSubType::TRAVEL
                 ];
                 break;
             case self::ABSENT:
