@@ -11,7 +11,7 @@ class CheckinStationFilter implements Filter
     {
         return $query->when($value, function ($subQuery) use ($value) {
             $subQuery->whereHas('personnel', function ($personnelQuery) use ($value) {
-                $personnelQuery->whereHas('assignments', function ($assignmentQuery) use ($value) {
+                $personnelQuery->whereHas('assignment', function ($assignmentQuery) use ($value) {
                     $assignmentQuery->where('station_id', $value);
                 });
             });

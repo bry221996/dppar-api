@@ -10,7 +10,7 @@ class PersonnelSubUnitFilter implements Filter
     public function __invoke(Builder $query, $value, string $property)
     {
         return $query->when($value, function ($subQuery) use ($value) {
-            $subQuery->whereHas('assignments', function ($assignmentQuery) use ($value) {
+            $subQuery->whereHas('assignment', function ($assignmentQuery) use ($value) {
                 $assignmentQuery->where('sub_unit_id', $value);
             });
         });
