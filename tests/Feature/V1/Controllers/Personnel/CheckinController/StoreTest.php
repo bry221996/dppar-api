@@ -163,6 +163,43 @@ class StoreTest extends TestCase
             ->assertJsonValidationErrors(['type']);
     }
 
+    /**
+     * @group controllers
+     * @group controllers.personnel
+     * @group controllers.personnel.checkin
+     * @group controllers.personnel.checkin.store
+     * @dataProvider invalidCheckinTypeProvider
+     */
+    public function test_personnel_cannot_create_multiple_offline_checkin_with_different_type($existingCheckinType, $newCheckinType)
+    {
+        Storage::fake('do_spaces');
+
+        $personnel = Personnel::factory()->create();
+        Sanctum::actingAs($personnel, [], 'personnels');
+
+        $date = Carbon::now()->subDay()->toDateTimeString();
+
+        Checkin::factory()
+            ->$existingCheckinType()
+            ->create([
+                'personnel_id' => $personnel->id,
+                'created_at' =>  $date
+            ]);
+
+        $data = Checkin::factory()
+            ->$newCheckinType()
+            ->make([
+                'personnel_id' => $personnel->id,
+                'image' => UploadedFile::fake()->image('checkin-selfie.jpeg'),
+                'created_at' =>  $date
+            ])
+            ->toArray();
+
+        $this->postJson('/api/v1/personnel/checkins', $data)
+            ->assertStatus(422)
+            ->assertJsonValidationErrors(['type']);
+    }
+
     public function invalidCheckinTypeProvider()
     {
         return [

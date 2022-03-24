@@ -4,6 +4,7 @@ namespace App\Rules;
 
 use App\Enums\CheckInType;
 use App\Models\Checkin;
+use Carbon\Carbon;
 use Illuminate\Contracts\Validation\DataAwareRule;
 use Illuminate\Contracts\Validation\Rule;
 use Illuminate\Support\Facades\Auth;
@@ -43,13 +44,19 @@ class CheckinTypeRule implements Rule, DataAwareRule
     {
         $personnel  = Auth::guard('personnels')->user();
 
+        $dateReference = isset($this->data['created_at']) && $this->data['created_at'] ?
+            Carbon::parse($this->data['created_at'])->toDateString() :
+            Carbon::now()->toDateString();
+
         if ($value === CheckInType::PRESENT) {
             return !Checkin::where('personnel_id', $personnel->id)
                 ->whereIn('type', [CheckInType::LEAVE, CheckInType::OFF_DUTY])
+                ->whereDate('created_at', $dateReference)
                 ->exists();
         }
 
         return !Checkin::where('personnel_id', $personnel->id)
+            ->whereDate('created_at', $dateReference)
             ->exists();
     }
 
