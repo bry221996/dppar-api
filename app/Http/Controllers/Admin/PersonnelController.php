@@ -58,7 +58,7 @@ class PersonnelController extends Controller
 
     public function show(Personnel $personnel)
     {
-        $personnel->loadMissing('assignments');
+        $personnel->loadMissing('assignment');
 
         return response([
             'message' => 'Personnel successfully fetched.',
@@ -70,7 +70,7 @@ class PersonnelController extends Controller
     {
         $personnel = Personnel::create($request->personnelData());
 
-        $personnel->assignments()->create($request->assignmentData());
+        $personnel->assignment()->create($request->assignmentData());
 
         return response([
             'message' => 'Personnel successfully created.',
@@ -85,7 +85,7 @@ class PersonnelController extends Controller
 
         $personnel->update($data);
 
-        $personnel->assignments()->first()->update($request->assignmentData());
+        $personnel->assignment()->first()->update($request->assignmentData());
 
         if ($personnel->fresh()->is_inactive && $needLogout) {
             $personnel->tokens()->delete();

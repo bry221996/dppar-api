@@ -41,7 +41,7 @@ class AnalyticsController extends Controller
                     });
                     $personnelSubQuery->whereIn('classification_id', $classificationIds);
                 })
-                ->whereHas('assignments', function ($assignmentQuery) use ($user) {
+                ->whereHas('assignment', function ($assignmentQuery) use ($user) {
                     $assignmentQuery
                         ->when($user->unit_id, function ($subAssignmentQuery) use ($user) {
                             $subAssignmentQuery->where('unit_id', $user->unit_id);

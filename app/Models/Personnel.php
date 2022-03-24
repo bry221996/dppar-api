@@ -40,9 +40,9 @@ class Personnel extends Authenticatable
         return $this->status === StatusType::INACTIVE;
     }
 
-    public function assignments()
+    public function assignment()
     {
-        return $this->hasMany(Assignment::class);
+        return $this->hasOne(Assignment::class);
     }
 
     public function checkins()
