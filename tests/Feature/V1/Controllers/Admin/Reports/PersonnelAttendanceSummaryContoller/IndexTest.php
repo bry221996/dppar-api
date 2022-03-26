@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\V1\Controllers\Admin\Reports\PersonnelAttendanceSummaryContoller;
 
+use App\Enums\CheckInType;
 use App\Models\Assignment;
 use App\Models\Checkin;
 use App\Models\Personnel;
@@ -63,5 +64,30 @@ class IndexTest extends TestCase
                     ]
                 ]
             ]);
+    }
+
+    /**
+     * @group controllers
+     * @group controllers.admin
+     * @group controllers.admin.repots.personnel_attendance_summary
+     * @group controllers.admin.repots.personnel_attendance_summary.index
+     */
+    public function test_duplicate_checkin_with_same_type_will_count_as_one_on_personnel_attendance_summary_report()
+    {
+        $superAdmin = User::factory()->superAdmin()->create();
+        Sanctum::actingAs($superAdmin, [], 'admins');
+
+        $type = CheckInType::getRandomValue();
+
+        $personnel = Personnel::factory()->create();
+        Assignment::factory()->create(['personnel_id' => $personnel->id]);
+        Checkin::factory()->$type()->count(2)->create(['personnel_id' => $personnel->id]);
+
+        $start_date = now()->subWeek()->format('Y-m-d');
+        $end_date =  now()->format('Y-m-d');
+
+        $this->getJson("/api/v1/admin/reports/personnel/attendance/summary?start_date=$start_date&end_date=$end_date")
+            ->assertSuccessful()
+            ->assertJsonFragment([$type . "_count" => 1]);
     }
 }

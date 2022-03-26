@@ -10,6 +10,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Personnel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
 
@@ -58,30 +59,35 @@ class PersonnelAttendanceSummaryContoller extends Controller
             ->withCount([
                 'checkins as present_count' => function ($checkinQuery) use ($request) {
                     $checkinQuery
+                        ->select(DB::raw('COUNT(DISTINCT(type))'))
                         ->whereDate('created_at', '<=', $request->get('end_date'))
                         ->whereDate('created_at', '>=', $request->get('start_date'))
                         ->where('type', CheckInType::PRESENT);
                 },
                 'checkins as leave_count' => function ($checkinQuery) use ($request) {
                     $checkinQuery
+                        ->select(DB::raw('COUNT(DISTINCT(type))'))
                         ->whereDate('created_at', '<=', $request->get('end_date'))
                         ->whereDate('created_at', '>=', $request->get('start_date'))
                         ->where('type', CheckInType::LEAVE);
                 },
                 'checkins as off_duty_count' => function ($checkinQuery) use ($request) {
                     $checkinQuery
+                        ->select(DB::raw('COUNT(DISTINCT(type))'))
                         ->whereDate('created_at', '<=', $request->get('end_date'))
                         ->whereDate('created_at', '>=', $request->get('start_date'))
                         ->where('type', CheckInType::OFF_DUTY);
                 },
                 'checkins as unaccounted_count' => function ($checkinQuery) use ($request) {
                     $checkinQuery
+                        ->select(DB::raw('COUNT(DISTINCT(type))'))
                         ->whereDate('created_at', '<=', $request->get('end_date'))
                         ->whereDate('created_at', '>=', $request->get('start_date'))
                         ->where('type', CheckInType::UNACCOUNTED);
                 },
                 'checkins as absent_count' => function ($checkinQuery) use ($request) {
                     $checkinQuery
+                        ->select(DB::raw('COUNT(DISTINCT(type))'))
                         ->whereDate('created_at', '<=', $request->get('end_date'))
                         ->whereDate('created_at', '>=', $request->get('start_date'))
                         ->where('type', CheckInType::ABSENT);
