@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\NewPasswordController;
 use App\Http\Controllers\Admin\OfficeController;
 use App\Http\Controllers\Admin\PasswordResetController;
 use App\Http\Controllers\Admin\PersonnelController;
+use App\Http\Controllers\Admin\Reports\PersonnelAttendanceContoller;
 use App\Http\Controllers\Admin\StationController;
 use App\Http\Controllers\Admin\SubUnitController;
 use App\Http\Controllers\Admin\UnitController;
@@ -100,6 +101,10 @@ Route::group(['prefix' => 'v1'], function () {
                 Route::resource('/users', UserController::class)->except(['create', 'edit']);
                 Route::resource('/offices', OfficeController::class)->except(['index', 'create', 'edit', 'destroy']);
             });
+        });
+
+        Route::group(['prefix' => '/reports'], function () {
+            Route::get('/personnel/attendance', [PersonnelAttendanceContoller::class, 'index']);
         });
     });
 });
