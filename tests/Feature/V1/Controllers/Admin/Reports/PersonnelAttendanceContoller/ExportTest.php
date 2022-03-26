@@ -32,7 +32,6 @@ class ExportTest extends TestCase
         $end_date =  now()->format('Y-m-d');
 
         $this->getJson("/api/v1/admin/reports/personnel/attendance/export?start_date=$start_date&end_date=$end_date")
-            ->assertSuccessful()
-            ->dump();
+            ->assertSuccessful();
     }
 }
