@@ -106,6 +106,7 @@ Route::group(['prefix' => 'v1'], function () {
 
         Route::group(['prefix' => '/reports'], function () {
             Route::get('/personnel/attendance', [PersonnelAttendanceContoller::class, 'index']);
+            Route::get('/personnel/attendance/export', [PersonnelAttendanceContoller::class, 'export']);
             Route::get('/personnel/attendance/summary', [PersonnelAttendanceSummaryContoller::class, 'index']);
         });
     });

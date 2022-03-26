@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\CheckInType;
 use App\Traits\WithSerializeDate;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -16,6 +17,10 @@ class Checkin extends Model
     protected $casts = [
         'is_accounted' => 'boolean',
         'from_offline_sync' => 'boolean'
+    ];
+
+    protected $appends = [
+        'type_short_code'
     ];
 
     /**
@@ -69,5 +74,10 @@ class Checkin extends Model
     public function scopeEndDate(Builder $query, $date)
     {
         return $query->whereDate('created_at', '<=', $date);
+    }
+
+    public function getTypeShortCodeAttribute()
+    {
+        return CheckInType::getShortCode($this->type);
     }
 }

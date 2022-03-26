@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\Admin\Reports;
 
+use App\Filters\Personnel\PersonnelOfficeFilter;
 use App\Filters\Personnel\PersonnelStationFilter;
 use App\Filters\Personnel\PersonnelSubUnitFilter;
 use App\Filters\Personnel\PersonnelUnitFilter;
 use App\Http\Controllers\Controller;
+use App\Jobs\ExportPersonnelAttendanceReport;
 use App\Models\Personnel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -40,7 +42,7 @@ class PersonnelAttendanceContoller extends Controller
                 AllowedFilter::custom('unit_id', new PersonnelUnitFilter)->default($user->unit_id),
                 AllowedFilter::custom('sub_unit_id', new PersonnelSubUnitFilter)->default($user->sub_unit_id),
                 AllowedFilter::custom('station_id', new PersonnelStationFilter)->default($user->station_id),
-                AllowedFilter::custom('office_id', new PersonnelStationFilter)->default(implode(',', $userOffices))
+                AllowedFilter::custom('office_id', new PersonnelOfficeFilter)->default(implode(',', $userOffices))
             ])
             ->when($userAccessibleClassifications->count(), function ($query) use ($userAccessibleClassifications) {
                 return $query->whereIn('classification_id', $userAccessibleClassifications->toArray());
@@ -61,5 +63,14 @@ class PersonnelAttendanceContoller extends Controller
             ->paginate($request->per_page ?? 10);
 
         return response($list);
+    }
+
+    public function export(Request $request)
+    {
+        $user = Auth::guard('admins')->user();
+
+        dispatch(new ExportPersonnelAttendanceReport($user, $request->get('start_date'), $request->get('end_date')));
+
+        return response(['message' => 'Generating reports. Kindly wait for the email with a download link']);
     }
 }

@@ -42,4 +42,23 @@ final class CheckInType extends Enum
                 break;
         }
     }
+
+    public static function getShortCode(string $value): string
+    {
+        switch ($value) {
+            case self::PRESENT:
+                return 'P';
+            case self::LEAVE:
+                return 'Loa';
+            case self::OFF_DUTY:
+                return 'OD';
+            case self::UNACCOUNTED:
+                return 'UN';
+            case self::ABSENT:
+                return 'Abs';
+            default:
+                return '';
+                break;
+        }
+    }
 }

@@ -10,6 +10,7 @@ use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
+use Illuminate\Support\Str;
 
 class IndexTest extends TestCase
 {
@@ -78,10 +79,11 @@ class IndexTest extends TestCase
         Sanctum::actingAs($superAdmin, [], 'admins');
 
         $type = CheckInType::getRandomValue();
+        $scopeType = Str::camel($type);
 
         $personnel = Personnel::factory()->create();
         Assignment::factory()->create(['personnel_id' => $personnel->id]);
-        Checkin::factory()->$type()->count(2)->create(['personnel_id' => $personnel->id]);
+        Checkin::factory()->$scopeType()->count(2)->create(['personnel_id' => $personnel->id]);
 
         $start_date = now()->subWeek()->format('Y-m-d');
         $end_date =  now()->format('Y-m-d');
