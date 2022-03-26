@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin\Reports;
 
+use App\Enums\CheckInType;
 use App\Filters\Personnel\PersonnelStationFilter;
 use App\Filters\Personnel\PersonnelSubUnitFilter;
 use App\Filters\Personnel\PersonnelUnitFilter;
@@ -12,7 +13,7 @@ use Illuminate\Support\Facades\Auth;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
 
-class PersonnelAttendanceContoller extends Controller
+class PersonnelAttendanceSummaryContoller extends Controller
 {
     public function index(Request $request)
     {
@@ -49,13 +50,42 @@ class PersonnelAttendanceContoller extends Controller
                 return $query->where('is_intel', false);
             })
             ->with([
-                'checkins' => function ($checkinSubQuery) use ($request) {
-                    return $checkinSubQuery
-                        ->select(['id', 'personnel_id', 'type', 'created_at'])
+                'assignment' => function ($assignmentQuery) {
+                    return $assignmentQuery->select(['personnel_id', 'unit_id', 'sub_unit_id', 'station_id', 'office_id'])
+                        ->with(['unit:id,name', 'subUnit:id,name', 'station:id,name', 'office:id,name']);
+                }
+            ])
+            ->withCount([
+                'checkins as present_count' => function ($checkinQuery) use ($request) {
+                    $checkinQuery
                         ->whereDate('created_at', '<=', $request->get('end_date'))
                         ->whereDate('created_at', '>=', $request->get('start_date'))
-                        ->orderBy('created_at', 'asc');
-                }
+                        ->where('type', CheckInType::PRESENT);
+                },
+                'checkins as leave_count' => function ($checkinQuery) use ($request) {
+                    $checkinQuery
+                        ->whereDate('created_at', '<=', $request->get('end_date'))
+                        ->whereDate('created_at', '>=', $request->get('start_date'))
+                        ->where('type', CheckInType::LEAVE);
+                },
+                'checkins as off_duty_count' => function ($checkinQuery) use ($request) {
+                    $checkinQuery
+                        ->whereDate('created_at', '<=', $request->get('end_date'))
+                        ->whereDate('created_at', '>=', $request->get('start_date'))
+                        ->where('type', CheckInType::OFF_DUTY);
+                },
+                'checkins as unaccounted_count' => function ($checkinQuery) use ($request) {
+                    $checkinQuery
+                        ->whereDate('created_at', '<=', $request->get('end_date'))
+                        ->whereDate('created_at', '>=', $request->get('start_date'))
+                        ->where('type', CheckInType::UNACCOUNTED);
+                },
+                'checkins as absent_count' => function ($checkinQuery) use ($request) {
+                    $checkinQuery
+                        ->whereDate('created_at', '<=', $request->get('end_date'))
+                        ->whereDate('created_at', '>=', $request->get('start_date'))
+                        ->where('type', CheckInType::ABSENT);
+                },
             ])
             ->orderBy('created_at', 'desc')
             ->paginate($request->per_page ?? 10);
