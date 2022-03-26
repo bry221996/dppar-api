@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\OfficeController;
 use App\Http\Controllers\Admin\PasswordResetController;
 use App\Http\Controllers\Admin\PersonnelController;
 use App\Http\Controllers\Admin\Reports\PersonnelAttendanceContoller;
+use App\Http\Controllers\Admin\Reports\PersonnelAttendanceSummaryContoller;
 use App\Http\Controllers\Admin\StationController;
 use App\Http\Controllers\Admin\SubUnitController;
 use App\Http\Controllers\Admin\UnitController;
@@ -105,6 +106,11 @@ Route::group(['prefix' => 'v1'], function () {
 
         Route::group(['prefix' => '/reports'], function () {
             Route::get('/personnel/attendance', [PersonnelAttendanceContoller::class, 'index']);
+            Route::get('/personnel/attendance/summary', [PersonnelAttendanceSummaryContoller::class, 'index']);
         });
     });
 });
+
+
+// Overall Personnel Attendance summary report
+// api/reports/Attendance/summary

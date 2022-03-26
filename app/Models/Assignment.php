@@ -11,4 +11,24 @@ class Assignment extends Model
     use HasFactory, WithSerializeDate;
 
     protected $guarded = [];
+
+    public function unit()
+    {
+        return $this->belongsTo(Unit::class);
+    }
+
+    public function subUnit()
+    {
+        return $this->belongsTo(SubUnit::class);
+    }
+
+    public function station()
+    {
+        return $this->belongsTo(Station::class);
+    }
+
+    public function office()
+    {
+        return $this->belongsTo(Office::class);
+    }
 }
